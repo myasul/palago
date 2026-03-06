@@ -2,9 +2,14 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "lib": ["ES2022"],
-    "rootDir": "src",
-    "outDir": "dist"
+    "rootDir": ".",
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@palago/db": ["../db/dist/src/index.d.ts"],
+      "@palago/db/*": ["../db/dist/*"]
+    }
   },
-  "include": ["src/**/*.ts"],
+  "include": ["api.ts", "index.ts", "market.ts", "stock.ts", "src/**/*.ts"],
   "exclude": ["dist", "node_modules"]
 }

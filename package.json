@@ -1,0 +1,14 @@
+{
+  "name": "palago",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @palago/web",
+    "build": "npm run build --workspace @palago/web",
+    "lint": "npm run lint --workspace @palago/web"
+  }
+}
+

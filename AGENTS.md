@@ -255,3 +255,46 @@ NEXT_PUBLIC_APP_URL=   # e.g. https://palago.ph
 ```
 
 Never commit real values. `.env.example` at repo root lists all variables with placeholder values.
+
+---
+## Git Commit Behaviour
+
+After completing any task, Codex must:
+
+1. **Show a summary** of all files created or modified
+2. **Propose a commit message** following the Conventional Commits format (see below)
+3. **Wait for explicit approval** — do not run `git add` or `git commit` until the user 
+   responds with "yes", "approved", "lgtm", or any clear affirmative
+4. **Only then** stage the relevant files and commit
+
+If the user requests changes to the commit message or the file selection, 
+revise and ask for approval again before proceeding.
+
+### Commit Message Format
+
+Use Conventional Commits: `type(scope): description`
+
+Types:
+- `feat`     → new feature or new file
+- `fix`      → bug fix
+- `chore`    → setup, config, tooling (no production code change)
+- `refactor` → code restructure with no behaviour change
+- `test`     → adding or updating tests
+- `docs`     → documentation only
+
+Scopes match the monorepo structure:
+- `web`        → changes in apps/web
+- `ingestion`  → changes in apps/ingestion
+- `db`         → changes in packages/db
+- `types`      → changes in packages/types
+- `infra`      → changes in infrastructure/terraform
+- `ci`         → changes in .github/workflows
+
+Examples:
+  chore(db): add drizzle schema for stocks and daily_prices
+  feat(ingestion): add eod-prices lambda job
+  chore(infra): add terraform config for lambda and eventbridge
+  feat(web): add dashboard api route with promise.all queries
+
+Each commit should correspond to exactly one task from the setup guide.
+Never batch multiple unrelated tasks into a single commit.

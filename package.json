@@ -17,6 +17,7 @@
     "type-check": "turbo type-check"
   },
   "devDependencies": {
+    "drizzle-orm": "^0.44.7",
     "turbo": "^2.5.0"
   }
 }

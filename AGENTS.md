@@ -259,6 +259,10 @@ Never commit real values. `.env.example` at repo root lists all variables with p
 ---
 ## Git Commit Behaviour
 
+After each completed task, always prepare a commit message proposal that summarizes the work clearly.
+
+Never run any `git` command that modifies repository state, including `git add`, `git commit`, `git restore`, `git reset`, `git checkout`, or branch-changing commands, until the user has explicitly approved that git action.
+
 After completing any task, Codex must:
 
 1. **Show a summary** of all files created or modified

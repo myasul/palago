@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "ES2017",
     "lib": [
@@ -24,9 +25,11 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"],
+      "@palago/db": ["../../packages/db/src/index.ts"],
+      "@palago/db/*": ["../../packages/db/src/*"],
+      "@palago/types": ["../../packages/types/src/index.ts"],
+      "@palago/types/*": ["../../packages/types/src/*"]
     }
   },
   "include": [
@@ -39,4 +42,3 @@
     "node_modules"
   ]
 }
-

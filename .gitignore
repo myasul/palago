@@ -1,9 +1,8 @@
 node_modules
+.env*
+!.env.example
 .next
 dist
+.turbo
 coverage
 npm-debug.log*
-.env
-.env.local
-.env.*.local
-

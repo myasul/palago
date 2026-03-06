@@ -1,14 +1,22 @@
 {
   "name": "palago",
   "private": true,
+  "engines": {
+    "node": ">=20",
+    "npm": ">=10"
+  },
+  "packageManager": "npm@10.9.2",
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace @palago/web",
-    "build": "npm run build --workspace @palago/web",
-    "lint": "npm run lint --workspace @palago/web"
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "type-check": "turbo type-check"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0"
   }
 }
-

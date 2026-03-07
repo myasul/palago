@@ -13,3 +13,4 @@ npm-debug.log*
 terraform.tfstate
 terraform.tfstate.backup
 *.tfvars
+ingestion.zip

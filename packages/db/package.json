@@ -30,7 +30,7 @@
     "type-check": "tsc -p tsconfig.json --noEmit",
     "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
     "db:migrate": "node dist/migrate.js",
-    "db:apply-views": "node dist/scripts/apply-views.js"
+    "db:apply-views": "tsx scripts/apply-views.ts"
   },
   "dependencies": {
     "drizzle-kit": "^0.30.6",
@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "dotenv": "^17.3.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.8.2"
   }
 }

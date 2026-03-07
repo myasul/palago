@@ -1,18 +1,20 @@
-import "dotenv/config";
-
+import dotenv from "dotenv";
+import path from "path";
 import { readFile } from "node:fs/promises";
-
 import postgres from "postgres";
 
-const connectionString = process.env.DATABASE_URL;
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const envPath = path.resolve(__dirname, "../../../.env");
 
-if (!connectionString) {
+dotenv.config({ path: envPath });
+
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
   throw new Error("DATABASE_URL is not set");
 }
 
-const sql = postgres(connectionString, {
-  max: 1,
-});
+const sql = postgres(databaseUrl, { max: 1 });
 
 const run = async () => {
   const filePath = new URL("./sql/create_52_week_view.sql", import.meta.url);

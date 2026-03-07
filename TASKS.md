@@ -86,11 +86,12 @@
 
 ## Phase 6 — Backend Verification
 
-| #   | Type | Task                                                                | Status |
-| --- | ---- | ------------------------------------------------------------------- | ------ |
-| 6.1 | 🧑   | Verify the Database (stocks, daily_prices, 52-week view, dividends) | ⬜     |
-| 6.2 | 🧑   | Verify Lambda Functions via AWS Console manual test                 | ⬜     |
-| 6.3 | 🧑   | Verify EventBridge Schedules are enabled and firing                 | ⬜     |
+| #   | Type | Task                                                                  | Status |
+| --- | ---- | --------------------------------------------------------------------- | ------ |
+| 6.1 | 🧑   | Verify the Database (stocks, daily_prices, 52-week view, dividends)   | ⬜     |
+| 6.2 | 🧑   | Verify Lambda Functions via AWS Console manual test                   | ⬜     |
+| 6.3 | 🧑   | Verify EventBridge Schedules are enabled and firing                   | ⬜     |
+| 6.4 | 🤖   | Write unit tests for shared/clients/ (yahoo.ts, eodhd.ts Zod schemas) | ⬜     |
 
 ---
 
@@ -101,6 +102,7 @@
 | 7.1 | 🤖   | Write `GET /api/dashboard` — PSEi index, top gainers/losers, most active, sector summary | ⬜     |
 | 7.2 | 🤖   | Write `GET /api/stocks/[symbol]` — price, OHLC, 52-week range, dividends, company info   | ⬜     |
 | 7.3 | 🤖   | Write `GET /api/lists/[type]` — paginated, sortable list by sector/category              | ⬜     |
+| 7.4 | 🤖   | Write API route tests (dashboard, stock detail, list)                                    | ⬜     |
 
 ---
 

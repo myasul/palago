@@ -120,7 +120,6 @@ Pre-computed 52-week high/low per stock. Derived from `daily_prices`. Refreshed 
 - `stock_id`, `high_52w`, `low_52w`, `as_of_date`
 - Refresh after every `eod-prices` job: `REFRESH MATERIALIZED VIEW CONCURRENTLY stock_52_week`
 
-
 **Migration rules:**
 
 - `migrations/` is owned entirely by Drizzle. Never manually create
@@ -336,13 +335,25 @@ Never batch multiple unrelated tasks into a single commit.
 ## Session Management
 
 At the start of every session, Codex must:
+
 1. Read `AGENT.md` (this file)
 2. Read `PROGRESS.md` — understand what's built, what's broken, what's next
 
 At the end of every task, Codex must update `PROGRESS.md`:
+
 - Move completed items to ✅ Completed
 - Document any bugs or incomplete work under ❌ Known Issues
 - Update 📋 Next Session with the logical next steps
 - Update the Last Updated timestamp
 
 Never end a session without updating PROGRESS.md.
+
+## Observability
+
+- Never use `console.log` directly in Lambda jobs — always use `logger` from
+  `shared/utils/logger.ts`
+- Every log line must include a `job` field so CloudWatch queries can filter
+  by job name
+- Errors must always include the `error` field with `err.message`
+- Log at the start of every job (info), at every record failure (warn),
+  and at job completion with counts (info)

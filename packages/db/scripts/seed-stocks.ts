@@ -49,13 +49,9 @@ type PseCompanyRow = {
   "Listing Board ": string;
 };
 
-const currentFile = fileURLToPath(import.meta.url);
-const currentDir = path.dirname(currentFile);
-const packageRoot = currentDir.endsWith(path.join("dist", "scripts"))
-  ? path.resolve(currentDir, "../..")
-  : path.resolve(currentDir, "..");
-const envPath = path.resolve(packageRoot, "../../.env");
-const csvPath = path.resolve(packageRoot, "data/pse-companies.csv");
+const currentDir = path.dirname(new URL(import.meta.url).pathname);
+const envPath = path.resolve(currentDir, "../../../.env");
+const csvPath = path.resolve(currentDir, "data/pse-companies.csv");
 
 dotenv.config({ path: envPath });
 

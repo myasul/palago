@@ -6,3 +6,10 @@ dist
 .turbo
 coverage
 npm-debug.log*
+
+
+# terraform
+.terraform
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars

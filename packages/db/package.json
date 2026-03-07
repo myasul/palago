@@ -29,7 +29,8 @@
     "lint": "tsc -p tsconfig.json --noEmit",
     "type-check": "tsc -p tsconfig.json --noEmit",
     "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
-    "db:migrate": "node dist/migrate.js"
+    "db:migrate": "node dist/migrate.js",
+    "db:apply-views": "node dist/scripts/apply-views.js"
   },
   "dependencies": {
     "drizzle-kit": "^0.30.6",

@@ -6,6 +6,6 @@
     "outDir": "dist",
     "types": ["node"]
   },
-  "include": ["client.ts", "migrate.ts", "schema.ts", "src/**/*.ts"],
+  "include": ["client.ts", "migrate.ts", "schema.ts", "scripts/**/*.ts", "src/**/*.ts"],
   "exclude": ["dist", "node_modules"]
 }

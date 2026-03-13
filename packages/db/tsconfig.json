@@ -3,7 +3,7 @@
   "compilerOptions": {
     "lib": ["ES2022"],
     "rootDir": ".",
-    "outDir": "dist",
+    "noEmit": true,
     "types": ["node"]
   },
   "include": ["client.ts", "migrate.ts", "schema.ts", "scripts/**/*.ts", "src/**/*.ts"],

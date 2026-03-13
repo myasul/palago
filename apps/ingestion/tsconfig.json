@@ -4,7 +4,12 @@
     "lib": ["ES2022"],
     "rootDir": ".",
     "outDir": "dist",
-    "types": ["node"]
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@palago/db": ["../../packages/db/dist/src/index.d.ts"],
+      "@palago/db/*": ["../../packages/db/dist/*"]
+    }
   },
   "include": ["**/*.ts"],
   "exclude": ["dist", "node_modules"]

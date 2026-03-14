@@ -61,6 +61,14 @@ Last Updated: 2026-03-15
 - Verified `cd packages/pse-edge && npx vitest run` passes with 4/4 test files
   and 8/8 tests.
 - Verified `npm run type-check --workspace @palago/pse-edge` passes.
+- Implemented Phase 3 User Story 1 for `@palago/pse-edge` by adding
+  `packages/pse-edge/src/provider.ts` with paginated `getCompanyList()`,
+  explicit failure on any page request error, and 500ms throttling between page
+  requests.
+- Added mocked-fetch provider tests in
+  `packages/pse-edge/tests/provider-company-list.test.ts`.
+- Verified `cd packages/pse-edge && npx vitest run` passes with 5/5 test files
+  and 10/10 tests after the provider company-list work.
 
 ## ❌ Known Issues
 
@@ -94,4 +102,5 @@ Last Updated: 2026-03-15
 - Implement `@palago/pse-edge` per the new plan and add fixture-backed parser
   tests for company list, stock data, company info, and historical prices.
 - Continue `001-pse-edge-provider` with Phase 3 provider-method work starting
-  at `T016` for paginated company-list fetching in `packages/pse-edge/src/provider.ts`.
+  at `T018` for `getStockData(edgeCmpyId)` and `getCompanyInfo(edgeCmpyId)` in
+  `packages/pse-edge/src/provider.ts`.

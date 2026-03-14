@@ -74,8 +74,8 @@ description: "Task list for PSE Edge provider implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T016 [US1] Implement paginated company directory fetching and `getCompanyList()` in `packages/pse-edge/src/provider.ts`
-- [ ] T017 [US1] Add provider-level tests for `getCompanyList()` pagination and failure behavior in `packages/pse-edge/tests/provider-company-list.test.ts`
+- [x] T016 [US1] Implement paginated company directory fetching and `getCompanyList()` in `packages/pse-edge/src/provider.ts`
+- [x] T017 [US1] Add provider-level tests for `getCompanyList()` pagination and failure behavior in `packages/pse-edge/tests/provider-company-list.test.ts`
 
 **Checkpoint**: User Story 1 is fully functional and testable independently
 

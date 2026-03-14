@@ -42,6 +42,9 @@ Last Updated: 2026-03-15
   `.specify/templates/spec-template.md`, and
   `.specify/templates/tasks-template.md` so planning artifacts enforce the new
   constitution gates and compliance tasks.
+- Created the feature spec for PSE Edge provider work at
+  `specs/001-pse-edge-provider/spec.md` and added a completed specification
+  quality checklist at `specs/001-pse-edge-provider/checklists/requirements.md`.
 
 ## ❌ Known Issues
 
@@ -56,6 +59,9 @@ Last Updated: 2026-03-15
   `tsx` failed to open its IPC socket under `/var/folders/...` with `EPERM`.
 - `.specify/templates/commands/` does not exist in this repository, so there
   were no command templates to align with the constitution during this session.
+- `.specify/scripts/bash/create-new-feature.sh` failed to create the feature
+  branch automatically; the branch was created manually as a fallback and the
+  expected spec directory was created by hand.
 
 ## 📋 Next Session
 
@@ -66,3 +72,6 @@ Last Updated: 2026-03-15
 - Add a safe dry-run or smoke-test path for the local backfill script.
 - Create `.specify/templates/commands/` guidance later only if the project
   starts using command-specific Specify templates.
+- Investigate why `.specify/scripts/bash/create-new-feature.sh` could not create
+  the feature branch in this environment and decide whether the script or local
+  git setup needs adjustment.

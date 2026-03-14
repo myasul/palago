@@ -51,6 +51,10 @@ Last Updated: 2026-03-15
 - Generated `specs/001-pse-edge-provider/tasks.md` with ordered implementation
   work for the shared package, parser fixtures, provider methods, workspace
   wiring, and final Vitest verification.
+- Scaffolded `@palago/pse-edge` for Phase 1 setup with
+  `packages/pse-edge/package.json`, `packages/pse-edge/tsconfig.json`, and
+  `packages/pse-edge/src/index.ts`, and marked tasks `T001` through `T003`
+  complete in `specs/001-pse-edge-provider/tasks.md`.
 
 ## ❌ Known Issues
 
@@ -83,3 +87,5 @@ Last Updated: 2026-03-15
   git setup needs adjustment.
 - Implement `@palago/pse-edge` per the new plan and add fixture-backed parser
   tests for company list, stock data, company info, and historical prices.
+- Continue Phase 2 for `001-pse-edge-provider` starting with `T005` shared
+  provider types and `T007` Zod schemas.

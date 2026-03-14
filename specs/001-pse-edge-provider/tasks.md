@@ -28,9 +28,9 @@ description: "Task list for PSE Edge provider implementation"
 
 **Purpose**: Create the new shared package skeleton and workspace configuration required before feature code is added
 
-- [ ] T001 Create the shared package manifest in `packages/pse-edge/package.json`
-- [ ] T002 Create the package TypeScript config in `packages/pse-edge/tsconfig.json`
-- [ ] T003 Create the package entrypoint stub in `packages/pse-edge/src/index.ts`
+- [x] T001 Create the shared package manifest in `packages/pse-edge/package.json`
+- [x] T002 Create the package TypeScript config in `packages/pse-edge/tsconfig.json`
+- [x] T003 Create the package entrypoint stub in `packages/pse-edge/src/index.ts`
 - [ ] ~~T004 Create the package test bootstrap in `packages/pse-edge/tests/setup.ts`~~
 
 ---

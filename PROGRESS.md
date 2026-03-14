@@ -45,6 +45,9 @@ Last Updated: 2026-03-15
 - Created the feature spec for PSE Edge provider work at
   `specs/001-pse-edge-provider/spec.md` and added a completed specification
   quality checklist at `specs/001-pse-edge-provider/checklists/requirements.md`.
+- Generated the planning artifacts for the PSE Edge provider feature:
+  `specs/001-pse-edge-provider/plan.md`, `research.md`, `data-model.md`,
+  `contracts/pse-edge-provider.md`, and `quickstart.md`.
 
 ## ❌ Known Issues
 
@@ -75,3 +78,5 @@ Last Updated: 2026-03-15
 - Investigate why `.specify/scripts/bash/create-new-feature.sh` could not create
   the feature branch in this environment and decide whether the script or local
   git setup needs adjustment.
+- Implement `@palago/pse-edge` per the new plan and add fixture-backed parser
+  tests for company list, stock data, company info, and historical prices.

@@ -41,25 +41,26 @@ description: "Task list for PSE Edge provider implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 Define provider interfaces and result types in `packages/pse-edge/src/types.ts`
-- [ ] T006 Create shared normalization helpers in `packages/pse-edge/src/utils/numbers.ts`, `packages/pse-edge/src/utils/dates.ts`, and `packages/pse-edge/src/utils/sleep.ts`
-- [ ] T007 Create shared Zod schemas for all provider responses in `packages/pse-edge/src/schemas.ts`
-- [ ] T008 [P] Implement the company list parser in `packages/pse-edge/src/parsers/company-list.ts` using `packages/pse-data/search.html`
-- [ ] T009 [P] Add fixture-backed Vitest coverage for the company list parser in `packages/pse-edge/tests/company-list.test.ts` using `packages/pse-data/search.html`
-- [ ] T010 [P] Implement the stock data parser in `packages/pse-edge/src/parsers/stock-data.ts` using `packages/pse-data/stockData.html`
-- [ ] T011 [P] Add fixture-backed Vitest coverage for the stock data parser in `packages/pse-edge/tests/stock-data.test.ts` using `packages/pse-data/stockData.html`
-- [ ] T012 [P] Implement the company info parser in `packages/pse-edge/src/parsers/company-info.ts` using `packages/pse-data/company_information.html`
-- [ ] T013 [P] Add fixture-backed Vitest coverage for the company info parser in `packages/pse-edge/tests/company-info.test.ts` using `packages/pse-data/company_information.html`
-- [ ] T014 [P] Add the historical response fixture in `packages/pse-data/disclosure-cht.json` and implement the historical prices parser in `packages/pse-edge/src/parsers/historical-prices.ts` using that fixture
-  - [ ] T014a [MANUAL] Create packages/pse-data/disclosure-cht.json by running:
+- [x] T005 Define provider interfaces and result types in `packages/pse-edge/src/types.ts`
+- [x] T006 Create shared normalization helpers in `packages/pse-edge/src/utils/numbers.ts`, `packages/pse-edge/src/utils/dates.ts`, and `packages/pse-edge/src/utils/sleep.ts`
+- [x] T007 Create shared Zod schemas for all provider responses in `packages/pse-edge/src/schemas.ts`
+- [x] T008 [P] Implement the company list parser in `packages/pse-edge/src/parsers/company-list.ts` using `packages/pse-data/search.html`
+- [x] T009 [P] Add fixture-backed Vitest coverage for the company list parser in `packages/pse-edge/tests/company-list.test.ts` using `packages/pse-data/search.html`
+- [x] T010 [P] Implement the stock data parser in `packages/pse-edge/src/parsers/stock-data.ts` using `packages/pse-data/stockData.html`
+- [x] T011 [P] Add fixture-backed Vitest coverage for the stock data parser in `packages/pse-edge/tests/stock-data.test.ts` using `packages/pse-data/stockData.html`
+- [x] T012 [P] Implement the company info parser in `packages/pse-edge/src/parsers/company-info.ts` using `packages/pse-data/company_information.html`
+- [x] T013 [P] Add fixture-backed Vitest coverage for the company info parser in `packages/pse-edge/tests/company-info.test.ts` using `packages/pse-data/company_information.html`
+- [x] T014 [P] Add the historical response fixture in `packages/pse-data/disclosure-cht.json` and implement the historical prices parser in `packages/pse-edge/src/parsers/historical-prices.ts` using that fixture
+  - [x] T014a [MANUAL] Create packages/pse-data/disclosure-cht.json by running:
     curl -X POST https://edge.pse.com.ph/common/DisclosureCht.ax \
       -d "cmpy_id=86&security_id=158&startDate=03-01-2026&endDate=03-15-2026"
     Save the response as packages/pse-data/disclosure-cht.json
+    Note: Fixture already existed before this implementation session, so this manual step was not repeated.
 
-  - [ ] T014b [P] Implement the historical prices parser in
+  - [x] T014b [P] Implement the historical prices parser in
     packages/pse-edge/src/parsers/historical-prices.ts
     using packages/pse-data/disclosure-cht.json
-- [ ] T015 [P] Add fixture-backed Vitest coverage for the historical prices parser in `packages/pse-edge/tests/historical-prices.test.ts` using `packages/pse-data/disclosure-cht.json`
+- [x] T015 [P] Add fixture-backed Vitest coverage for the historical prices parser in `packages/pse-edge/tests/historical-prices.test.ts` using `packages/pse-data/disclosure-cht.json`
 
 **Checkpoint**: Shared types, schemas, parsers, and parser tests are ready for provider method integration
 

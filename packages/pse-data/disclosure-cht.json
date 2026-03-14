@@ -1,0 +1,50 @@
+{
+  "chartData": [
+      {
+          "OPEN": 195.7,
+          "VALUE": 1.32369927E8,
+          "CLOSE": 200.0,
+          "CHART_DATE": "Mar 11, 2026 00:00:00",
+          "HIGH": 202.6,
+          "LOW": 195.7
+      },
+      {
+          "OPEN": 201.0,
+          "VALUE": 1.42770292E8,
+          "CLOSE": 199.0,
+          "CHART_DATE": "Mar 12, 2026 00:00:00",
+          "HIGH": 201.6,
+          "LOW": 198.1
+      },
+      {
+          "OPEN": 199.1,
+          "VALUE": 2.42069641E8,
+          "CLOSE": 190.0,
+          "CHART_DATE": "Mar 13, 2026 00:00:00",
+          "HIGH": 199.2,
+          "LOW": 190.0
+      },
+      {
+          "OPEN": 199.1,
+          "VALUE": 2.42069641E8,
+          "CLOSE": 190.0,
+          "CHART_DATE": "Mar 13, 2026 00:00:00",
+          "HIGH": 199.2,
+          "LOW": 190.0
+      },
+      {
+          "OPEN": 199.1,
+          "VALUE": 2.42069641E8,
+          "CLOSE": 190.0,
+          "CHART_DATE": "Mar 13, 2026 00:00:00",
+          "HIGH": 199.2,
+          "LOW": 190.0
+      }
+  ],
+  "tableData": [
+      {
+          "SM_DM": "Mar 12, 2026 07:12 AM",
+          "SUBJECT_TITLE": "[Amend-1]Annual Report"
+      }
+  ]
+}

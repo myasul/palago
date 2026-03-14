@@ -55,6 +55,12 @@ Last Updated: 2026-03-15
   `packages/pse-edge/package.json`, `packages/pse-edge/tsconfig.json`, and
   `packages/pse-edge/src/index.ts`, and marked tasks `T001` through `T003`
   complete in `specs/001-pse-edge-provider/tasks.md`.
+- Completed Phase 2 foundational work for `@palago/pse-edge` by adding
+  `types.ts`, shared normalization helpers, Zod schemas, four endpoint parsers,
+  and four fixture-backed Vitest parser test files.
+- Verified `cd packages/pse-edge && npx vitest run` passes with 4/4 test files
+  and 8/8 tests.
+- Verified `npm run type-check --workspace @palago/pse-edge` passes.
 
 ## ❌ Known Issues
 
@@ -87,5 +93,5 @@ Last Updated: 2026-03-15
   git setup needs adjustment.
 - Implement `@palago/pse-edge` per the new plan and add fixture-backed parser
   tests for company list, stock data, company info, and historical prices.
-- Continue Phase 2 for `001-pse-edge-provider` starting with `T005` shared
-  provider types and `T007` Zod schemas.
+- Continue `001-pse-edge-provider` with Phase 3 provider-method work starting
+  at `T016` for paginated company-list fetching in `packages/pse-edge/src/provider.ts`.

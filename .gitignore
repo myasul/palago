@@ -14,3 +14,10 @@ terraform.tfstate
 terraform.tfstate.backup
 *.tfvars
 ingestion.zip
+
+# Codex agent data
+.codex/
+
+# macOS
+.DS_Store
+**/.DS_Store

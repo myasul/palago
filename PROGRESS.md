@@ -42,6 +42,60 @@ Last Updated: 2026-03-15
   `.specify/templates/spec-template.md`, and
   `.specify/templates/tasks-template.md` so planning artifacts enforce the new
   constitution gates and compliance tasks.
+- Created the feature spec for PSE Edge provider work at
+  `specs/001-pse-edge-provider/spec.md` and added a completed specification
+  quality checklist at `specs/001-pse-edge-provider/checklists/requirements.md`.
+- Generated the planning artifacts for the PSE Edge provider feature:
+  `specs/001-pse-edge-provider/plan.md`, `research.md`, `data-model.md`,
+  `contracts/pse-edge-provider.md`, and `quickstart.md`.
+- Generated `specs/001-pse-edge-provider/tasks.md` with ordered implementation
+  work for the shared package, parser fixtures, provider methods, workspace
+  wiring, and final Vitest verification.
+- Scaffolded `@palago/pse-edge` for Phase 1 setup with
+  `packages/pse-edge/package.json`, `packages/pse-edge/tsconfig.json`, and
+  `packages/pse-edge/src/index.ts`, and marked tasks `T001` through `T003`
+  complete in `specs/001-pse-edge-provider/tasks.md`.
+- Completed Phase 2 foundational work for `@palago/pse-edge` by adding
+  `types.ts`, shared normalization helpers, Zod schemas, four endpoint parsers,
+  and four fixture-backed Vitest parser test files.
+- Verified `cd packages/pse-edge && npx vitest run` passes with 4/4 test files
+  and 8/8 tests.
+- Verified `npm run type-check --workspace @palago/pse-edge` passes.
+- Implemented Phase 3 User Story 1 for `@palago/pse-edge` by adding
+  `packages/pse-edge/src/provider.ts` with paginated `getCompanyList()`,
+  explicit failure on any page request error, and 500ms throttling between page
+  requests.
+- Added mocked-fetch provider tests in
+  `packages/pse-edge/tests/provider-company-list.test.ts`.
+- Verified `cd packages/pse-edge && npx vitest run` passes with 5/5 test files
+  and 10/10 tests after the provider company-list work.
+- Implemented Phase 4 User Story 2 for `@palago/pse-edge` by adding
+  `getStockData(edgeCmpyId)` and `getCompanyInfo(edgeCmpyId)` in
+  `packages/pse-edge/src/provider.ts`.
+- Added mocked-fetch provider tests in
+  `packages/pse-edge/tests/provider-company-detail.test.ts`, including
+  optional-field null handling for missing or unparseable stock and company
+  detail fields.
+- Verified `cd packages/pse-edge && npx vitest run` passes with 6/6 test files
+  and 16/16 tests after the provider detail work.
+- Implemented Phase 5 User Story 3 for `@palago/pse-edge` by adding
+  `getHistoricalPrices(edgeCmpyId, edgeSecId, startDate, endDate)` in
+  `packages/pse-edge/src/provider.ts` with form-encoded POST requests to the
+  disclosure chart endpoint.
+- Added mocked-fetch provider tests in
+  `packages/pse-edge/tests/provider-historical-prices.test.ts`, covering
+  scientific-notation value normalization, UTC date parsing, empty `chartData`,
+  and explicit request/parsing failures.
+- Verified `cd packages/pse-edge && npx vitest run` passes with 7/7 test files
+  and 20/20 tests after the historical provider work.
+- Completed Phase 6 polish for `@palago/pse-edge` by exporting the public API
+  from `packages/pse-edge/src/index.ts`, wiring `@palago/pse-edge` into
+  `apps/ingestion/package.json` and `apps/web/package.json`, and cleaning up the
+  provider method parameter names to remove unnecessary underscore prefixes.
+- Re-verified the package hard gate with `cd packages/pse-edge && npx vitest run`
+  passing 7/7 test files and 20/20 tests.
+- Verified the full workspace build passes with `npm run build`, including
+  `@palago/pse-edge`, `@palago/ingestion`, and `@palago/web`.
 
 ## ❌ Known Issues
 
@@ -56,6 +110,9 @@ Last Updated: 2026-03-15
   `tsx` failed to open its IPC socket under `/var/folders/...` with `EPERM`.
 - `.specify/templates/commands/` does not exist in this repository, so there
   were no command templates to align with the constitution during this session.
+- `.specify/scripts/bash/create-new-feature.sh` failed to create the feature
+  branch automatically; the branch was created manually as a fallback and the
+  expected spec directory was created by hand.
 
 ## 📋 Next Session
 
@@ -66,3 +123,8 @@ Last Updated: 2026-03-15
 - Add a safe dry-run or smoke-test path for the local backfill script.
 - Create `.specify/templates/commands/` guidance later only if the project
   starts using command-specific Specify templates.
+- Investigate why `.specify/scripts/bash/create-new-feature.sh` could not create
+  the feature branch in this environment and decide whether the script or local
+  git setup needs adjustment.
+- Start integrating `@palago/pse-edge` into ingestion flows and web data access
+  now that the shared provider package and public API are complete.

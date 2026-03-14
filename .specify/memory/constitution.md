@@ -120,6 +120,11 @@ what's broken, what's next — updated by Codex at the end of every session),
 (this file). Every Codex session MUST begin by reading all three before
 proceeding.
 
+During implementation, tasks.md MUST be updated immediately after
+each task completes — change [ ] to [x], add a brief deviation note
+if the implementation differed from the plan, and commit tasks.md
+in the same commit as the implementation files it describes.
+
 ## Governance
 
 This constitution supersedes conflicting local habits for palago.ph. Amendments
@@ -137,5 +142,14 @@ Reviewers MUST confirm source isolation, numeric precision, timezone handling,
 mobile-first beginner UX obligations, observability requirements, and secret
 management where applicable. Exceptions MUST be documented in the relevant plan
 under a justified complexity or compliance note before implementation proceeds.
+
+## Git Commit Behaviour
+
+After completing any task, Codex must:
+
+1. Show a summary of all files created or modified
+2. Prepare a commit message following Conventional Commits format
+3. Stage the relevant files and commit immediately — no approval
+   required
 
 **Version**: 1.0.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-15

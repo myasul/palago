@@ -1,4 +1,6 @@
 import { parseCompanyList } from "./parsers/company-list";
+import { parseCompanyInfo } from "./parsers/company-info";
+import { parseStockData } from "./parsers/stock-data";
 import type {
   CompanyProfile,
   HistoricalPricePoint,
@@ -9,6 +11,8 @@ import type {
 import { sleep } from "./utils/sleep";
 
 const COMPANY_DIRECTORY_URL = "https://edge.pse.com.ph/companyDirectory/search.ax";
+const COMPANY_INFORMATION_URL = "https://edge.pse.com.ph/companyInformation/form.do";
+const STOCK_DATA_URL = "https://edge.pse.com.ph/companyPage/stockData.do";
 const REQUEST_THROTTLE_MS = 500;
 
 type FetchLike = typeof fetch;
@@ -79,11 +83,41 @@ export class PSEEdgeProvider implements IPSEDataProvider {
   }
 
   async getStockData(_edgeCmpyId: string): Promise<StockDetailSnapshot> {
-    throw new Error("getStockData is not implemented yet");
+    const response = await this.fetchFn(`${STOCK_DATA_URL}?cmpy_id=${encodeURIComponent(_edgeCmpyId)}`);
+
+    if (!response.ok) {
+      throw new Error(`PSE Edge stock data request failed for cmpy_id ${_edgeCmpyId} with status ${response.status}`);
+    }
+
+    const html = await response.text();
+
+    try {
+      return parseStockData(html, _edgeCmpyId);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new Error(`PSE Edge stock data parsing failed for cmpy_id ${_edgeCmpyId}: ${message}`);
+    }
   }
 
   async getCompanyInfo(_edgeCmpyId: string): Promise<CompanyProfile> {
-    throw new Error("getCompanyInfo is not implemented yet");
+    const response = await this.fetchFn(
+      `${COMPANY_INFORMATION_URL}?cmpy_id=${encodeURIComponent(_edgeCmpyId)}`,
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `PSE Edge company info request failed for cmpy_id ${_edgeCmpyId} with status ${response.status}`,
+      );
+    }
+
+    const html = await response.text();
+
+    try {
+      return parseCompanyInfo(html, _edgeCmpyId);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new Error(`PSE Edge company info parsing failed for cmpy_id ${_edgeCmpyId}: ${message}`);
+    }
   }
 
   async getHistoricalPrices(

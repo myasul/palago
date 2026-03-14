@@ -69,6 +69,15 @@ Last Updated: 2026-03-15
   `packages/pse-edge/tests/provider-company-list.test.ts`.
 - Verified `cd packages/pse-edge && npx vitest run` passes with 5/5 test files
   and 10/10 tests after the provider company-list work.
+- Implemented Phase 4 User Story 2 for `@palago/pse-edge` by adding
+  `getStockData(edgeCmpyId)` and `getCompanyInfo(edgeCmpyId)` in
+  `packages/pse-edge/src/provider.ts`.
+- Added mocked-fetch provider tests in
+  `packages/pse-edge/tests/provider-company-detail.test.ts`, including
+  optional-field null handling for missing or unparseable stock and company
+  detail fields.
+- Verified `cd packages/pse-edge && npx vitest run` passes with 6/6 test files
+  and 16/16 tests after the provider detail work.
 
 ## ❌ Known Issues
 
@@ -102,5 +111,5 @@ Last Updated: 2026-03-15
 - Implement `@palago/pse-edge` per the new plan and add fixture-backed parser
   tests for company list, stock data, company info, and historical prices.
 - Continue `001-pse-edge-provider` with Phase 3 provider-method work starting
-  at `T018` for `getStockData(edgeCmpyId)` and `getCompanyInfo(edgeCmpyId)` in
-  `packages/pse-edge/src/provider.ts`.
+  at `T021` for `getHistoricalPrices(edgeCmpyId, edgeSecId, startDate, endDate)`
+  in `packages/pse-edge/src/provider.ts`.

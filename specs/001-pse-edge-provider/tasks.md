@@ -89,9 +89,9 @@ description: "Task list for PSE Edge provider implementation"
 
 ### Implementation for User Story 2
 
-- [ ] T018 [US2] Implement `getStockData(edgeCmpyId)` in `packages/pse-edge/src/provider.ts`
-- [ ] T019 [US2] Implement `getCompanyInfo(edgeCmpyId)` in `packages/pse-edge/src/provider.ts`
-- [ ] T020 [US2] Add provider-level tests for stock detail and company profile methods in `packages/pse-edge/tests/provider-company-detail.test.ts`
+- [x] T018 [US2] Implement `getStockData(edgeCmpyId)` in `packages/pse-edge/src/provider.ts`
+- [x] T019 [US2] Implement `getCompanyInfo(edgeCmpyId)` in `packages/pse-edge/src/provider.ts`
+- [x] T020 [US2] Add provider-level tests for stock detail and company profile methods in `packages/pse-edge/tests/provider-company-detail.test.ts`
 
 **Checkpoint**: User Story 2 is fully functional and testable independently
 

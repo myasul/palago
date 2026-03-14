@@ -41,6 +41,18 @@ const toNullableEmail = (value: string | undefined) => {
   return /\[email/i.test(value) ? null : value;
 };
 
+const toNullableAbsoluteUrl = (value: string | undefined) => {
+  if (!value) {
+    return null;
+  }
+
+  try {
+    return new URL(value).toString();
+  } catch {
+    return null;
+  }
+};
+
 export const parseCompanyInfo = (html: string, edgeCmpyId: string) => {
   const { $, map } = buildFieldMap(html);
   const description = $("#dataList table.view").first().find("td").first().text().replace(/\s+/g, " ").trim();
@@ -59,7 +71,7 @@ export const parseCompanyInfo = (html: string, edgeCmpyId: string) => {
     address: map.get("Business Address"),
     email: toNullableEmail(map.get("E-mail Address")),
     phone: map.get("Telephone Number"),
-    websiteUrl: map.get("Website"),
+    websiteUrl: toNullableAbsoluteUrl(map.get("Website")),
     logoUrl: symbol ? `${ABSOLUTE_LOGO_BASE_URL}/co_${symbol}_logo.jpg` : null,
   });
 };

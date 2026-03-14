@@ -138,4 +138,13 @@ mobile-first beginner UX obligations, observability requirements, and secret
 management where applicable. Exceptions MUST be documented in the relevant plan
 under a justified complexity or compliance note before implementation proceeds.
 
+## Git Commit Behaviour
+
+After completing any task, Codex must:
+
+1. Show a summary of all files created or modified
+2. Prepare a commit message following Conventional Commits format
+3. Stage the relevant files and commit immediately — no approval
+   required
+
 **Version**: 1.0.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-15

@@ -11,6 +11,7 @@
     "packages/*"
   ],
   "scripts": {
+    "backfill": "npm run backfill --workspace @palago/ingestion --",
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",

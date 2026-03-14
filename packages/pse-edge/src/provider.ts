@@ -97,72 +97,72 @@ export class PSEEdgeProvider implements IPSEDataProvider {
     }
   }
 
-  async getStockData(_edgeCmpyId: string): Promise<StockDetailSnapshot> {
-    const response = await this.fetchFn(`${STOCK_DATA_URL}?cmpy_id=${encodeURIComponent(_edgeCmpyId)}`);
+  async getStockData(edgeCmpyId: string): Promise<StockDetailSnapshot> {
+    const response = await this.fetchFn(`${STOCK_DATA_URL}?cmpy_id=${encodeURIComponent(edgeCmpyId)}`);
 
     if (!response.ok) {
-      throw new Error(`PSE Edge stock data request failed for cmpy_id ${_edgeCmpyId} with status ${response.status}`);
+      throw new Error(`PSE Edge stock data request failed for cmpy_id ${edgeCmpyId} with status ${response.status}`);
     }
 
     const html = await response.text();
 
     try {
-      return parseStockData(html, _edgeCmpyId);
+      return parseStockData(html, edgeCmpyId);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      throw new Error(`PSE Edge stock data parsing failed for cmpy_id ${_edgeCmpyId}: ${message}`);
+      throw new Error(`PSE Edge stock data parsing failed for cmpy_id ${edgeCmpyId}: ${message}`);
     }
   }
 
-  async getCompanyInfo(_edgeCmpyId: string): Promise<CompanyProfile> {
+  async getCompanyInfo(edgeCmpyId: string): Promise<CompanyProfile> {
     const response = await this.fetchFn(
-      `${COMPANY_INFORMATION_URL}?cmpy_id=${encodeURIComponent(_edgeCmpyId)}`,
+      `${COMPANY_INFORMATION_URL}?cmpy_id=${encodeURIComponent(edgeCmpyId)}`,
     );
 
     if (!response.ok) {
       throw new Error(
-        `PSE Edge company info request failed for cmpy_id ${_edgeCmpyId} with status ${response.status}`,
+        `PSE Edge company info request failed for cmpy_id ${edgeCmpyId} with status ${response.status}`,
       );
     }
 
     const html = await response.text();
 
     try {
-      return parseCompanyInfo(html, _edgeCmpyId);
+      return parseCompanyInfo(html, edgeCmpyId);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      throw new Error(`PSE Edge company info parsing failed for cmpy_id ${_edgeCmpyId}: ${message}`);
+      throw new Error(`PSE Edge company info parsing failed for cmpy_id ${edgeCmpyId}: ${message}`);
     }
   }
 
   async getHistoricalPrices(
-    _edgeCmpyId: string,
-    _edgeSecId: string,
-    _startDate: string,
-    _endDate: string,
+    edgeCmpyId: string,
+    edgeSecId: string,
+    startDate: string,
+    endDate: string,
   ): Promise<HistoricalPricePoint[]> {
     const response = await this.fetchFn(DISCLOSURE_CHART_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: buildHistoricalPricesPayload(_edgeCmpyId, _edgeSecId, _startDate, _endDate),
+      body: buildHistoricalPricesPayload(edgeCmpyId, edgeSecId, startDate, endDate),
     });
 
     if (!response.ok) {
       throw new Error(
-        `PSE Edge historical prices request failed for cmpy_id ${_edgeCmpyId} and security_id ${_edgeSecId} with status ${response.status}`,
+        `PSE Edge historical prices request failed for cmpy_id ${edgeCmpyId} and security_id ${edgeSecId} with status ${response.status}`,
       );
     }
 
     const payload = await response.text();
 
     try {
-      return parseHistoricalPrices(payload, _edgeCmpyId, _edgeSecId);
+      return parseHistoricalPrices(payload, edgeCmpyId, edgeSecId);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       throw new Error(
-        `PSE Edge historical prices parsing failed for cmpy_id ${_edgeCmpyId} and security_id ${_edgeSecId}: ${message}`,
+        `PSE Edge historical prices parsing failed for cmpy_id ${edgeCmpyId} and security_id ${edgeSecId}: ${message}`,
       );
     }
   }

@@ -116,9 +116,9 @@ description: "Task list for PSE Edge provider implementation"
 
 **Purpose**: Finalize exports, consumer wiring, and verification for the shared package
 
-- [ ] T023 Export the provider, parsers, schemas, and public types from `packages/pse-edge/src/index.ts`
-- [ ] T024 Update workspace dependency wiring in `apps/ingestion/package.json` and `apps/web/package.json` to add `@palago/pse-edge`
-- [ ] T025 Run final parser verification with `cd packages/pse-edge && npx vitest run` and if tests fail, the feature is not complete.
+- [x] T023 Export the provider, parsers, schemas, and public types from `packages/pse-edge/src/index.ts`
+- [x] T024 Update workspace dependency wiring in `apps/ingestion/package.json` and `apps/web/package.json` to add `@palago/pse-edge`
+- [x] T025 Run final parser verification with `cd packages/pse-edge && npx vitest run` and if tests fail, the feature is not complete.
 
 ---
 

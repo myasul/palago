@@ -1,2 +1,8 @@
-// Public entrypoint for the shared PSE Edge provider package.
-export {};
+export { PSEEdgeProvider } from "./provider";
+export type {
+  CompanyProfile,
+  HistoricalPricePoint,
+  IPSEDataProvider,
+  ListedCompanyEntry,
+  StockDetailSnapshot,
+} from "./types";

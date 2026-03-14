@@ -88,6 +88,14 @@ Last Updated: 2026-03-15
   and explicit request/parsing failures.
 - Verified `cd packages/pse-edge && npx vitest run` passes with 7/7 test files
   and 20/20 tests after the historical provider work.
+- Completed Phase 6 polish for `@palago/pse-edge` by exporting the public API
+  from `packages/pse-edge/src/index.ts`, wiring `@palago/pse-edge` into
+  `apps/ingestion/package.json` and `apps/web/package.json`, and cleaning up the
+  provider method parameter names to remove unnecessary underscore prefixes.
+- Re-verified the package hard gate with `cd packages/pse-edge && npx vitest run`
+  passing 7/7 test files and 20/20 tests.
+- Verified the full workspace build passes with `npm run build`, including
+  `@palago/pse-edge`, `@palago/ingestion`, and `@palago/web`.
 
 ## ❌ Known Issues
 
@@ -118,8 +126,5 @@ Last Updated: 2026-03-15
 - Investigate why `.specify/scripts/bash/create-new-feature.sh` could not create
   the feature branch in this environment and decide whether the script or local
   git setup needs adjustment.
-- Implement `@palago/pse-edge` per the new plan and add fixture-backed parser
-  tests for company list, stock data, company info, and historical prices.
-- Continue `001-pse-edge-provider` with Phase 3 provider-method work starting
-- Continue `001-pse-edge-provider` with Phase 6 polish starting at `T023` for
-  package exports, workspace wiring, and final verification.
+- Start integrating `@palago/pse-edge` into ingestion flows and web data access
+  now that the shared provider package and public API are complete.

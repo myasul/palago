@@ -1,12 +1,9 @@
-import dotenv from "dotenv";
-import path from "path";
 import { readFile } from "node:fs/promises";
 import postgres from "postgres";
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-const envPath = path.resolve(__dirname, "../../../.env");
+import { loadRepoEnv } from "../load-env";
 
-dotenv.config({ path: envPath });
+loadRepoEnv(import.meta.url);
 
 const databaseUrl = process.env.DATABASE_URL;
 

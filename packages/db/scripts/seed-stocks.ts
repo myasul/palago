@@ -1,9 +1,8 @@
-import dotenv from "dotenv";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 
 import { db, sql } from "../client";
+import { loadRepoEnv, resolvePackageRoot } from "../load-env";
 import { stocks } from "../schema";
 import { parse } from "csv-parse/sync";
 
@@ -49,11 +48,10 @@ type PseCompanyRow = {
   "Listing Board ": string;
 };
 
-const currentDir = path.dirname(new URL(import.meta.url).pathname);
-const envPath = path.resolve(currentDir, "../../../.env");
-const csvPath = path.resolve(currentDir, "data/pse-companies.csv");
+loadRepoEnv(import.meta.url);
 
-dotenv.config({ path: envPath });
+const packageRoot = resolvePackageRoot(import.meta.url);
+const csvPath = path.resolve(packageRoot, "data/pse-companies.csv");
 
 const parseListingDate = (value: string): Date | null => {
   const trimmed = value.trim();

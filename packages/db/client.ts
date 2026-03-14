@@ -1,13 +1,12 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import dotenv from "dotenv";
-import path from "path";
 
+import { loadRepoEnv } from "./load-env";
 import * as schema from "./schema";
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-const envPath = path.resolve(__dirname, "../../.env");
-dotenv.config({ path: envPath });
+console.log("[client.ts] Loading repo env from", import.meta.url);
+
+loadRepoEnv(import.meta.url);
 
 const databaseUrl = process.env.DATABASE_URL;
 

@@ -1,8 +1,7 @@
 import { defineConfig } from "drizzle-kit";
-import dotenv from "dotenv";
-import path from "path";
+import { loadRepoEnv } from "./load-env";
 
-dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+loadRepoEnv(import.meta.url);
 
 const databaseUrl = process.env.DATABASE_URL;
 

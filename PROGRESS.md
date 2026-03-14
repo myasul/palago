@@ -78,6 +78,16 @@ Last Updated: 2026-03-15
   detail fields.
 - Verified `cd packages/pse-edge && npx vitest run` passes with 6/6 test files
   and 16/16 tests after the provider detail work.
+- Implemented Phase 5 User Story 3 for `@palago/pse-edge` by adding
+  `getHistoricalPrices(edgeCmpyId, edgeSecId, startDate, endDate)` in
+  `packages/pse-edge/src/provider.ts` with form-encoded POST requests to the
+  disclosure chart endpoint.
+- Added mocked-fetch provider tests in
+  `packages/pse-edge/tests/provider-historical-prices.test.ts`, covering
+  scientific-notation value normalization, UTC date parsing, empty `chartData`,
+  and explicit request/parsing failures.
+- Verified `cd packages/pse-edge && npx vitest run` passes with 7/7 test files
+  and 20/20 tests after the historical provider work.
 
 ## ❌ Known Issues
 
@@ -111,5 +121,5 @@ Last Updated: 2026-03-15
 - Implement `@palago/pse-edge` per the new plan and add fixture-backed parser
   tests for company list, stock data, company info, and historical prices.
 - Continue `001-pse-edge-provider` with Phase 3 provider-method work starting
-  at `T021` for `getHistoricalPrices(edgeCmpyId, edgeSecId, startDate, endDate)`
-  in `packages/pse-edge/src/provider.ts`.
+- Continue `001-pse-edge-provider` with Phase 6 polish starting at `T023` for
+  package exports, workspace wiring, and final verification.

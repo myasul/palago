@@ -1,5 +1,6 @@
 import { parseCompanyList } from "./parsers/company-list";
 import { parseCompanyInfo } from "./parsers/company-info";
+import { parseHistoricalPrices } from "./parsers/historical-prices";
 import { parseStockData } from "./parsers/stock-data";
 import type {
   CompanyProfile,
@@ -12,6 +13,7 @@ import { sleep } from "./utils/sleep";
 
 const COMPANY_DIRECTORY_URL = "https://edge.pse.com.ph/companyDirectory/search.ax";
 const COMPANY_INFORMATION_URL = "https://edge.pse.com.ph/companyInformation/form.do";
+const DISCLOSURE_CHART_URL = "https://edge.pse.com.ph/common/DisclosureCht.ax";
 const STOCK_DATA_URL = "https://edge.pse.com.ph/companyPage/stockData.do";
 const REQUEST_THROTTLE_MS = 500;
 
@@ -34,6 +36,19 @@ const buildCompanyListPayload = (pageNo: number) =>
     symbolSortType: "ASC",
     sector: "ALL",
     subsector: "ALL",
+  });
+
+const buildHistoricalPricesPayload = (
+  edgeCmpyId: string,
+  edgeSecId: string,
+  startDate: string,
+  endDate: string,
+) =>
+  new URLSearchParams({
+    cmpy_id: edgeCmpyId,
+    security_id: edgeSecId,
+    startDate,
+    endDate,
   });
 
 export class PSEEdgeProvider implements IPSEDataProvider {
@@ -126,6 +141,29 @@ export class PSEEdgeProvider implements IPSEDataProvider {
     _startDate: string,
     _endDate: string,
   ): Promise<HistoricalPricePoint[]> {
-    throw new Error("getHistoricalPrices is not implemented yet");
+    const response = await this.fetchFn(DISCLOSURE_CHART_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: buildHistoricalPricesPayload(_edgeCmpyId, _edgeSecId, _startDate, _endDate),
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `PSE Edge historical prices request failed for cmpy_id ${_edgeCmpyId} and security_id ${_edgeSecId} with status ${response.status}`,
+      );
+    }
+
+    const payload = await response.text();
+
+    try {
+      return parseHistoricalPrices(payload, _edgeCmpyId, _edgeSecId);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new Error(
+        `PSE Edge historical prices parsing failed for cmpy_id ${_edgeCmpyId} and security_id ${_edgeSecId}: ${message}`,
+      );
+    }
   }
 }

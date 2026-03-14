@@ -105,8 +105,8 @@ description: "Task list for PSE Edge provider implementation"
 
 ### Implementation for User Story 3
 
-- [ ] T021 [US3] Implement form-encoded historical requests and `getHistoricalPrices(edgeCmpyId, edgeSecId, startDate, endDate)` in `packages/pse-edge/src/provider.ts`
-- [ ] T022 [US3] Add provider-level tests for historical price requests and response normalization in `packages/pse-edge/tests/provider-historical-prices.test.ts`
+- [x] T021 [US3] Implement form-encoded historical requests and `getHistoricalPrices(edgeCmpyId, edgeSecId, startDate, endDate)` in `packages/pse-edge/src/provider.ts`
+- [x] T022 [US3] Add provider-level tests for historical price requests and response normalization in `packages/pse-edge/tests/provider-historical-prices.test.ts`
 
 **Checkpoint**: User Story 3 is fully functional and testable independently
 

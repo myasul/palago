@@ -96,6 +96,9 @@ Last Updated: 2026-03-15
   passing 7/7 test files and 20/20 tests.
 - Verified the full workspace build passes with `npm run build`, including
   `@palago/pse-edge`, `@palago/ingestion`, and `@palago/web`.
+- Created the feature specification for the PSE Edge backfill foundation at
+  `specs/002-pse-edge-backfill/spec.md` and added a completed requirements
+  checklist at `specs/002-pse-edge-backfill/checklists/requirements.md`.
 
 ## ❌ Known Issues
 
@@ -128,3 +131,6 @@ Last Updated: 2026-03-15
   git setup needs adjustment.
 - Start integrating `@palago/pse-edge` into ingestion flows and web data access
   now that the shared provider package and public API are complete.
+- Generate the implementation plan and task breakdown for
+  `002-pse-edge-backfill`, covering dividends support, the schema rewrite,
+  Terraform asset storage, and initial backfill scripts.

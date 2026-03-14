@@ -120,6 +120,11 @@ what's broken, what's next — updated by Codex at the end of every session),
 (this file). Every Codex session MUST begin by reading all three before
 proceeding.
 
+During implementation, tasks.md MUST be updated immediately after
+each task completes — change [ ] to [x], add a brief deviation note
+if the implementation differed from the plan, and commit tasks.md
+in the same commit as the implementation files it describes.
+
 ## Governance
 
 This constitution supersedes conflicting local habits for palago.ph. Amendments

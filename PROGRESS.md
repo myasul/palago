@@ -48,6 +48,9 @@ Last Updated: 2026-03-15
 - Generated the planning artifacts for the PSE Edge provider feature:
   `specs/001-pse-edge-provider/plan.md`, `research.md`, `data-model.md`,
   `contracts/pse-edge-provider.md`, and `quickstart.md`.
+- Generated `specs/001-pse-edge-provider/tasks.md` with ordered implementation
+  work for the shared package, parser fixtures, provider methods, workspace
+  wiring, and final Vitest verification.
 
 ## ❌ Known Issues
 

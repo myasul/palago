@@ -54,9 +54,10 @@ and dividend records are populated or updated without affecting unrelated rows.
 1. **Given** an active stock with a provider identifier, **When** the operator
    runs stock enrichment, **Then** trading and capital structure fields are
    stored on that stock record.
-2. **Given** a company has both common and non-common dividend entries,
+2. **Given** a company has both common and preferred-share dividend entries,
    **When** dividends are backfilled, **Then** all source rows are stored with
-   their security type so user-facing screens can later filter to common shares.
+   their security type (e.g. COMMON, JFCPB, GLOPA) so user-facing MVP screens
+   can filter to common-share dividends without data loss.
 3. **Given** optional upstream dividend or capital-structure fields are
    missing, **When** enrichment runs, **Then** the workflow stores null values
    for those fields and continues without corrupting the record.
@@ -99,6 +100,9 @@ do not duplicate rows, and empty source ranges leave no invalid records behind.
   schema reset?
 - What happens when preferred-share dividend rows exist but user-facing MVP
   views must only show common-share dividends?
+- What happens when a stock exists in the database from the original seed
+  but has no edge_cmpy_id or edge_sec_id set — enrichment and price backfill
+  must skip it gracefully rather than failing the entire run.
 
 ## Requirements *(mandatory)*
 
@@ -128,7 +132,10 @@ do not duplicate rows, and empty source ranges leave no invalid records behind.
   and related stock metadata for existing active stocks.
 - **FR-009**: The system MUST provide a repeatable dividend backfill workflow
   that stores all dividend rows returned by the approved provider, including
-  non-common securities, while preserving the security type for later filtering.
+  preferred-share rows such as JFCPB and GLOPA, while storing the raw
+  security_type value on every row so user-facing screens can filter to
+  security_type = 'COMMON' without requiring a re-backfill.
+
 - **FR-010**: The system MUST provide a repeatable historical-price backfill
   workflow that writes daily OHLC and value data by trading date for stocks with
   valid provider identifiers.

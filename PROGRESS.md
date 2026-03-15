@@ -107,6 +107,17 @@ Last Updated: 2026-03-15
   and S3 planning context for feature `002-pse-edge-backfill`.
 - Generated `specs/002-pse-edge-backfill/tasks.md` with strict prerequisite,
   schema, script, and manual-stop sequencing for the PSE Edge backfill work.
+- Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
+  last page from the paging HTML and stops at the advertised final page instead
+  of making an extra empty-page request.
+- Moved company-list pagination extraction into
+  `packages/pse-edge/src/parsers/company-list.ts` so the paging HTML parsing
+  stays alongside the company-list row parser.
+- Updated `packages/pse-edge/tests/provider-company-list.test.ts` to cover
+  last-page detection, clear single-page results, and malformed pagination
+  errors, and verified
+  `cd packages/pse-edge && npx vitest run tests/company-list.test.ts tests/provider-company-list.test.ts`
+  passes.
 
 ## ❌ Known Issues
 

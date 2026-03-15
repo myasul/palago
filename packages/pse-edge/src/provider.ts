@@ -1,4 +1,4 @@
-import { parseCompanyList } from "./parsers/company-list";
+import { extractLastCompanyListPage, parseCompanyList } from "./parsers/company-list";
 import { parseCompanyInfo } from "./parsers/company-info";
 import { parseHistoricalPrices } from "./parsers/historical-prices";
 import { parseStockData } from "./parsers/stock-data";
@@ -83,6 +83,7 @@ export class PSEEdgeProvider implements IPSEDataProvider {
       const html = await response.text();
 
       try {
+        const lastPage = extractLastCompanyListPage(html);
         const pageResults = parseCompanyList(html);
 
         if (pageResults.length === 0) {
@@ -90,6 +91,10 @@ export class PSEEdgeProvider implements IPSEDataProvider {
         }
 
         results.push(...pageResults);
+
+        if (pageNo >= lastPage) {
+          return results;
+        }
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         throw new Error(`PSE Edge company list parsing failed on page ${pageNo}: ${message}`);

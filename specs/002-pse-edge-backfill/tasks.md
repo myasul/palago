@@ -27,13 +27,13 @@ mapping story work with `[US1]`, `[US2]`, and `[US3]` labels where applicable.
 **Purpose**: Extend `@palago/pse-edge` with `getDividends()` and a fixture-backed
 hard-gate test without changing `IPSEDataProvider`.
 
-- [ ] T001 Add `DividendEntry` to `packages/pse-edge/src/types.ts`
-- [ ] T002 Add the `DividendEntry` Zod schema to `packages/pse-edge/src/schemas.ts`
-- [ ] T003 [P] Create the dividends parser in `packages/pse-edge/src/parsers/dividends.ts` using `packages/pse-data/dividends.html` as the fixture reference
-- [ ] T004 [P] Add the fixture-backed dividends parser test in `packages/pse-edge/tests/dividends.test.ts` using `packages/pse-data/dividends.html`
-- [ ] T005 Add `getDividends(edgeCmpyId)` to `packages/pse-edge/src/provider.ts` without modifying `packages/pse-edge/src/types.ts` `IPSEDataProvider`
-- [ ] T006 Export `DividendEntry` from `packages/pse-edge/src/index.ts`
-- [ ] T007 Run the hard gate `cd packages/pse-edge && npx vitest run` — all tests must pass, not just the dividends test, to confirm the getDividends addition did not break existing parser coverage
+- [x] T001 Add `DividendEntry` to `packages/pse-edge/src/types.ts`
+- [x] T002 Add the `DividendEntry` Zod schema to `packages/pse-edge/src/schemas.ts`
+- [x] T003 [P] Create the dividends parser in `packages/pse-edge/src/parsers/dividends.ts` using `packages/pse-data/dividends.html` as the fixture reference
+- [x] T004 [P] Add the fixture-backed dividends parser test in `packages/pse-edge/tests/dividends.test.ts` using `packages/pse-data/dividends.html`
+- [x] T005 Add `getDividends(edgeCmpyId)` to `packages/pse-edge/src/provider.ts` without modifying `packages/pse-edge/src/types.ts` `IPSEDataProvider`
+- [x] T006 Export `DividendEntry` from `packages/pse-edge/src/index.ts`
+- [x] T007 Run the hard gate `cd packages/pse-edge && npx vitest run` — all tests must pass, not just the dividends test, to confirm the getDividends addition did not break existing parser coverage
 
 ## Phase 0b: Terraform S3 Bucket
 

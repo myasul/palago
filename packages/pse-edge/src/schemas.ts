@@ -87,6 +87,17 @@ export const CompanyProfileSchema = z.object({
   logoUrl: nullableAbsoluteUrl,
 });
 
+export const DividendEntrySchema = z.object({
+  securityType: nonEmptyString,
+  dividendType: nonEmptyString,
+  dividendRate: z.number().nullable(),
+  exDate: nullableDate,
+  recordDate: nullableDate,
+  paymentDate: nullableDate,
+});
+
+export const DividendEntryListSchema = z.array(DividendEntrySchema);
+
 export const HistoricalPricePointSchema = z.object({
   edgeCmpyId: nonEmptyString,
   edgeSecId: nonEmptyString,

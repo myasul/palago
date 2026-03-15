@@ -107,6 +107,13 @@ Last Updated: 2026-03-15
   and S3 planning context for feature `002-pse-edge-backfill`.
 - Generated `specs/002-pse-edge-backfill/tasks.md` with strict prerequisite,
   schema, script, and manual-stop sequencing for the PSE Edge backfill work.
+- Completed Phase 0a for `002-pse-edge-backfill` by adding `DividendEntry`,
+  `DividendEntrySchema`, `packages/pse-edge/src/parsers/dividends.ts`,
+  fixture-backed coverage in `packages/pse-edge/tests/dividends.test.ts`,
+  `PSEEdgeProvider.getDividends(edgeCmpyId)`, and the public type export from
+  `packages/pse-edge/src/index.ts`.
+- Verified the hard gate `cd packages/pse-edge && npx vitest run` passes with
+  8/8 test files and 27/27 tests after the dividends extension work.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.
@@ -151,6 +158,5 @@ Last Updated: 2026-03-15
 - Start integrating `@palago/pse-edge` into ingestion flows and web data access
   now that the shared provider package and public API are complete.
 - Start implementing `specs/002-pse-edge-backfill/tasks.md` in strict order:
-  dividends provider extension, Terraform bucket, schema rewrite, then the
-  five local backfill and verification scripts with Matt performing each manual
-  stop between phases.
+  Terraform bucket, schema rewrite, then the five local backfill and
+  verification scripts with Matt performing each manual stop between phases.

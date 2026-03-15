@@ -50,6 +50,15 @@ export interface CompanyProfile {
   logoUrl: string | null;
 }
 
+export interface DividendEntry {
+  securityType: string;
+  dividendType: string;
+  dividendRate: number | null;
+  exDate: Date | null;
+  recordDate: Date | null;
+  paymentDate: Date | null;
+}
+
 export interface HistoricalPricePoint {
   edgeCmpyId: string;
   edgeSecId: string;

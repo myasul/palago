@@ -1,9 +1,11 @@
 import { extractLastCompanyListPage, parseCompanyList } from "./parsers/company-list";
 import { parseCompanyInfo } from "./parsers/company-info";
+import { parseDividends } from "./parsers/dividends";
 import { parseHistoricalPrices } from "./parsers/historical-prices";
 import { parseStockData } from "./parsers/stock-data";
 import type {
   CompanyProfile,
+  DividendEntry,
   HistoricalPricePoint,
   IPSEDataProvider,
   ListedCompanyEntry,
@@ -13,6 +15,7 @@ import { sleep } from "./utils/sleep";
 
 const COMPANY_DIRECTORY_URL = "https://edge.pse.com.ph/companyDirectory/search.ax";
 const COMPANY_INFORMATION_URL = "https://edge.pse.com.ph/companyInformation/form.do";
+const DIVIDENDS_URL = "https://edge.pse.com.ph/companyPage/dividends_and_rights_form.do";
 const DISCLOSURE_CHART_URL = "https://edge.pse.com.ph/common/DisclosureCht.ax";
 const STOCK_DATA_URL = "https://edge.pse.com.ph/companyPage/stockData.do";
 const REQUEST_THROTTLE_MS = 500;
@@ -137,6 +140,27 @@ export class PSEEdgeProvider implements IPSEDataProvider {
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       throw new Error(`PSE Edge company info parsing failed for cmpy_id ${edgeCmpyId}: ${message}`);
+    }
+  }
+
+  async getDividends(edgeCmpyId: string): Promise<DividendEntry[]> {
+    await this.sleepFn(REQUEST_THROTTLE_MS);
+
+    const response = await this.fetchFn(`${DIVIDENDS_URL}?cmpy_id=${encodeURIComponent(edgeCmpyId)}`);
+
+    if (!response.ok) {
+      throw new Error(
+        `PSE Edge dividends request failed for cmpy_id ${edgeCmpyId} with status ${response.status}`,
+      );
+    }
+
+    const html = await response.text();
+
+    try {
+      return parseDividends(html);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new Error(`PSE Edge dividends parsing failed for cmpy_id ${edgeCmpyId}: ${message}`);
     }
   }
 

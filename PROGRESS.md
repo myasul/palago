@@ -99,6 +99,12 @@ Last Updated: 2026-03-15
 - Created the feature specification for the PSE Edge backfill foundation at
   `specs/002-pse-edge-backfill/spec.md` and added a completed requirements
   checklist at `specs/002-pse-edge-backfill/checklists/requirements.md`.
+- Generated the planning artifacts for the PSE Edge backfill foundation:
+  `specs/002-pse-edge-backfill/plan.md`, `research.md`, `data-model.md`,
+  `contracts/pse-edge-dividends.md`, `contracts/backfill-workflows.md`, and
+  `quickstart.md`.
+- Updated `AGENTS.md` with the new TypeScript, Drizzle, PostgreSQL, PSE Edge,
+  and S3 planning context for feature `002-pse-edge-backfill`.
 
 ## ❌ Known Issues
 
@@ -131,6 +137,6 @@ Last Updated: 2026-03-15
   git setup needs adjustment.
 - Start integrating `@palago/pse-edge` into ingestion flows and web data access
   now that the shared provider package and public API are complete.
-- Generate the implementation plan and task breakdown for
-  `002-pse-edge-backfill`, covering dividends support, the schema rewrite,
-  Terraform asset storage, and initial backfill scripts.
+- Generate `specs/002-pse-edge-backfill/tasks.md` for the provider extension,
+  Terraform bucket work, schema rewrite, migration generation, and local
+  backfill scripts.

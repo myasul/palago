@@ -51,8 +51,8 @@ company seed workflow.
 **Purpose**: Replace the launch schema with the `companies` + rewritten `stocks`
 model and generate the Drizzle migration for review.
 
-- [ ] T011 Rewrite `packages/db/schema.ts` as a full file replacement using the exact launch column names from `specs/002-pse-edge-backfill/data-model.md`
-- [ ] T012 Run `cd packages/db && npx drizzle-kit generate` to create the new migration SQL in `packages/db/migrations/`; show the full generated SQL output before proceeding — do not manually edit any file in `packages/db/migrations/`
+- [x] T011 Rewrite `packages/db/schema.ts` as a full file replacement using the exact launch column names from `specs/002-pse-edge-backfill/data-model.md`
+- [x] T012 Run `cd packages/db && npx drizzle-kit generate` to create the new migration SQL in `packages/db/migrations/`; show the full generated SQL output before proceeding — do not manually edit any file in `packages/db/migrations/`
 
 > [MANUAL] After Phase 1, Matt stops for: drop tables in Supabase SQL editor,
 > then `cd packages/db && npx drizzle-kit migrate`, then

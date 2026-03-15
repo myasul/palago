@@ -8,6 +8,13 @@
       "when": 1772837365323,
       "tag": "0000_lovely_talon",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1773552534517,
+      "tag": "0001_magical_captain_stacy",
+      "breakpoints": true
     }
   ]
 }

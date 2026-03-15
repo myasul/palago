@@ -67,7 +67,8 @@ and idempotent upserts.
 database and confirm companies and stocks are created without duplicates and
 with fallback-safe logo URLs.
 
-- [ ] T013 [US1] Create `apps/ingestion/scripts/seed-companies.ts` with provider-driven company seeding, S3 logo upload fallback, structured logging, `onConflictDoUpdate`, commit message `feat(ingestion): add seed-companies backfill script`, and manual run `cd apps/ingestion && npx tsx scripts/seed-companies.ts`
+- [x] T013 [US1] Create `apps/ingestion/scripts/seed-companies.ts` with provider-driven company seeding, S3 logo upload fallback, structured logging, `onConflictDoUpdate`, commit message `feat(ingestion): add seed-companies backfill script`, and manual run `cd apps/ingestion && npx tsx scripts/seed-companies.ts`
+  Note: Also updated `apps/ingestion/package.json` to declare `@aws-sdk/client-s3` required by the script.
 
 > [MANUAL] After Phase 2, Matt runs:
 > `cd apps/ingestion && npx tsx scripts/seed-companies.ts`

@@ -121,6 +121,11 @@ Last Updated: 2026-03-15
 - Completed Phase 1 schema rewrite for `002-pse-edge-backfill` by replacing
   `packages/db/schema.ts` with the launch `companies` + rewritten `stocks`
   schema and generating the Drizzle-owned migration files for the new shape.
+- Completed Phase 2 / `T013` for `002-pse-edge-backfill` by adding
+  `apps/ingestion/scripts/seed-companies.ts` with PSE Edge company list +
+  profile ingestion, S3 logo upload with fallback to the original PSE Edge logo
+  URL, idempotent upserts into `companies` and `stocks`, and structured
+  progress/summary logging.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.
@@ -165,5 +170,6 @@ Last Updated: 2026-03-15
 - Start integrating `@palago/pse-edge` into ingestion flows and web data access
   now that the shared provider package and public API are complete.
 - Start implementing `specs/002-pse-edge-backfill/tasks.md` in strict order:
-  the five local backfill and verification scripts with Matt performing each
-  manual stop between phases.
+  continue with `T014` for `apps/ingestion/scripts/enrich-stocks.ts`, then
+  proceed through the remaining backfill and verification scripts with Matt
+  performing each manual stop between phases.

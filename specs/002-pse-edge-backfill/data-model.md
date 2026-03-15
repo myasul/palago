@@ -17,7 +17,9 @@ records and mappings used by local backfill scripts before rows are persisted.
 - `id`: serial primary key
 - `edge_cmpy_id`: optional provider company identifier, unique
 - `name`: required company name
-- `logo_url`: optional absolute URL, preferably S3-backed
+- `logo_url`: optional absolute URL — S3 URL when upload succeeds,
+  PSE Edge source URL as fallback when upload fails. Must begin
+  with `https://` when present.
 - `description`: optional company description
 - `sector`: optional sector label
 - `subsector`: optional subsector label

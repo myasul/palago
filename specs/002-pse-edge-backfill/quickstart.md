@@ -45,13 +45,12 @@ npx tsx scripts/apply-views.ts
 ```
 
 8. Run the local scripts in this order:
-
 ```bash
 cd /Users/matthewyasul/personal/code/palago/apps/ingestion
 npx tsx scripts/seed-companies.ts
 npx tsx scripts/enrich-stocks.ts
-npx tsx scripts/backfill-dividends.ts
 npx tsx scripts/backfill-prices.ts
+npx tsx scripts/backfill-dividends.ts
 npx tsx scripts/verify-backfill.ts
 ```
 

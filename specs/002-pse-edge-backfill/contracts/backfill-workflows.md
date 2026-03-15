@@ -76,8 +76,11 @@ by this feature.
 1. Query active stocks with non-null `edge_cmpy_id` and `edge_sec_id`.
 2. Convert CLI date arguments to the provider's required request format.
 3. Fetch historical prices and upsert `daily_prices`.
-4. Recompute `percent_change` scoped to the requested date range.
-5. Refresh `stock_52_week`.
+4. After all stocks are written, recompute `percent_change` for
+   affected rows using LAG over previous close price, scoped to
+   the requested date range.
+5. After percent_change update, run:
+   REFRESH MATERIALIZED VIEW CONCURRENTLY stock_52_week
 
 ### Error Handling
 

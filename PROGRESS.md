@@ -114,6 +114,10 @@ Last Updated: 2026-03-15
   `packages/pse-edge/src/index.ts`.
 - Verified the hard gate `cd packages/pse-edge && npx vitest run` passes with
   8/8 test files and 27/27 tests after the dividends extension work.
+- Completed Phase 0b for `002-pse-edge-backfill` by adding
+  `infrastructure/terraform/s3.tf`, a new S3 upload policy block in
+  `infrastructure/terraform/iam.tf`, and the `assets_bucket_name` output in
+  `infrastructure/terraform/outputs.tf`.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.
@@ -158,5 +162,5 @@ Last Updated: 2026-03-15
 - Start integrating `@palago/pse-edge` into ingestion flows and web data access
   now that the shared provider package and public API are complete.
 - Start implementing `specs/002-pse-edge-backfill/tasks.md` in strict order:
-  Terraform bucket, schema rewrite, then the five local backfill and
-  verification scripts with Matt performing each manual stop between phases.
+  schema rewrite, then the five local backfill and verification scripts with
+  Matt performing each manual stop between phases.

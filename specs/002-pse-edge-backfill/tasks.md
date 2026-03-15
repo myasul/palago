@@ -40,9 +40,9 @@ hard-gate test without changing `IPSEDataProvider`.
 **Purpose**: Add the public logo bucket and upload permission required by the
 company seed workflow.
 
-- [ ] T008 [P] Create `infrastructure/terraform/s3.tf` with the `palago-assets` bucket, public-access block, and `logos/*` read policy
-- [ ] T009 [P] Update `infrastructure/terraform/iam.tf` to add `s3:PutObject` on `arn:aws:s3:::palago-assets/logos/*`
-- [ ] T010 [P] Update `infrastructure/terraform/outputs.tf` to add the `assets_bucket_name` output
+- [x] T008 [P] Create `infrastructure/terraform/s3.tf` with the `palago-assets` bucket, public-access block, and `logos/*` read policy
+- [x] T009 [P] Update `infrastructure/terraform/iam.tf` to add `s3:PutObject` on `arn:aws:s3:::palago-assets/logos/*`
+- [x] T010 [P] Update `infrastructure/terraform/outputs.tf` to add the `assets_bucket_name` output
 
 > [MANUAL] After Phase 0b, Matt runs: `aws-vault exec palago -- terraform apply`
 

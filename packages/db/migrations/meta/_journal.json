@@ -15,6 +15,13 @@
       "when": 1773552534517,
       "tag": "0001_magical_captain_stacy",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1773555043842,
+      "tag": "0002_certain_stephen_strange",
+      "breakpoints": true
     }
   ]
 }

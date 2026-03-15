@@ -40,8 +40,6 @@ export const stocks = pgTable("stocks", {
   name: varchar("name", { length: 255 }).notNull(),
   edgeCmpyId: varchar("edge_cmpy_id", { length: 20 }),
   edgeSecId: varchar("edge_sec_id", { length: 20 }),
-  sector: varchar("sector", { length: 100 }),
-  subsector: varchar("subsector", { length: 100 }),
   description: text("description"),
   boardLot: integer("board_lot"),
   parValue: numeric("par_value", { precision: 10, scale: 4 }),

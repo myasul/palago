@@ -15,11 +15,10 @@ describe("parseCompanyInfo", () => {
     const companyInfo = parseCompanyInfo(html, "86");
 
     expect(companyInfo.edgeCmpyId).toBe("86");
-    expect(companyInfo.symbol).toBe("JFC");
     expect(companyInfo.sector).toBe("Industrial");
     expect(companyInfo.subsector).toBe("Food, Beverage & Tobacco");
     expect(companyInfo.incorporationDate).toEqual(new Date("1978-01-11T00:00:00.000Z"));
-    expect(companyInfo.fiscalYearEnd).toBe("12/31 (Month/Day)");
+    expect(companyInfo.fiscalYearEnd).toBe("12/31");
     expect(companyInfo.externalAuditor).toBe("SyCip, Gorres, Velayo & Company");
     expect(companyInfo.transferAgent).toBe("RCBC Trust Corporation");
     expect(companyInfo.address).toBe(
@@ -32,9 +31,13 @@ describe("parseCompanyInfo", () => {
     expect(companyInfo.description).toContain("Jollibee Foods Corporation (JFC) was incorporated");
   });
 
-  it("throws when the fixture does not contain a required symbol source", () => {
+  it("returns a null logo URL when the page does not expose a logo image", () => {
     const html = '<div id="dataList"><table class="view"><td>Example description</td></table></div>';
 
-    expect(() => parseCompanyInfo(html, "86")).toThrow();
+    expect(parseCompanyInfo(html, "86")).toMatchObject({
+      edgeCmpyId: "86",
+      description: "Example description",
+      logoUrl: null,
+    });
   });
 });

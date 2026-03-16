@@ -72,7 +72,6 @@ export const StockDetailSnapshotSchema = z.object({
 
 export const CompanyProfileSchema = z.object({
   edgeCmpyId: nonEmptyString,
-  symbol: nonEmptyString,
   description: nullableString,
   sector: nullableString,
   subsector: nullableString,

@@ -31,7 +31,49 @@ describe("parseCompanyList", () => {
       parseCompanyList(
         '<table class="list"><tbody><tr><td><a href="#company">Broken</a></td><td><a href="#company">BRK</a></td><td></td><td></td><td></td></tr></tbody></table>',
       ),
-    ).toThrow(/Unable to extract company and security IDs/);
+    ).toThrow(/Unable to extract company and security IDs.*Broken/);
+  });
+
+  it("supports unquoted cmDetail identifiers", () => {
+    const companies = parseCompanyList(`
+      <table class="list">
+        <tbody>
+          <tr>
+            <td><a href="#company" onclick="cmDetail(55,347);return false;">Jollibee Foods Corporation</a></td>
+            <td class="alignC"><a href="#company" onclick="cmDetail(55,347);return false;">JFC</a></td>
+            <td>Services</td>
+            <td>Restaurants, Hotels and Leisure</td>
+            <td class="alignC">Mar 22, 1973</td>
+          </tr>
+        </tbody>
+      </table>
+    `);
+
+    expect(companies).toEqual([
+      {
+        symbol: "JFC",
+        name: "Jollibee Foods Corporation",
+        sector: "Services",
+        subsector: "Restaurants, Hotels and Leisure",
+        listingDate: new Date("1973-03-22T00:00:00.000Z"),
+        edgeCmpyId: "55",
+        edgeSecId: "347",
+      },
+    ]);
+  });
+
+  it("ignores non-result rows without company links", () => {
+    const companies = parseCompanyList(`
+      <table class="list">
+        <tbody>
+          <tr>
+            <td colspan="5">No records found.</td>
+          </tr>
+        </tbody>
+      </table>
+    `);
+
+    expect(companies).toEqual([]);
   });
 });
 

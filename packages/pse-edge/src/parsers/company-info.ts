@@ -53,6 +53,15 @@ const toNullableAbsoluteUrl = (value: string | undefined) => {
   }
 };
 
+const toNullableFiscalYearEnd = (value: string | undefined) => {
+  if (!value) {
+    return null;
+  }
+
+  const matched = value.match(/\b(\d{2}\/\d{2})\b/);
+  return matched?.[1] ?? null;
+};
+
 export const parseCompanyInfo = (html: string, edgeCmpyId: string) => {
   const { $, map } = buildFieldMap(html);
   const description = $("#dataList table.view").first().find("td").first().text().replace(/\s+/g, " ").trim();
@@ -60,12 +69,11 @@ export const parseCompanyInfo = (html: string, edgeCmpyId: string) => {
 
   return CompanyProfileSchema.parse({
     edgeCmpyId,
-    symbol,
     description,
     sector: map.get("Sector"),
     subsector: map.get("Subsector"),
     incorporationDate: map.get("Incorporation Date"),
-    fiscalYearEnd: map.get("Fiscal Year"),
+    fiscalYearEnd: toNullableFiscalYearEnd(map.get("Fiscal Year")),
     externalAuditor: map.get("External Auditor"),
     transferAgent: map.get("Transfer Agent"),
     address: map.get("Business Address"),

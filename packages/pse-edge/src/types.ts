@@ -35,7 +35,6 @@ export interface StockDetailSnapshot {
 
 export interface CompanyProfile {
   edgeCmpyId: string;
-  symbol: string;
   description: string | null;
   sector: string | null;
   subsector: string | null;

@@ -88,7 +88,6 @@ describe("PSEEdgeProvider company detail methods", () => {
 
     expect(fetchMock).toHaveBeenCalledWith("https://edge.pse.com.ph/companyInformation/form.do?cmpy_id=86");
     expect(companyInfo.edgeCmpyId).toBe("86");
-    expect(companyInfo.symbol).toBe("JFC");
     expect(companyInfo.logoUrl).toBe("https://edge.pse.com.ph/clogo/co_JFC_logo.jpg");
     expect(companyInfo.websiteUrl).toBe("https://jollibeegroup.com/");
   });
@@ -128,7 +127,6 @@ describe("PSEEdgeProvider company detail methods", () => {
 
     const companyInfo = await provider.getCompanyInfo("99");
 
-    expect(companyInfo.symbol).toBe("TEST");
     expect(companyInfo.sector).toBeNull();
     expect(companyInfo.subsector).toBeNull();
     expect(companyInfo.incorporationDate).toBeNull();

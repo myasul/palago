@@ -73,6 +73,13 @@ with fallback-safe logo URLs.
 > [MANUAL] After Phase 2, Matt runs:
 > `cd apps/ingestion && npx tsx scripts/seed-companies.ts`
 
+Phase 2 implementation notes:
+
+- `2.1` Removed the no-longer-valid `sector` and `subsector` writes from `stocks` in `seed-companies.ts` after the schema rewrite dropped those columns.
+- `2.2` Added automatic resume detection to `seed-companies.ts` based on existing `companies.edge_cmpy_id` values plus a manual `--start-at` override and absolute progress logs like `[42/285]`.
+- `2.3` Changed `seed-companies.ts` to degrade per-company failures to warnings so one bad company no longer aborts the full seed run.
+- `2.4` Fixed the `companies.phone` overflow encountered during seeding by changing `packages/db/schema.ts` from `varchar(50)` to `text` and generating migration `0003_right_jack_murdock.sql`.
+
 ## Phase 3: User Story 2 - Enrich Stocks (Priority: P2)
 
 **Goal**: Fill stock trading and capital-structure fields for active stocks with
@@ -87,6 +94,12 @@ without duplicate rows or failures on skipped records.
 > [MANUAL] After Phase 3, Matt runs:
 > `cd apps/ingestion && npx tsx scripts/enrich-stocks.ts`
 
+Phase 3 implementation notes:
+
+- `3.1` Added automatic resume detection to `enrich-stocks.ts` using `updated_at > created_at`, plus a manual `--start-at` override and an inline comment documenting that this assumption is only safe while enrich-stocks is the only post-seed stock updater.
+- `3.2` Fixed the `foreign_ownership_limit = 100` numeric overflow by widening `stocks.free_float_level` and `stocks.foreign_ownership_limit` from `numeric(6,4)` to `numeric(7,4)` and generating migration `0004_motionless_energizer.sql`.
+- `3.3` Preserved the Phase 3 scope by writing only stock metadata and capital-structure fields during enrichment and continuing to exclude price fields from `stocks`.
+
 ## Phase 4: User Story 3 - Backfill Launch-Ready Price History (Priority: P3)
 
 **Goal**: Add the historical price backfill script with CLI range overrides,
@@ -100,6 +113,13 @@ remains null, and derived updates run after inserts.
 
 > [MANUAL] After Phase 4, Matt runs:
 > `cd apps/ingestion && npx tsx scripts/backfill-prices.ts`
+
+Phase 4 implementation notes:
+
+- `4.1` Updated `PSEEdgeProvider.getHistoricalPrices()` to send the historical-price request as JSON with the required payload key `security_id` instead of `sec_id`.
+- `4.2` Moved historical-date formatting into `PSEEdgeProvider.getHistoricalPrices()` so the provider accepts `Date` instances and formats `startDate` and `endDate` internally to `MM-DD-YYYY`.
+- `4.3` Updated `backfill-prices.ts` to pass `Date` objects into `getHistoricalPrices()` and keep provider-specific date formatting out of the script.
+- `4.4` Optimized `backfill-prices.ts` to bulk upsert `daily_prices` per stock in batches instead of issuing one insert per row, while keeping the existing `(stock_id, trade_date)` idempotent upsert behavior via `excluded.*` updates.
 
 ## Phase 5: User Story 2 - Backfill Dividends Continuation (Priority: P2)
 

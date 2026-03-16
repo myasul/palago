@@ -18,12 +18,16 @@ describe("PSEEdgeProvider.getHistoricalPrices", () => {
       sleepFn: vi.fn().mockResolvedValue(undefined),
     });
 
-    const rows = await provider.getHistoricalPrices("86", "158", "03-11-2026", "03-13-2026");
+    const rows = await provider.getHistoricalPrices(
+      "86",
+      "158",
+      new Date("2026-03-11T00:00:00.000Z"),
+      new Date("2026-03-13T00:00:00.000Z"),
+    );
 
     expect(fetchMock).toHaveBeenCalledWith("https://edge.pse.com.ph/common/DisclosureCht.ax", {
       method: "POST",
       headers: {
-        Accept: "*/*",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -57,7 +61,14 @@ describe("PSEEdgeProvider.getHistoricalPrices", () => {
       sleepFn: vi.fn().mockResolvedValue(undefined),
     });
 
-    await expect(provider.getHistoricalPrices("86", "158", "03-11-2026", "03-13-2026")).resolves.toEqual([]);
+    await expect(
+      provider.getHistoricalPrices(
+        "86",
+        "158",
+        new Date("2026-03-11T00:00:00.000Z"),
+        new Date("2026-03-13T00:00:00.000Z"),
+      ),
+    ).resolves.toEqual([]);
   });
 
   it("throws an explicit error when the historical request fails", async () => {
@@ -66,7 +77,14 @@ describe("PSEEdgeProvider.getHistoricalPrices", () => {
       sleepFn: vi.fn().mockResolvedValue(undefined),
     });
 
-    await expect(provider.getHistoricalPrices("86", "158", "03-11-2026", "03-13-2026")).rejects.toThrow(
+    await expect(
+      provider.getHistoricalPrices(
+        "86",
+        "158",
+        new Date("2026-03-11T00:00:00.000Z"),
+        new Date("2026-03-13T00:00:00.000Z"),
+      ),
+    ).rejects.toThrow(
       "PSE Edge historical prices request failed for cmpy_id 86 and security_id 158 with status 500",
     );
   });
@@ -94,7 +112,14 @@ describe("PSEEdgeProvider.getHistoricalPrices", () => {
       sleepFn: vi.fn().mockResolvedValue(undefined),
     });
 
-    await expect(provider.getHistoricalPrices("86", "158", "03-11-2026", "03-13-2026")).rejects.toThrow(
+    await expect(
+      provider.getHistoricalPrices(
+        "86",
+        "158",
+        new Date("2026-03-11T00:00:00.000Z"),
+        new Date("2026-03-13T00:00:00.000Z"),
+      ),
+    ).rejects.toThrow(
       /PSE Edge historical prices parsing failed for cmpy_id 86 and security_id 158: Invalid chart date/,
     );
   });

@@ -180,13 +180,11 @@ export class PSEEdgeProvider implements IPSEDataProvider {
     endDate: Date
   ): Promise<HistoricalPricePoint[]> {
     const payload = {
-      cmpy_id: Number(edgeCmpyId),
-      sec_id: Number(edgeSecId),
+      cmpy_id: edgeCmpyId,
+      security_id: edgeSecId,
       startDate: this.parseDate(startDate),
       endDate: this.parseDate(endDate),
     };
-
-    console.log("[getHistoricalPrices] payload", payload);
 
     const response = await this.fetchFn(DISCLOSURE_CHART_URL, {
       method: "POST",
@@ -203,8 +201,6 @@ export class PSEEdgeProvider implements IPSEDataProvider {
     }
 
     const data = await response.json();
-
-    console.log("[getHistoricalPrices] data", data);
 
     try {
       return parseHistoricalPrices(data, edgeCmpyId, edgeSecId);

@@ -77,7 +77,7 @@ export interface IPSEDataProvider {
   getHistoricalPrices(
     edgeCmpyId: string,
     edgeSecId: string,
-    startDate: string,
-    endDate: string,
+    startDate: Date,
+    endDate: Date,
   ): Promise<HistoricalPricePoint[]>;
 }

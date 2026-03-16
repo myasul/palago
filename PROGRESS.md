@@ -158,6 +158,9 @@ Last Updated: 2026-03-16
   `packages/pse-edge/src/provider.ts` to send a JSON request body with
   `Content-Type: application/json` for `DisclosureCht.ax`, and locked the
   request contract in `packages/pse-edge/tests/provider-historical-prices.test.ts`.
+- Fixed the historical-price JSON payload key in
+  `packages/pse-edge/src/provider.ts` from `sec_id` to `security_id`, which is
+  required by PSE Edge for successful historical-price requests.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.

@@ -130,11 +130,6 @@ const getDefaultRange = () => {
   };
 };
 
-const toProviderDate = (value: string) => {
-  const date = parseSqlDate(value);
-  return `${padNumber(date.getMonth() + 1)}-${padNumber(date.getDate())}-${date.getFullYear()}`;
-};
-
 const toNumericString = (value: number | null) => (value === null ? null : value.toString());
 
 const run = async () => {
@@ -181,8 +176,8 @@ const run = async () => {
   let rowsWritten = 0;
   let failures = 0;
 
-  const providerFrom = toProviderDate(from);
-  const providerTo = toProviderDate(to);
+  const providerFrom = parseSqlDate(from);
+  const providerTo = parseSqlDate(to);
 
   for (const [index, stock] of activeStocks.entries()) {
     if (!stock.edgeCmpyId || !stock.edgeSecId) {

@@ -135,6 +135,11 @@ Last Updated: 2026-03-16
   failure for source phone numbers by changing `companies.phone` to `text` in
   `packages/db/schema.ts` and generating
   `packages/db/migrations/0003_right_jack_murdock.sql`.
+- Completed Phase 3 / `T014` for `002-pse-edge-backfill` by adding
+  `apps/ingestion/scripts/enrich-stocks.ts` with active-stock selection,
+  provider-driven stock detail enrichment, idempotent `stocks` upserts for
+  capital-structure fields only, structured progress logging, per-stock warning
+  degradation, and 1-second throttling between provider requests.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.

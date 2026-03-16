@@ -82,7 +82,7 @@ provider identifiers.
 confirm active stocks with `edge_cmpy_id` receive updated stock-detail fields
 without duplicate rows or failures on skipped records.
 
-- [ ] T014 [US2] Create `apps/ingestion/scripts/enrich-stocks.ts` with active-stock queries, 1-second throttling, structured logging, stock-detail upserts, commit message `feat(ingestion): add enrich-stocks backfill script`, and manual run `cd apps/ingestion && npx tsx scripts/enrich-stocks.ts`
+- [x] T014 [US2] Create `apps/ingestion/scripts/enrich-stocks.ts` with active-stock queries, 1-second throttling, structured logging, stock-detail upserts, commit message `feat(ingestion): add enrich-stocks backfill script`, and manual run `cd apps/ingestion && npx tsx scripts/enrich-stocks.ts`
 
 > [MANUAL] After Phase 3, Matt runs:
 > `cd apps/ingestion && npx tsx scripts/enrich-stocks.ts`

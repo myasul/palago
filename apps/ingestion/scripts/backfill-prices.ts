@@ -9,6 +9,7 @@ import { sleep } from "../shared/sleep";
 
 const JOB_NAME = "backfill-prices";
 const STOCK_DELAY_MS = 1000;
+const INSERT_BATCH_SIZE = 250;
 
 type CliOptions = {
   symbol: string | null;
@@ -132,6 +133,16 @@ const getDefaultRange = () => {
 
 const toNumericString = (value: number | null) => (value === null ? null : value.toString());
 
+const chunk = <T>(items: T[], size: number) => {
+  const chunks: T[][] = [];
+
+  for (let index = 0; index < items.length; index += size) {
+    chunks.push(items.slice(index, index + size));
+  }
+
+  return chunks;
+};
+
 const run = async () => {
   const startedAt = Date.now();
   const options = parseArgs(process.argv.slice(2));
@@ -199,28 +210,30 @@ const run = async () => {
         providerTo,
       );
 
-      for (const pricePoint of pricePoints) {
+      const priceRows = pricePoints.map((pricePoint) => ({
+        stockId: stock.id,
+        tradeDate: toSqlDate(pricePoint.tradeDate),
+        openPrice: toNumericString(pricePoint.openPrice),
+        highPrice: toNumericString(pricePoint.highPrice),
+        lowPrice: toNumericString(pricePoint.lowPrice),
+        closePrice: toNumericString(pricePoint.closePrice),
+        value: toNumericString(pricePoint.value),
+        volume: null,
+      }));
+
+      for (const batch of chunk(priceRows, INSERT_BATCH_SIZE)) {
         await db
           .insert(dailyPrices)
-          .values({
-            stockId: stock.id,
-            tradeDate: toSqlDate(pricePoint.tradeDate),
-            openPrice: toNumericString(pricePoint.openPrice),
-            highPrice: toNumericString(pricePoint.highPrice),
-            lowPrice: toNumericString(pricePoint.lowPrice),
-            closePrice: toNumericString(pricePoint.closePrice),
-            value: toNumericString(pricePoint.value),
-            volume: null,
-          })
+          .values(batch)
           .onConflictDoUpdate({
             target: [dailyPrices.stockId, dailyPrices.tradeDate],
             set: {
-              openPrice: toNumericString(pricePoint.openPrice),
-              highPrice: toNumericString(pricePoint.highPrice),
-              lowPrice: toNumericString(pricePoint.lowPrice),
-              closePrice: toNumericString(pricePoint.closePrice),
-              value: toNumericString(pricePoint.value),
-              volume: null,
+              openPrice: sql`excluded.open_price`,
+              highPrice: sql`excluded.high_price`,
+              lowPrice: sql`excluded.low_price`,
+              closePrice: sql`excluded.close_price`,
+              value: sql`excluded.value`,
+              volume: sql`excluded.volume`,
             },
           });
       }

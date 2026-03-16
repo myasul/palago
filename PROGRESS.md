@@ -161,6 +161,9 @@ Last Updated: 2026-03-16
 - Fixed the historical-price JSON payload key in
   `packages/pse-edge/src/provider.ts` from `sec_id` to `security_id`, which is
   required by PSE Edge for successful historical-price requests.
+- Optimized `apps/ingestion/scripts/backfill-prices.ts` to bulk upsert
+  `daily_prices` in per-stock batches instead of issuing one insert per row,
+  while keeping the existing `(stock_id, trade_date)` idempotent upsert logic.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.

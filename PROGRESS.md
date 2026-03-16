@@ -154,6 +154,10 @@ Last Updated: 2026-03-16
   idempotent `daily_prices` upserts with `volume` forced to null, scoped
   `percent_change` recomputation, concurrent `stock_52_week` refresh, and
   structured progress and summary logging.
+- Fixed PSE Edge historical-price requests returning HTTP 415 by updating
+  `packages/pse-edge/src/provider.ts` to send a JSON request body with
+  `Content-Type: application/json` for `DisclosureCht.ax`, and locked the
+  request contract in `packages/pse-edge/tests/provider-historical-prices.test.ts`.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.

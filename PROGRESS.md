@@ -148,6 +148,12 @@ Last Updated: 2026-03-16
   automatic resume detection using `updated_at > created_at`, an explicit
   `--start-at` override, absolute progress logging, and skip counts for
   already-enriched stocks.
+- Completed Phase 4 / `T015` for `002-pse-edge-backfill` by adding
+  `apps/ingestion/scripts/backfill-prices.ts` with `process.argv` CLI parsing,
+  a default two-years-through-yesterday date range, provider date conversion,
+  idempotent `daily_prices` upserts with `volume` forced to null, scoped
+  `percent_change` recomputation, concurrent `stock_52_week` refresh, and
+  structured progress and summary logging.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.

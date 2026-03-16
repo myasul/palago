@@ -96,7 +96,7 @@ date-range percent-change recomputation, and 52-week view refresh.
 date range and verify that daily prices are written once per trade date, volume
 remains null, and derived updates run after inserts.
 
-- [ ] T015 [US3] Create `apps/ingestion/scripts/backfill-prices.ts` with `--symbol`, `--from`, and `--to` parsing via `process.argv`, default two-year-to-yesterday range, historical-price upserts, scoped `percent_change` recomputation, `REFRESH MATERIALIZED VIEW CONCURRENTLY stock_52_week`, commit message `feat(ingestion): add backfill-prices script`, and manual run `cd apps/ingestion && npx tsx scripts/backfill-prices.ts`
+- [x] T015 [US3] Create `apps/ingestion/scripts/backfill-prices.ts` with `--symbol`, `--from`, and `--to` parsing via `process.argv`, default two-year-to-yesterday range, historical-price upserts, scoped `percent_change` recomputation, `REFRESH MATERIALIZED VIEW CONCURRENTLY stock_52_week`, commit message `feat(ingestion): add backfill-prices script`, and manual run `cd apps/ingestion && npx tsx scripts/backfill-prices.ts`
 
 > [MANUAL] After Phase 4, Matt runs:
 > `cd apps/ingestion && npx tsx scripts/backfill-prices.ts`

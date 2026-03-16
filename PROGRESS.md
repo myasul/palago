@@ -144,6 +144,10 @@ Last Updated: 2026-03-16
   `stocks.free_float_level` and `stocks.foreign_ownership_limit` from
   `numeric(6,4)` to `numeric(7,4)`, which allows valid provider values such as
   `100.0000`, and generated `packages/db/migrations/0004_motionless_energizer.sql`.
+- Updated `apps/ingestion/scripts/enrich-stocks.ts` to support safe reruns via
+  automatic resume detection using `updated_at > created_at`, an explicit
+  `--start-at` override, absolute progress logging, and skip counts for
+  already-enriched stocks.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.

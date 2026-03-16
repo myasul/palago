@@ -12,6 +12,43 @@ const STOCK_DELAY_MS = 1000;
 
 const provider = new PSEEdgeProvider();
 
+type CliOptions = {
+  startAt: number | null;
+};
+
+const parseArgs = (argv: string[]): CliOptions => {
+  let startAt: number | null = null;
+
+  for (let index = 0; index < argv.length; index += 1) {
+    const argument = argv[index];
+
+    if (argument === "--start-at") {
+      const value = argv[index + 1];
+
+      if (!value) {
+        throw new Error("Missing value for --start-at");
+      }
+
+      startAt = Number.parseInt(value, 10);
+      index += 1;
+      continue;
+    }
+
+    if (argument.startsWith("--start-at=")) {
+      startAt = Number.parseInt(argument.slice("--start-at=".length), 10);
+      continue;
+    }
+
+    throw new Error(`Unknown argument: ${argument}`);
+  }
+
+  if (startAt !== null && (!Number.isInteger(startAt) || startAt < 1)) {
+    throw new Error("--start-at must be a positive integer");
+  }
+
+  return { startAt };
+};
+
 const toSqlDate = (value: Date | null): string | null => {
   if (!value) {
     return null;
@@ -20,25 +57,83 @@ const toSqlDate = (value: Date | null): string | null => {
   return value.toISOString().slice(0, 10);
 };
 
+const isAlreadyEnriched = (stock: {
+  createdAt: Date | null;
+  updatedAt: Date | null;
+}) =>
+  stock.createdAt !== null &&
+  stock.updatedAt !== null &&
+  stock.updatedAt.getTime() > stock.createdAt.getTime();
+
 const run = async () => {
+  const options = parseArgs(process.argv.slice(2));
   const activeStocks = await db
     .select({
       symbol: stocks.symbol,
       edgeCmpyId: stocks.edgeCmpyId,
       isActive: stocks.isActive,
+      createdAt: stocks.createdAt,
+      updatedAt: stocks.updatedAt,
     })
     .from(stocks)
     .where(and(isNotNull(stocks.edgeCmpyId), eq(stocks.isActive, true)));
 
+  // This resume check is only safe while enrich-stocks is the only workflow
+  // that updates stock rows after seed-companies inserts them.
+  const firstMissingIndex = activeStocks.findIndex((stock) => !isAlreadyEnriched(stock));
+  const startIndex =
+    options.startAt !== null
+      ? options.startAt - 1
+      : firstMissingIndex === -1
+        ? activeStocks.length
+        : firstMissingIndex;
+
   let stocksEnriched = 0;
+  let stocksSkipped = 0;
   let failures = 0;
 
+  if (startIndex > activeStocks.length) {
+    throw new Error(
+      `--start-at ${options.startAt} is outside the stock list (total ${activeStocks.length})`,
+    );
+  }
+
+  logger.info("Resolved enrich-stocks starting point", {
+    job: JOB_NAME,
+    mode: options.startAt === null ? "auto-resume" : "manual-start",
+    startAt: startIndex + 1,
+    totalStocks: activeStocks.length,
+  });
+
+  if (startIndex === activeStocks.length) {
+    logger.info("All active stocks already appear enriched; nothing to do", {
+      job: JOB_NAME,
+      totalStocks: activeStocks.length,
+    });
+    return;
+  }
+
   for (const [index, stock] of activeStocks.entries()) {
+    if (index < startIndex) {
+      continue;
+    }
+
     if (!stock.edgeCmpyId) {
       logger.warn("Skipping stock without edgeCmpyId", {
         job: JOB_NAME,
         index: index + 1,
         symbol: stock.symbol,
+      });
+      continue;
+    }
+
+    if (options.startAt === null && isAlreadyEnriched(stock)) {
+      stocksSkipped += 1;
+      logger.info(`[${index + 1}/${activeStocks.length}] ${stock.symbol} skipped`, {
+        job: JOB_NAME,
+        symbol: stock.symbol,
+        edgeCmpyId: stock.edgeCmpyId,
+        reason: "stock already enriched",
       });
       continue;
     }
@@ -112,6 +207,7 @@ const run = async () => {
   }
 
   logger.info(`Stocks enriched: ${stocksEnriched}`, { job: JOB_NAME });
+  logger.info(`Stocks skipped: ${stocksSkipped}`, { job: JOB_NAME });
   logger.info(`Failures: ${failures}`, { job: JOB_NAME });
 };
 

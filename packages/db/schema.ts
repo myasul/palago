@@ -24,7 +24,7 @@ export const companies = pgTable("companies", {
   websiteUrl: varchar("website_url", { length: 255 }),
   address: text("address"),
   email: varchar("email", { length: 255 }),
-  phone: varchar("phone", { length: 50 }),
+  phone: text("phone"),
   incorporationDate: date("incorporation_date"),
   fiscalYearEnd: varchar("fiscal_year_end", { length: 10 }),
   externalAuditor: varchar("external_auditor", { length: 255 }),

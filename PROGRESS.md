@@ -1,6 +1,6 @@
 # PROGRESS
 
-Last Updated: 2026-03-15
+Last Updated: 2026-03-16
 
 ## ✅ Completed
 
@@ -126,6 +126,15 @@ Last Updated: 2026-03-15
   profile ingestion, S3 logo upload with fallback to the original PSE Edge logo
   URL, idempotent upserts into `companies` and `stocks`, and structured
   progress/summary logging.
+- Fixed `apps/ingestion/scripts/seed-companies.ts` resume behavior by adding
+  automatic start-point detection from existing `companies.edge_cmpy_id` rows,
+  an explicit `--start-at` override, absolute progress logging such as
+  `[42/285]`, and per-company warning degradation so one bad row no longer
+  aborts the full seed run.
+- Fixed the `seed-companies.ts` `value too long for type character varying(50)`
+  failure for source phone numbers by changing `companies.phone` to `text` in
+  `packages/db/schema.ts` and generating
+  `packages/db/migrations/0003_right_jack_murdock.sql`.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.

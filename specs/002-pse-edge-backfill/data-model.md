@@ -61,8 +61,8 @@ records and mappings used by local backfill scripts before rows are persisted.
 - `par_value`: optional numeric(10,4)
 - `isin`: optional ISIN
 - `issue_type`: optional issue type such as `Common` or `Preferred`
-- `free_float_level`: optional numeric(6,4)
-- `foreign_ownership_limit`: optional numeric(6,4)
+- `free_float_level`: optional numeric(7,4)
+- `foreign_ownership_limit`: optional numeric(7,4)
 - `outstanding_shares`: optional bigint
 - `listed_shares`: optional bigint
 - `issued_shares`: optional bigint

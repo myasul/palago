@@ -167,6 +167,18 @@ Last Updated: 2026-03-16
 - Fixed batched price backfills failing with `ON CONFLICT DO UPDATE command
   cannot affect row a second time` by deduplicating per-stock `daily_prices`
   rows on `(stock_id, trade_date)` before each bulk upsert batch.
+- Completed Phase 5 / `T016` for `002-pse-edge-backfill` by adding
+  `apps/ingestion/scripts/backfill-dividends.ts` with active-stock selection,
+  all-row dividend ingestion from `getDividends(edgeCmpyId)`, idempotent
+  upserts into `dividends`, structured progress logging, per-stock warning
+  degradation, and 1-second throttling between provider requests.
+- Hardened `apps/ingestion/scripts/backfill-dividends.ts` with automatic
+  resume detection from existing `dividends.stock_id` rows, a manual
+  `--start-at` override, per-stock dividend-row deduplication before batched
+  upserts, and absolute progress logging.
+- Added the missing `dividends_stock_id_ex_date_unique` schema constraint so
+  the Phase 5 `(stock_id, ex_date)` upsert target is enforced by Drizzle and
+  the database.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.

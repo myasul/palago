@@ -130,10 +130,17 @@ for existing active stocks.
 confirm all dividend rows are stored with `security_type`, while stocks missing
 `edge_cmpy_id` are skipped safely.
 
-- [ ] T016 [US2] Create `apps/ingestion/scripts/backfill-dividends.ts` with all-row dividend ingestion, `security_type` preservation, `onConflictDoUpdate` on `(stock_id, ex_date)`, structured logging, commit message `feat(ingestion): add backfill-dividends script`, and manual run `cd apps/ingestion && npx tsx scripts/backfill-dividends.ts`
+- [x] T016 [US2] Create `apps/ingestion/scripts/backfill-dividends.ts` with all-row dividend ingestion, `security_type` preservation, `onConflictDoUpdate` on `(stock_id, ex_date)`, structured logging, commit message `feat(ingestion): add backfill-dividends script`, and manual run `cd apps/ingestion && npx tsx scripts/backfill-dividends.ts`
 
 > [MANUAL] After Phase 5, Matt runs:
 > `cd apps/ingestion && npx tsx scripts/backfill-dividends.ts`
+
+Phase 5 implementation notes:
+
+- `5.1` Added automatic resume detection to `backfill-dividends.ts` based on existing `dividends.stock_id` rows, plus a manual `--start-at` override and absolute progress logs like `[45/300]`.
+- `5.2` Added per-stock dividend-row deduplication before batched upserts so duplicate provider rows for the same `stock_id` and `ex_date` cannot trigger `ON CONFLICT DO UPDATE command cannot affect row a second time`.
+- `5.3` Added the missing `dividends_stock_id_ex_date_unique` constraint in `packages/db/schema.ts` so the `(stock_id, ex_date)` upsert target required by Phase 5 is enforced by the schema and database.
+- `5.4` Documented in `backfill-dividends.ts` that auto-resume is only a pragmatic shortcut here because stocks with genuinely zero dividends have no persisted rows and may be revisited on later runs.
 
 ## Phase 6: Verify Backfill
 

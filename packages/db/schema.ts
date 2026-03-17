@@ -116,21 +116,30 @@ export const intradaySnapshots = pgTable(
   }),
 );
 
-export const dividends = pgTable("dividends", {
-  id: serial("id").primaryKey(),
-  stockId: integer("stock_id")
-    .notNull()
-    .references(() => stocks.id, { onDelete: "cascade" }),
-  securityType: varchar("security_type", { length: 20 }),
-  dividendType: varchar("dividend_type", { length: 20 }).notNull(),
-  amountPerShare: numeric("amount_per_share", { precision: 10, scale: 6 }),
-  declarationDate: date("declaration_date"),
-  exDate: date("ex_date"),
-  recordDate: date("record_date"),
-  paymentDate: date("payment_date"),
-  fiscalYear: integer("fiscal_year"),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-});
+export const dividends = pgTable(
+  "dividends",
+  {
+    id: serial("id").primaryKey(),
+    stockId: integer("stock_id")
+      .notNull()
+      .references(() => stocks.id, { onDelete: "cascade" }),
+    securityType: varchar("security_type", { length: 20 }),
+    dividendType: varchar("dividend_type", { length: 20 }).notNull(),
+    amountPerShare: numeric("amount_per_share", { precision: 10, scale: 6 }),
+    declarationDate: date("declaration_date"),
+    exDate: date("ex_date"),
+    recordDate: date("record_date"),
+    paymentDate: date("payment_date"),
+    fiscalYear: integer("fiscal_year"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  },
+  (table) => ({
+    stockExDateUnique: uniqueIndex("dividends_stock_id_ex_date_unique").on(
+      table.stockId,
+      table.exDate,
+    ),
+  }),
+);
 
 export const marketIndices = pgTable(
   "market_indices",

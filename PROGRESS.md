@@ -164,6 +164,9 @@ Last Updated: 2026-03-16
 - Optimized `apps/ingestion/scripts/backfill-prices.ts` to bulk upsert
   `daily_prices` in per-stock batches instead of issuing one insert per row,
   while keeping the existing `(stock_id, trade_date)` idempotent upsert logic.
+- Fixed batched price backfills failing with `ON CONFLICT DO UPDATE command
+  cannot affect row a second time` by deduplicating per-stock `daily_prices`
+  rows on `(stock_id, trade_date)` before each bulk upsert batch.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.

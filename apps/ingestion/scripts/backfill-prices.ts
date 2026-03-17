@@ -143,6 +143,23 @@ const chunk = <T>(items: T[], size: number) => {
   return chunks;
 };
 
+const dedupePriceRows = <
+  T extends {
+    stockId: number;
+    tradeDate: string;
+  },
+>(
+  rows: T[],
+) => {
+  const deduped = new Map<string, T>();
+
+  for (const row of rows) {
+    deduped.set(`${row.stockId}:${row.tradeDate}`, row);
+  }
+
+  return [...deduped.values()];
+};
+
 const run = async () => {
   const startedAt = Date.now();
   const options = parseArgs(process.argv.slice(2));
@@ -210,16 +227,18 @@ const run = async () => {
         providerTo,
       );
 
-      const priceRows = pricePoints.map((pricePoint) => ({
-        stockId: stock.id,
-        tradeDate: toSqlDate(pricePoint.tradeDate),
-        openPrice: toNumericString(pricePoint.openPrice),
-        highPrice: toNumericString(pricePoint.highPrice),
-        lowPrice: toNumericString(pricePoint.lowPrice),
-        closePrice: toNumericString(pricePoint.closePrice),
-        value: toNumericString(pricePoint.value),
-        volume: null,
-      }));
+      const priceRows = dedupePriceRows(
+        pricePoints.map((pricePoint) => ({
+          stockId: stock.id,
+          tradeDate: toSqlDate(pricePoint.tradeDate),
+          openPrice: toNumericString(pricePoint.openPrice),
+          highPrice: toNumericString(pricePoint.highPrice),
+          lowPrice: toNumericString(pricePoint.lowPrice),
+          closePrice: toNumericString(pricePoint.closePrice),
+          value: toNumericString(pricePoint.value),
+          volume: null,
+        })),
+      );
 
       for (const batch of chunk(priceRows, INSERT_BATCH_SIZE)) {
         await db
@@ -239,13 +258,14 @@ const run = async () => {
       }
 
       stocksProcessed += 1;
-      rowsWritten += pricePoints.length;
+      rowsWritten += priceRows.length;
 
-      logger.info(`[${index + 1}/${activeStocks.length}] ${stock.symbol} wrote ${pricePoints.length} rows`, {
+      logger.info(`[${index + 1}/${activeStocks.length}] ${stock.symbol} wrote ${priceRows.length} rows`, {
         job: JOB_NAME,
         symbol: stock.symbol,
         stockId: stock.id,
-        rowsWritten: pricePoints.length,
+        rowsWritten: priceRows.length,
+        sourceRows: pricePoints.length,
       });
     } catch (error) {
       failures += 1;

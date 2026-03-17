@@ -15,6 +15,7 @@ const provider = new PSEEdgeProvider();
 
 type CliOptions = {
   startAt: number | null;
+  symbol: string | null;
 };
 
 type DividendWriteRow = {
@@ -31,6 +32,7 @@ type DividendWriteRow = {
 
 const parseArgs = (argv: string[]): CliOptions => {
   let startAt: number | null = null;
+  let symbol: string | null = null;
 
   for (let index = 0; index < argv.length; index += 1) {
     const argument = argv[index];
@@ -52,6 +54,23 @@ const parseArgs = (argv: string[]): CliOptions => {
       continue;
     }
 
+    if (argument === "--symbol") {
+      const value = argv[index + 1];
+
+      if (!value) {
+        throw new Error("Missing value for --symbol");
+      }
+
+      symbol = value.trim().toUpperCase();
+      index += 1;
+      continue;
+    }
+
+    if (argument.startsWith("--symbol=")) {
+      symbol = argument.slice("--symbol=".length).trim().toUpperCase();
+      continue;
+    }
+
     throw new Error(`Unknown argument: ${argument}`);
   }
 
@@ -59,7 +78,11 @@ const parseArgs = (argv: string[]): CliOptions => {
     throw new Error("--start-at must be a positive integer");
   }
 
-  return { startAt };
+  if (symbol !== null && symbol.length === 0) {
+    throw new Error("--symbol must not be empty");
+  }
+
+  return { startAt, symbol };
 };
 
 const toSqlDate = (value: Date | null): string | null => {
@@ -106,6 +129,12 @@ const dedupeDividendRows = (rows: DividendWriteRow[]) => {
 
 const run = async () => {
   const options = parseArgs(process.argv.slice(2));
+  const filters = [isNotNull(stocks.edgeCmpyId), eq(stocks.isActive, true)];
+
+  if (options.symbol !== null) {
+    filters.push(eq(stocks.symbol, options.symbol));
+  }
+
   const activeStocks = await db
     .select({
       id: stocks.id,
@@ -113,7 +142,7 @@ const run = async () => {
       edgeCmpyId: stocks.edgeCmpyId,
     })
     .from(stocks)
-    .where(and(isNotNull(stocks.edgeCmpyId), eq(stocks.isActive, true)));
+    .where(and(...filters));
 
   const existingDividendStockIds = new Set(
     activeStocks.length === 0
@@ -152,6 +181,7 @@ const run = async () => {
     mode: options.startAt === null ? "auto-resume" : "manual-start",
     startAt: startIndex + 1,
     totalStocks: activeStocks.length,
+    symbol: options.symbol,
   });
 
   if (startIndex === activeStocks.length) {

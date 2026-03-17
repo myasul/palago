@@ -20,8 +20,10 @@ const COMPANY_DIRECTORY_URL =
   "https://edge.pse.com.ph/companyDirectory/search.ax";
 const COMPANY_INFORMATION_URL =
   "https://edge.pse.com.ph/companyInformation/form.do";
-const DIVIDENDS_URL =
+const DIVIDENDS_FORM_URL =
   "https://edge.pse.com.ph/companyPage/dividends_and_rights_form.do";
+const DIVIDENDS_LIST_URL =
+  "https://edge.pse.com.ph/companyPage/dividends_and_rights_list.ax";
 const DISCLOSURE_CHART_URL = "https://edge.pse.com.ph/common/DisclosureCht.ax";
 const STOCK_DATA_URL = "https://edge.pse.com.ph/companyPage/stockData.do";
 const REQUEST_THROTTLE_MS = 500;
@@ -45,6 +47,11 @@ const buildCompanyListPayload = (pageNo: number) =>
     symbolSortType: "ASC",
     sector: "ALL",
     subsector: "ALL",
+  });
+
+const buildDividendsPayload = (edgeCmpyId: string) =>
+  new URLSearchParams({
+    cmpy_id: edgeCmpyId,
   });
 
 export class PSEEdgeProvider implements IPSEDataProvider {
@@ -151,20 +158,52 @@ export class PSEEdgeProvider implements IPSEDataProvider {
   async getDividends(edgeCmpyId: string): Promise<DividendEntry[]> {
     await this.sleepFn(REQUEST_THROTTLE_MS);
 
-    const response = await this.fetchFn(
-      `${DIVIDENDS_URL}?cmpy_id=${encodeURIComponent(edgeCmpyId)}`
+    const formResponse = await this.fetchFn(
+      `${DIVIDENDS_FORM_URL}?cmpy_id=${encodeURIComponent(edgeCmpyId)}`
     );
 
-    if (!response.ok) {
+    if (!formResponse.ok) {
       throw new Error(
-        `PSE Edge dividends request failed for cmpy_id ${edgeCmpyId} with status ${response.status}`
+        `PSE Edge dividends request failed for cmpy_id ${edgeCmpyId} with status ${formResponse.status}`
       );
     }
 
-    const html = await response.text();
+    const formHtml = await formResponse.text();
 
     try {
-      return parseDividends(html);
+      const formRows = parseDividends(formHtml);
+
+      if (formRows.length > 0) {
+        return formRows;
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new Error(
+        `PSE Edge dividends parsing failed for cmpy_id ${edgeCmpyId}: ${message}`
+      );
+    }
+
+    const listResponse = await this.fetchFn(
+      `${DIVIDENDS_LIST_URL}?DividendsOrRights=Dividends`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: buildDividendsPayload(edgeCmpyId),
+      }
+    );
+
+    if (!listResponse.ok) {
+      throw new Error(
+        `PSE Edge dividends request failed for cmpy_id ${edgeCmpyId} with status ${listResponse.status}`
+      );
+    }
+
+    const listHtml = await listResponse.text();
+
+    try {
+      return parseDividends(listHtml);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       throw new Error(

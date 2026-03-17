@@ -141,6 +141,8 @@ Phase 5 implementation notes:
 - `5.2` Added per-stock dividend-row deduplication before batched upserts so duplicate provider rows for the same `stock_id` and `ex_date` cannot trigger `ON CONFLICT DO UPDATE command cannot affect row a second time`.
 - `5.3` Added the missing `dividends_stock_id_ex_date_unique` constraint in `packages/db/schema.ts` so the `(stock_id, ex_date)` upsert target required by Phase 5 is enforced by the schema and database.
 - `5.4` Documented in `backfill-dividends.ts` that auto-resume is only a pragmatic shortcut here because stocks with genuinely zero dividends have no persisted rows and may be revisited on later runs.
+- `5.5` Updated `PSEEdgeProvider.getDividends()` to fall back from `dividends_and_rights_form.do` to `dividends_and_rights_list.ax?DividendsOrRights=Dividends` when the form page parses to zero rows, because some live company pages render the dividend table through the list endpoint instead of the initial form response.
+- `5.6` Added `--symbol SYMBOL` support to `backfill-dividends.ts` so individual dividend backfills can be rerun and debugged against one stock without scanning the full active-stock set.
 
 ## Phase 6: Verify Backfill
 

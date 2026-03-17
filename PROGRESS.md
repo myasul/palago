@@ -179,6 +179,14 @@ Last Updated: 2026-03-16
 - Added the missing `dividends_stock_id_ex_date_unique` schema constraint so
   the Phase 5 `(stock_id, ex_date)` upsert target is enforced by Drizzle and
   the database.
+- Fixed live dividend scraping gaps for companies like JFC by updating
+  `packages/pse-edge/src/provider.ts` so `getDividends()` falls back from the
+  initial form page to the `dividends_and_rights_list.ax` endpoint when the
+  form HTML contains no dividend rows, and added provider-level coverage for
+  that request flow.
+- Added `--symbol SYMBOL` targeting to
+  `apps/ingestion/scripts/backfill-dividends.ts` so single-stock dividend
+  reruns are possible while debugging provider or parser issues.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.

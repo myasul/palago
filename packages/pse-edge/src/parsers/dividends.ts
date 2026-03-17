@@ -19,8 +19,9 @@ const extractDividendRate = (value: string): number | null => {
 export const parseDividends = (html: string) => {
   const $ = load(html);
 
-  const rows = $('table.list:has(caption:contains("Dividend Information")) tbody tr')
+  const rows = $("table.list tbody tr")
     .toArray()
+    .filter((row) => $(row).find("td").length >= 6)
     .map((row) => {
       const cells = $(row).find("td");
 

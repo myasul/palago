@@ -162,4 +162,4 @@ After completing any task, Codex must:
 3. Stage the relevant files and commit immediately — no approval
    required
 
-**Version**: 1.1.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-15
+**Version**: 1.1.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-21

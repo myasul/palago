@@ -1,6 +1,6 @@
 # PROGRESS
 
-Last Updated: 2026-03-15
+Last Updated: 2026-03-21
 
 ## ✅ Completed
 
@@ -96,6 +96,118 @@ Last Updated: 2026-03-15
   passing 7/7 test files and 20/20 tests.
 - Verified the full workspace build passes with `npm run build`, including
   `@palago/pse-edge`, `@palago/ingestion`, and `@palago/web`.
+- Created the feature specification for the PSE Edge backfill foundation at
+  `specs/002-pse-edge-backfill/spec.md` and added a completed requirements
+  checklist at `specs/002-pse-edge-backfill/checklists/requirements.md`.
+- Generated the planning artifacts for the PSE Edge backfill foundation:
+  `specs/002-pse-edge-backfill/plan.md`, `research.md`, `data-model.md`,
+  `contracts/pse-edge-dividends.md`, `contracts/backfill-workflows.md`, and
+  `quickstart.md`.
+- Updated `AGENTS.md` with the new TypeScript, Drizzle, PostgreSQL, PSE Edge,
+  and S3 planning context for feature `002-pse-edge-backfill`.
+- Generated `specs/002-pse-edge-backfill/tasks.md` with strict prerequisite,
+  schema, script, and manual-stop sequencing for the PSE Edge backfill work.
+- Completed Phase 0a for `002-pse-edge-backfill` by adding `DividendEntry`,
+  `DividendEntrySchema`, `packages/pse-edge/src/parsers/dividends.ts`,
+  fixture-backed coverage in `packages/pse-edge/tests/dividends.test.ts`,
+  `PSEEdgeProvider.getDividends(edgeCmpyId)`, and the public type export from
+  `packages/pse-edge/src/index.ts`.
+- Verified the hard gate `cd packages/pse-edge && npx vitest run` passes with
+  8/8 test files and 27/27 tests after the dividends extension work.
+- Completed Phase 0b for `002-pse-edge-backfill` by adding
+  `infrastructure/terraform/s3.tf`, a new S3 upload policy block in
+  `infrastructure/terraform/iam.tf`, and the `assets_bucket_name` output in
+  `infrastructure/terraform/outputs.tf`.
+- Completed Phase 1 schema rewrite for `002-pse-edge-backfill` by replacing
+  `packages/db/schema.ts` with the launch `companies` + rewritten `stocks`
+  schema and generating the Drizzle-owned migration files for the new shape.
+- Completed Phase 2 / `T013` for `002-pse-edge-backfill` by adding
+  `apps/ingestion/scripts/seed-companies.ts` with PSE Edge company list +
+  profile ingestion, S3 logo upload with fallback to the original PSE Edge logo
+  URL, idempotent upserts into `companies` and `stocks`, and structured
+  progress/summary logging.
+- Fixed `apps/ingestion/scripts/seed-companies.ts` resume behavior by adding
+  automatic start-point detection from existing `companies.edge_cmpy_id` rows,
+  an explicit `--start-at` override, absolute progress logging such as
+  `[42/285]`, and per-company warning degradation so one bad row no longer
+  aborts the full seed run.
+- Fixed the `seed-companies.ts` `value too long for type character varying(50)`
+  failure for source phone numbers by changing `companies.phone` to `text` in
+  `packages/db/schema.ts` and generating
+  `packages/db/migrations/0003_right_jack_murdock.sql`.
+- Completed Phase 3 / `T014` for `002-pse-edge-backfill` by adding
+  `apps/ingestion/scripts/enrich-stocks.ts` with active-stock selection,
+  provider-driven stock detail enrichment, idempotent `stocks` upserts for
+  capital-structure fields only, structured progress logging, per-stock warning
+  degradation, and 1-second throttling between provider requests.
+- Fixed `enrich-stocks.ts` numeric overflow on percentage fields by widening
+  `stocks.free_float_level` and `stocks.foreign_ownership_limit` from
+  `numeric(6,4)` to `numeric(7,4)`, which allows valid provider values such as
+  `100.0000`, and generated `packages/db/migrations/0004_motionless_energizer.sql`.
+- Updated `apps/ingestion/scripts/enrich-stocks.ts` to support safe reruns via
+  automatic resume detection using `updated_at > created_at`, an explicit
+  `--start-at` override, absolute progress logging, and skip counts for
+  already-enriched stocks.
+- Completed Phase 4 / `T015` for `002-pse-edge-backfill` by adding
+  `apps/ingestion/scripts/backfill-prices.ts` with `process.argv` CLI parsing,
+  a default two-years-through-yesterday date range, provider date conversion,
+  idempotent `daily_prices` upserts with `volume` forced to null, scoped
+  `percent_change` recomputation, concurrent `stock_52_week` refresh, and
+  structured progress and summary logging.
+- Fixed PSE Edge historical-price requests returning HTTP 415 by updating
+  `packages/pse-edge/src/provider.ts` to send a JSON request body with
+  `Content-Type: application/json` for `DisclosureCht.ax`, and locked the
+  request contract in `packages/pse-edge/tests/provider-historical-prices.test.ts`.
+- Fixed the historical-price JSON payload key in
+  `packages/pse-edge/src/provider.ts` from `sec_id` to `security_id`, which is
+  required by PSE Edge for successful historical-price requests.
+- Optimized `apps/ingestion/scripts/backfill-prices.ts` to bulk upsert
+  `daily_prices` in per-stock batches instead of issuing one insert per row,
+  while keeping the existing `(stock_id, trade_date)` idempotent upsert logic.
+- Fixed batched price backfills failing with `ON CONFLICT DO UPDATE command
+  cannot affect row a second time` by deduplicating per-stock `daily_prices`
+  rows on `(stock_id, trade_date)` before each bulk upsert batch.
+- Completed Phase 5 / `T016` for `002-pse-edge-backfill` by adding
+  `apps/ingestion/scripts/backfill-dividends.ts` with active-stock selection,
+  all-row dividend ingestion from `getDividends(edgeCmpyId)`, idempotent
+  upserts into `dividends`, structured progress logging, per-stock warning
+  degradation, and 1-second throttling between provider requests.
+- Hardened `apps/ingestion/scripts/backfill-dividends.ts` with automatic
+  resume detection from existing `dividends.stock_id` rows, a manual
+  `--start-at` override, per-stock dividend-row deduplication before batched
+  upserts, and absolute progress logging.
+- Added the missing `dividends_stock_id_ex_date_unique` schema constraint so
+  the Phase 5 `(stock_id, ex_date)` upsert target is enforced by Drizzle and
+  the database.
+- Fixed live dividend scraping gaps for companies like JFC by updating
+  `packages/pse-edge/src/provider.ts` so `getDividends()` falls back from the
+  initial form page to the `dividends_and_rights_list.ax` endpoint when the
+  form HTML contains no dividend rows, and added provider-level coverage for
+  that request flow.
+- Added `--symbol SYMBOL` targeting to
+  `apps/ingestion/scripts/backfill-dividends.ts` so single-stock dividend
+  reruns are possible while debugging provider or parser issues.
+- Updated Git tracking so only `.specify/memory/constitution.md` remains in the
+  repository, while the other `.specify` scripts and templates stay local and
+  are ignored via `.gitignore`.
+- Completed Phase 6 / `T017` for `002-pse-edge-backfill` by adding
+  `apps/ingestion/scripts/verify-backfill.ts` as a read-only verifier that
+  prints table counts, JFC sample rows, daily-price gap reports, unlinked-stock
+  reports, and exits non-zero when verification gaps are found.
+- Added switchable ingestion logging in `apps/ingestion/shared/logger.ts` with
+  `LOG_FORMAT=pretty|json`, defaulting to human-readable output for local TTY
+  development and JSON output for non-interactive or production-style runs.
+- Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
+  last page from the paging HTML and stops at the advertised final page instead
+  of making an extra empty-page request.
+- Moved company-list pagination extraction into
+  `packages/pse-edge/src/parsers/company-list.ts` so the paging HTML parsing
+  stays alongside the company-list row parser.
+- Updated `packages/pse-edge/tests/provider-company-list.test.ts` to cover
+  last-page detection, clear single-page results, and malformed pagination
+  errors, and verified
+  `cd packages/pse-edge && npx vitest run tests/company-list.test.ts tests/provider-company-list.test.ts`
+  passes.
 
 ## ❌ Known Issues
 
@@ -128,3 +240,7 @@ Last Updated: 2026-03-15
   git setup needs adjustment.
 - Start integrating `@palago/pse-edge` into ingestion flows and web data access
   now that the shared provider package and public API are complete.
+- Start implementing `specs/002-pse-edge-backfill/tasks.md` in strict order:
+  continue with `T014` for `apps/ingestion/scripts/enrich-stocks.ts`, then
+  proceed through the remaining backfill and verification scripts with Matt
+  performing each manual stop between phases.

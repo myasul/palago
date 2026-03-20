@@ -72,7 +72,6 @@ export const StockDetailSnapshotSchema = z.object({
 
 export const CompanyProfileSchema = z.object({
   edgeCmpyId: nonEmptyString,
-  symbol: nonEmptyString,
   description: nullableString,
   sector: nullableString,
   subsector: nullableString,
@@ -86,6 +85,17 @@ export const CompanyProfileSchema = z.object({
   websiteUrl: nullableAbsoluteUrl,
   logoUrl: nullableAbsoluteUrl,
 });
+
+export const DividendEntrySchema = z.object({
+  securityType: nonEmptyString,
+  dividendType: nonEmptyString,
+  dividendRate: z.number().nullable(),
+  exDate: nullableDate,
+  recordDate: nullableDate,
+  paymentDate: nullableDate,
+});
+
+export const DividendEntryListSchema = z.array(DividendEntrySchema);
 
 export const HistoricalPricePointSchema = z.object({
   edgeCmpyId: nonEmptyString,

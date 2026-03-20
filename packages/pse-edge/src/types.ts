@@ -35,7 +35,6 @@ export interface StockDetailSnapshot {
 
 export interface CompanyProfile {
   edgeCmpyId: string;
-  symbol: string;
   description: string | null;
   sector: string | null;
   subsector: string | null;
@@ -48,6 +47,15 @@ export interface CompanyProfile {
   phone: string | null;
   websiteUrl: string | null;
   logoUrl: string | null;
+}
+
+export interface DividendEntry {
+  securityType: string;
+  dividendType: string;
+  dividendRate: number | null;
+  exDate: Date | null;
+  recordDate: Date | null;
+  paymentDate: Date | null;
 }
 
 export interface HistoricalPricePoint {
@@ -69,7 +77,7 @@ export interface IPSEDataProvider {
   getHistoricalPrices(
     edgeCmpyId: string,
     edgeSecId: string,
-    startDate: string,
-    endDate: string,
+    startDate: Date,
+    endDate: Date,
   ): Promise<HistoricalPricePoint[]>;
 }

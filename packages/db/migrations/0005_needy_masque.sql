@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "dividends_stock_id_ex_date_unique" ON "dividends" USING btree ("stock_id","ex_date");

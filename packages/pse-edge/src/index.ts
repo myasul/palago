@@ -1,6 +1,7 @@
 export { PSEEdgeProvider } from "./provider";
 export type {
   CompanyProfile,
+  DividendEntry,
   HistoricalPricePoint,
   IPSEDataProvider,
   ListedCompanyEntry,

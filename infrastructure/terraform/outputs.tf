@@ -21,3 +21,7 @@ output "sync_stock_list_lambda_arn" {
 output "backfill_all_lambda_arn" {
   value = aws_lambda_function.ingestion["palago-backfill-all"].arn
 }
+
+output "assets_bucket_name" {
+  value = aws_s3_bucket.palago_assets.bucket
+}

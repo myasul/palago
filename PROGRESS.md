@@ -197,6 +197,13 @@ Last Updated: 2026-03-21
 - Added switchable ingestion logging in `apps/ingestion/shared/logger.ts` with
   `LOG_FORMAT=pretty|json`, defaulting to human-readable output for local TTY
   development and JSON output for non-interactive or production-style runs.
+- Added `--logos-only` mode to `apps/ingestion/scripts/seed-companies.ts` so
+  missing or fallback company logos can be retried without rerunning company and
+  stock upserts, while preserving the existing normal seed path unchanged.
+- Updated `packages/pse-edge/src/parsers/company-info.ts` to read the actual
+  company logo image source from the HTML page instead of reconstructing a logo
+  URL from the stock symbol, and added coverage for non-pattern relative logo
+  paths.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.

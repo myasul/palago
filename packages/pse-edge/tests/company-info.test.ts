@@ -10,7 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const companyInfoFixturePath = path.resolve(__dirname, "../../pse-data/company_information.html");
 
 describe("parseCompanyInfo", () => {
-  it("extracts the company profile and builds the absolute logo URL", () => {
+  it("extracts the company profile and reads the absolute logo URL from the page image source", () => {
     const html = readFileSync(companyInfoFixturePath, "utf8");
     const companyInfo = parseCompanyInfo(html, "86");
 
@@ -38,6 +38,23 @@ describe("parseCompanyInfo", () => {
       edgeCmpyId: "86",
       description: "Example description",
       logoUrl: null,
+    });
+  });
+
+  it("converts a non-pattern relative logo path to an absolute PSE Edge URL", () => {
+    const html = `
+      <div class="compInfo">
+        <span><img src="/clogo/234/cl61a83813r307.jpg" alt="Logo" /></span>
+      </div>
+      <div id="dataList">
+        <table class="view"><tr><td>Example description</td></tr></table>
+      </div>
+    `;
+
+    expect(parseCompanyInfo(html, "86")).toMatchObject({
+      edgeCmpyId: "86",
+      description: "Example description",
+      logoUrl: "https://edge.pse.com.ph/clogo/234/cl61a83813r307.jpg",
     });
   });
 });

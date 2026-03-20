@@ -190,6 +190,10 @@ Last Updated: 2026-03-21
 - Updated Git tracking so only `.specify/memory/constitution.md` remains in the
   repository, while the other `.specify` scripts and templates stay local and
   are ignored via `.gitignore`.
+- Completed Phase 6 / `T017` for `002-pse-edge-backfill` by adding
+  `apps/ingestion/scripts/verify-backfill.ts` as a read-only verifier that
+  prints table counts, JFC sample rows, daily-price gap reports, unlinked-stock
+  reports, and exits non-zero when verification gaps are found.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.

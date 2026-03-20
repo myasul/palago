@@ -149,7 +149,7 @@ Phase 5 implementation notes:
 **Purpose**: Add the read-only verification script used to validate all prior
 manual backfill runs.
 
-- [ ] T017 Create `apps/ingestion/scripts/verify-backfill.ts` as a read-only verifier that prints counts, sample `JFC` rows, missing-price gaps, and null `company_id` gaps, exits `1` on failures and `0` when clean, commit message `feat(ingestion): add verify-backfill script`, and manual run `cd apps/ingestion && npx tsx scripts/verify-backfill.ts`
+- [x] T017 Create `apps/ingestion/scripts/verify-backfill.ts` as a read-only verifier that prints counts, sample `JFC` rows, missing-price gaps, and null `company_id` gaps, exits `1` on failures and `0` when clean, commit message `feat(ingestion): add verify-backfill script`, and manual run `cd apps/ingestion && npx tsx scripts/verify-backfill.ts`
 
 > [MANUAL] After Phase 6, Matt runs:
 > `cd apps/ingestion && npx tsx scripts/verify-backfill.ts`

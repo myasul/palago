@@ -194,6 +194,9 @@ Last Updated: 2026-03-21
   `apps/ingestion/scripts/verify-backfill.ts` as a read-only verifier that
   prints table counts, JFC sample rows, daily-price gap reports, unlinked-stock
   reports, and exits non-zero when verification gaps are found.
+- Added switchable ingestion logging in `apps/ingestion/shared/logger.ts` with
+  `LOG_FORMAT=pretty|json`, defaulting to human-readable output for local TTY
+  development and JSON output for non-interactive or production-style runs.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.

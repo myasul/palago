@@ -25,14 +25,10 @@ Sync Impact Report
 ## Core Principles
 
 ### I. Beginner-First Mobile Experience
-All user-facing features MUST serve beginner Filipino retail investors first and
-MUST be usable at a 375px mobile viewport before wider layouts are optimized.
-Section headers SHOULD be in Filipino, market labels MAY remain in English when
-they match investor expectations, and jargon MUST include tap-to-expand plain
-Filipino explanations. Every stock card and stock detail experience MUST show
-minimum investment as board lot × price, and any delayed market data MUST show a
-15-minute delay disclaimer. Rationale: palago.ph exists to make PSE data
-understandable for first-time investors, not to mirror broker-grade interfaces.
+All labels, navigation, and data fields MUST be in English. Jargon MUST include
+tap-to-expand plain Filipino explanations for terms a beginner would not know.
+Rationale: palago.ph exists to make PSE data understandable for first-time investors,
+not to mirror broker-grade interfaces.
 
 ### II. Source Isolation Through Provider Boundaries
 Each persisted table row MUST come from exactly one approved source, and data
@@ -97,6 +93,20 @@ Dividend data MUST be filtered to `security_type = 'COMMON'` in all user-facing
 contexts. Preferred share dividends MUST be stored in the `dividends` table but
 MUST NOT be displayed to users in MVP.
 
+### UI Conventions
+Price changes MUST use green for positive and red for negative — these match
+broker conventions and MUST NOT be changed. Color palette uses pastel shades
+derived from the Philippine flag: blue (#B8CEFF) as primary interactive color,
+red (#FFB3BB) for negative price changes, gold (#FFF0A0) as accent. Positive
+price changes use green (#B2F2BB) to match universal broker conventions.
+
+Every stock card MUST display minimum investment as board_lot × close_price.
+Data delay MUST be disclosed as "Data delayed 15 minutes" on every page showing
+live or recent prices. All UI components follow the smart/dumb split: Server
+Components for data fetching, Client Components only for interactivity. URL
+parameters MUST be used for all filterable/sortable list views so filters are
+shareable and survive page refresh.
+
 ## Delivery Workflow & Quality Gates
 
 Every feature spec, plan, and task list MUST demonstrate compliance with the
@@ -152,4 +162,4 @@ After completing any task, Codex must:
 3. Stage the relevant files and commit immediately — no approval
    required
 
-**Version**: 1.0.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-15
+**Version**: 1.1.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-15

@@ -5,11 +5,23 @@ conventions, and architectural decisions.
 
 For project state, read `PROGRESS.md` and `TASKS.md`.
 
-## Active Technologies
-- TypeScript (strict) on Node.js 20 + Cheerio, Zod, Vitest, native `fetch`, shared sleep utility pattern (001-pse-edge-provider)
-- N/A for this feature; provider is read-only and returns typed data to callers (001-pse-edge-provider)
-- TypeScript (strict) on Node.js 20 + Drizzle ORM, PostgreSQL, `@palago/pse-edge`, (002-pse-edge-backfill)
-- Supabase PostgreSQL, S3 bucket `palago-assets` for company logos (002-pse-edge-backfill)
+## Tech Stack (quick reference)
 
-## Recent Changes
-- 001-pse-edge-provider: Added TypeScript (strict) on Node.js 20 + Cheerio, Zod, Vitest, native `fetch`, shared sleep utility pattern
+| Category | Tool |
+|---|---|
+| Monorepo | Turborepo + npm workspaces |
+| Framework | Next.js 14 App Router |
+| Language | TypeScript strict |
+| Styling | Tailwind CSS + shadcn/ui |
+| Charts | Recharts |
+| ORM | Drizzle ORM |
+| Database | PostgreSQL via Supabase |
+| Validation | Zod |
+| Testing | Vitest |
+| Data provider | @palago/pse-edge (PSEEdgeProvider) |
+| Lambda runtime | Node.js 20 |
+| Infrastructure | AWS Lambda + EventBridge + S3 + SSM |
+| IaC | Terraform (ap-southeast-1) |
+| Hosting | Vercel |
+
+Package names use `@palago/` prefix.

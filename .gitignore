@@ -18,6 +18,11 @@ ingestion.zip
 # Codex agent data
 .codex/
 
+# Keep only the constitution tracked under .specify
+.specify/**
+!.specify/memory/
+!.specify/memory/constitution.md
+
 # macOS
 .DS_Store
 **/.DS_Store

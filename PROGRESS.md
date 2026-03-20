@@ -1,6 +1,6 @@
 # PROGRESS
 
-Last Updated: 2026-03-16
+Last Updated: 2026-03-21
 
 ## ✅ Completed
 
@@ -187,6 +187,9 @@ Last Updated: 2026-03-16
 - Added `--symbol SYMBOL` targeting to
   `apps/ingestion/scripts/backfill-dividends.ts` so single-stock dividend
   reruns are possible while debugging provider or parser issues.
+- Updated Git tracking so only `.specify/memory/constitution.md` remains in the
+  repository, while the other `.specify` scripts and templates stay local and
+  are ignored via `.gitignore`.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.

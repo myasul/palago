@@ -104,39 +104,39 @@ export function StockDetailTrading({
   return (
     <section className="bg-white">
       <div className="flex items-center justify-between border-b border-[#f3f4f6] px-4 py-[10px]">
-        <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#6b7280]">
+        <p className="type-overline tracking-[0.1em] text-[#6b7280]">
           TODAY&apos;S TRADING
         </p>
-        <p className="text-[10px] text-[#9ca3af]">{formatTradeDate(tradeDate)}</p>
+        <p className="type-overline tracking-normal text-[#9ca3af]">{formatTradeDate(tradeDate)}</p>
       </div>
 
       <div className="grid grid-cols-2 border-b border-[#f3f4f6]">
         <div className="border-r border-[#f3f4f6] px-4 py-[10px]">
-          <p className="text-[10px] text-[#9ca3af]">Open</p>
-          <p className="mt-1 text-[16px] font-semibold text-[#111111]">
+          <p className="type-overline tracking-normal text-[#9ca3af]">Open</p>
+          <p className="type-metric mt-1 text-[#111111]">
             {formatPeso(openPrice)}
           </p>
-          <p className="mt-1 text-[10px] text-[#9ca3af]">Market opened here</p>
+          <p className="type-overline mt-1 tracking-normal text-[#9ca3af]">Market opened here</p>
         </div>
 
         <div className={`px-4 py-[10px] ${getCloseValueClasses(closeVsOpen?.tone ?? null)}`}>
-          <p className="text-[10px] text-[#9ca3af]">Last Close</p>
-          <p className="mt-1 text-[16px] font-bold">{formatPeso(lastClose)}</p>
-          {closeVsOpen ? <p className="mt-1 text-[10px]">{closeVsOpen.text}</p> : null}
+          <p className="type-overline tracking-normal text-[#9ca3af]">Last Close</p>
+          <p className="type-metric mt-1">{formatPeso(lastClose)}</p>
+          {closeVsOpen ? <p className="type-overline mt-1 tracking-normal">{closeVsOpen.text}</p> : null}
         </div>
       </div>
 
       <div className="border-b border-[#f3f4f6] px-4 py-[10px]">
         <div className="mb-[6px] flex items-center justify-between">
           <div>
-            <p className="text-[10px] text-[#9ca3af]">Low</p>
-            <p className="text-[12px] font-medium text-[#be123c]">
+            <p className="type-overline tracking-normal text-[#9ca3af]">Low</p>
+            <p className="type-body-sm text-[#be123c]">
               {formatPeso(lowPrice)}
             </p>
           </div>
           <div className="text-right">
-            <p className="text-[10px] text-[#9ca3af]">High</p>
-            <p className="text-[12px] font-medium text-[#15803d]">
+            <p className="type-overline tracking-normal text-[#9ca3af]">High</p>
+            <p className="type-body-sm text-[#15803d]">
               {formatPeso(highPrice)}
             </p>
           </div>
@@ -166,25 +166,25 @@ export function StockDetailTrading({
             </div>
 
             {intradaySecondaryText ? (
-              <p className="mt-1 text-[10px] text-[#9ca3af]">
+              <p className="type-overline mt-1 tracking-normal text-[#9ca3af]">
                 {intradaySecondaryText}
               </p>
             ) : null}
           </div>
         ) : (
-          <p className="text-[10px] text-[#9ca3af]">—</p>
+          <p className="type-overline tracking-normal text-[#9ca3af]">—</p>
         )}
       </div>
 
       <div className="grid grid-cols-2 gap-4 px-4 py-[10px]">
         <div>
-          <p className="text-[10px] text-[#9ca3af]">Volume</p>
-          <p className="mt-1 text-[12px] text-[#6b7280]">{formatVolume(volume)}</p>
+          <p className="type-overline tracking-normal text-[#9ca3af]">Volume</p>
+          <p className="type-body-sm mt-1 text-[#6b7280]">{formatVolume(volume)}</p>
         </div>
 
         <div>
-          <p className="text-[10px] text-[#9ca3af]">Value</p>
-          <p className="mt-1 text-[12px] text-[#6b7280]">{formatPeso(value)}</p>
+          <p className="type-overline tracking-normal text-[#9ca3af]">Value</p>
+          <p className="type-body-sm mt-1 text-[#6b7280]">{formatPeso(value)}</p>
         </div>
       </div>
     </section>

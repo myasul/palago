@@ -45,10 +45,10 @@ export function StockDetailRange52({
   if (range52 === null) {
     return (
       <section className="rounded-b-2xl border-t border-[#f3f4f6] bg-white px-4 py-3">
-        <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.1em] text-[#6b7280]">
+        <p className="type-overline mb-2 tracking-[0.1em] text-[#6b7280]">
           52-WEEK RANGE
         </p>
-        <p className="text-[11px] text-[#9ca3af]">
+        <p className="type-caption text-[#9ca3af]">
           52-week range not yet available — not enough trading history.
         </p>
       </section>
@@ -60,26 +60,26 @@ export function StockDetailRange52({
 
   return (
     <section className="rounded-b-2xl border-t border-[#f3f4f6] bg-white px-4 py-3">
-      <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.1em] text-[#6b7280]">
+      <p className="type-overline mb-2 tracking-[0.1em] text-[#6b7280]">
         52-WEEK RANGE
       </p>
 
       <div className="mb-2 flex items-end justify-between">
         <div>
-          <p className="text-[10px] text-[#9ca3af]">Low</p>
-          <p className="text-[12px] font-semibold text-[#374151]">
+          <p className="type-overline tracking-normal text-[#9ca3af]">Low</p>
+          <p className="type-body-sm text-[#374151]">
             {formatPeso(range52.low52)}
           </p>
         </div>
 
         <div className="text-center">
-          <p className="text-[10px] text-[#9ca3af]">Current</p>
-          <p className="text-[12px] font-bold text-[#4338ca]">{formatPeso(lastClose)}</p>
+          <p className="type-overline tracking-normal text-[#9ca3af]">Current</p>
+          <p className="type-body-sm font-bold text-[#4338ca]">{formatPeso(lastClose)}</p>
         </div>
 
         <div className="text-right">
-          <p className="text-[10px] text-[#9ca3af]">High</p>
-          <p className="text-[12px] font-semibold text-[#374151]">
+          <p className="type-overline tracking-normal text-[#9ca3af]">High</p>
+          <p className="type-body-sm text-[#374151]">
             {formatPeso(range52.high52)}
           </p>
         </div>
@@ -108,12 +108,12 @@ export function StockDetailRange52({
             </div>
           </div>
 
-          <p className="mt-1 text-[10px] text-[#9ca3af]">
+          <p className="type-overline mt-1 tracking-normal text-[#9ca3af]">
             {get52WeekLabel(lastClose, range52.low52, range52.high52)}
           </p>
         </>
       ) : (
-        <p className="text-[11px] text-[#9ca3af]">
+        <p className="type-caption text-[#9ca3af]">
           52-week range not yet available — not enough trading history.
         </p>
       )}

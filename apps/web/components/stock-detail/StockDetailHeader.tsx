@@ -132,7 +132,7 @@ export function StockDetailHeader({
 
   return (
     <section className="bg-[linear-gradient(160deg,_#fde68a_0%,_#fef3c7_60%)] px-4 pb-4 pt-3">
-      <p className="mb-[7px] text-[10px] font-bold uppercase tracking-[0.14em] text-[#92400e]">
+      <p className="type-overline mb-[7px] tracking-[0.14em] text-[#92400e]">
         STOCK DETAIL
       </p>
 
@@ -141,38 +141,38 @@ export function StockDetailHeader({
           {logoUrl ? (
             <img alt={companyName} className="h-full w-full object-cover" src={logoUrl} />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-[#EEF2FF] text-[10px] font-bold text-[#4338ca]">
+            <div className="type-overline flex h-full w-full items-center justify-center bg-[#EEF2FF] tracking-normal text-[#4338ca]">
               {getInitials(companyName)}
             </div>
           )}
         </div>
 
         <div className="min-w-0">
-          <h1 className="text-[15px] font-bold leading-[1.15] tracking-[-0.02em] text-[#1c1917]">
+          <h1 className="type-metric tracking-[-0.02em] text-[#1c1917]">
             {companyName}
           </h1>
-          <p className="mt-px truncate text-[11px] text-[#78350f]">
+          <p className="type-caption mt-px truncate text-[#78350f]">
             {identityParts.join(" · ")}
           </p>
         </div>
       </div>
 
       <p
-        className={`mb-[8px] text-[30px] font-bold leading-none tracking-[-0.03em] ${heroPriceContent.className}`}
+        className={`type-hero mb-[8px] ${heroPriceContent.className}`}
       >
         {heroPriceContent.content}
       </p>
 
       <div className="mb-[8px] flex items-end justify-between gap-4">
         <div className="min-w-0">
-          <p className="mb-[2px] text-[10px] text-[#92400e]">Change</p>
+          <p className="type-overline mb-[2px] tracking-[0.07em] text-[#92400e]">Change</p>
           <p className={percentChangeContent.className}>{percentChangeContent.content}</p>
         </div>
 
         <div className="shrink-0 text-right">
-          <p className="mb-[2px] text-[10px] text-[#92400e]">Prev Close</p>
+          <p className="type-overline mb-[2px] tracking-[0.07em] text-[#92400e]">Prev Close</p>
           <p
-            className={`text-[15px] font-semibold ${
+            className={`type-stat ${
               prevClose === null ? "text-[#9ca3af]" : "text-[#44403c]"
             }`}
           >
@@ -181,7 +181,7 @@ export function StockDetailHeader({
         </div>
       </div>
 
-      <div className="flex items-center gap-[3px] text-[10px] text-[#92400e]">
+      <div className="type-overline flex items-center gap-[3px] tracking-normal text-[#92400e]">
         <svg width="9" height="9" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <circle cx="8" cy="8" r="7" stroke="#92400e" strokeWidth="1.5" />
           <path

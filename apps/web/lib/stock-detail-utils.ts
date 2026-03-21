@@ -85,6 +85,39 @@ export const getCloseVsOpenSubtitle = (
   return { text: "Unchanged from open", tone: "neutral" };
 };
 
+export const getPriceChange = (
+  lastClose: string | null,
+  prevClose: string | null
+): { formatted: string; tone: "positive" | "negative" | "neutral" } | null => {
+  const parsedLastClose = toNumber(lastClose);
+  const parsedPrevClose = toNumber(prevClose);
+
+  if (parsedLastClose === null || parsedPrevClose === null) {
+    return null;
+  }
+
+  const diff = parsedLastClose - parsedPrevClose;
+
+  if (diff > 0) {
+    return {
+      formatted: `+${Math.abs(diff).toFixed(2)}`,
+      tone: "positive",
+    };
+  }
+
+  if (diff < 0) {
+    return {
+      formatted: `−${Math.abs(diff).toFixed(2)}`,
+      tone: "negative",
+    };
+  }
+
+  return {
+    formatted: "0.00",
+    tone: "neutral",
+  };
+};
+
 export const get52WeekLabel = (
   lastClose: string | null,
   low52: string | null,

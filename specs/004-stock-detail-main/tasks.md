@@ -60,6 +60,7 @@ scrolling.
 - [x] T011 [US1] Create `apps/web/components/stock-detail/StockDetailSearch.tsx` as the first and only page-specific interactive `use client` component, accepting `initialSymbol`, rendering the nav bar with a back link to `/lists/blue-chips` and a full-width search input, navigating to `/stocks/[enteredSymbol]` via `useRouter` on submit, and doing nothing on empty submissions; commit message `feat(web): add stock detail search`
 - [x] T012 [US1] Create `apps/web/components/stock-detail/StockDetailHeader.tsx` as a Server Component with no `use client`, accepting `StockDetailPriceSnapshot` props, rendering the gold gradient header with logo or initials placeholder, company name, symbol, sector, subsector, large `lastClose`, stored `percentChange` badge, and the `Data delayed 15 minutes` disclosure using the constitution colours for positive, negative, and gold treatments; commit message `feat(web): add stock detail header`
 - [x] T013 [US1] Create `apps/web/components/stock-detail/StockDetailMinInvest.tsx` as a Server Component with no `use client`, accepting `boardLot`, `lastClose`, and `minimumInvestment`, always showing the board lot value, showing `minimumInvestment` or `—`, rendering the calculation row only when `lastClose` is non-null, and relying on query-provided values without recomputing `minimumInvestment` in the component; commit message `feat(web): add stock detail minimum investment section`
+- [x] T013a [US1] Refactor `apps/web/components/stock-detail/StockDetailHeader.tsx` to colour the price hero green/red/grey by direction, fix the change display to show ₱ change and % change as separate values, replace the pill badge with a B3 labelled stat pair layout, and add `getPriceChange` to `apps/web/lib/stock-detail-utils.ts`; commit message `refactor(web): fix stock detail header price colour and change format`
 
 ## Phase 4: User Story 2 - Understand Today's Trading Context (Priority: P2)
 
@@ -70,7 +71,7 @@ using a compact, server-rendered trading section.
 the page shows `Open`, `Last Close`, `Prev Close`, the intraday range bar, and
 the correct subtitle and secondary text for the day’s movement.
 
-- [ ] T014 [US2] Create `apps/web/components/stock-detail/StockDetailTrading.tsx` as a Server Component with no `use client`, accepting `StockDetailPriceSnapshot`, using `getRangeBarPosition`, `getIntradaySecondaryText`, and `getCloseVsOpenSubtitle` from `apps/web/lib/stock-detail-utils.ts`, rendering `Open` and `Last Close`, a labelled `Prev Close` row, the intraday range bar with a single dot, and muted `Volume` and `Value`, formatting `volume` as `number | null` with `toLocaleString()` when present, keeping `percentChange` as the stored value without recalculation, and doing all numeric conversion only through utilities and display-time formatting rather than in the query layer; commit message `feat(web): add stock detail trading section`
+- [x] T014 [US2] Create `apps/web/components/stock-detail/StockDetailTrading.tsx` as a Server Component with no `use client`, accepting `StockDetailPriceSnapshot`, using `getRangeBarPosition`, `getIntradaySecondaryText`, and `getCloseVsOpenSubtitle` from `apps/web/lib/stock-detail-utils.ts`, rendering `Open` and `Last Close`, a labelled `Prev Close` row, the intraday range bar with a single dot, and muted `Volume` and `Value`, formatting `volume` as `number | null` with `toLocaleString()` when present, keeping `percentChange` as the stored value without recalculation, and doing all numeric conversion only through utilities and display-time formatting rather than in the query layer; commit message `feat(web): add stock detail trading section`
 
 ## Phase 5: User Story 3 - Understand 52-Week Context (Priority: P3)
 
@@ -81,7 +82,7 @@ near the 52-week high with one sentence and one range bar.
 shows low/last-close/high values, a correctly positioned dot, and the correct
 label; open a stock without 52-week data and confirm the fallback message.
 
-- [ ] T015 [US3] Create `apps/web/components/stock-detail/StockDetailRange52.tsx` as a Server Component with no `use client`, accepting `lastClose` and `range52`, using `getRangeBarPosition` and `get52WeekLabel` from `apps/web/lib/stock-detail-utils.ts`, rendering only the fallback message when `range52` is null, and otherwise rendering the low/last-close/high labels, the 52-week range bar with a single dot, the `₱X now` chip, and the derived label sentence; commit message `feat(web): add stock detail 52-week range section`
+- [x] T015 [US3] Create `apps/web/components/stock-detail/StockDetailRange52.tsx` as a Server Component with no `use client`, accepting `lastClose` and `range52`, using `getRangeBarPosition` and `get52WeekLabel` from `apps/web/lib/stock-detail-utils.ts`, rendering only the fallback message when `range52` is null, and otherwise rendering the low/last-close/high labels, the 52-week range bar with a single dot, the `₱X now` chip, and the derived label sentence; commit message `feat(web): add stock detail 52-week range section`
 
 ## Phase 6: Manual Verification
 

@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { ToastHandler } from "@/components/ToastHandler";
 import { StockDetailHeader } from "@/components/stock-detail/StockDetailHeader";
 import { StockDetailMinInvest } from "@/components/stock-detail/StockDetailMinInvest";
+import { StockDetailRange52 } from "@/components/stock-detail/StockDetailRange52";
+import { StockDetailTrading } from "@/components/stock-detail/StockDetailTrading";
 import { StockDetailSearch } from "@/components/stock-detail/StockDetailSearch";
 import { getStockDetail } from "@/lib/queries/stock-detail";
 
@@ -14,14 +16,6 @@ type StockDetailPageProps = {
     toast?: string;
   }>;
 };
-
-function StockDetailTrading() {
-  return <section className="h-48 animate-pulse rounded-b-2xl bg-white" />;
-}
-
-function StockDetailRange52() {
-  return <section className="h-32 animate-pulse rounded-b-2xl bg-white" />;
-}
 
 export default async function StockDetailPage({
   params,
@@ -53,6 +47,7 @@ export default async function StockDetailPage({
         lastClose={result.stock.lastClose}
         logoUrl={result.stock.logoUrl}
         percentChange={result.stock.percentChange}
+        prevClose={result.stock.prevClose}
         sector={result.stock.sector}
         subsector={result.stock.subsector}
         symbol={result.stock.symbol}
@@ -62,8 +57,20 @@ export default async function StockDetailPage({
         lastClose={result.stock.lastClose}
         minimumInvestment={result.stock.minimumInvestment}
       />
-      <StockDetailTrading />
-      <StockDetailRange52 />
+      <StockDetailTrading
+        highPrice={result.stock.highPrice}
+        lastClose={result.stock.lastClose}
+        lowPrice={result.stock.lowPrice}
+        openPrice={result.stock.openPrice}
+        percentChange={result.stock.percentChange}
+        tradeDate={result.stock.tradeDate}
+        value={result.stock.value}
+        volume={result.stock.volume}
+      />
+      <StockDetailRange52
+        lastClose={result.stock.lastClose}
+        range52={result.range52}
+      />
     </main>
   );
 }

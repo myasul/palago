@@ -4,6 +4,19 @@ Last Updated: 2026-03-21
 
 ## ✅ Completed
 
+- Completed Phase 5 / `T015` of `004-stock-detail-main` by adding the real
+  `StockDetailRange52` server component, wiring it into the stock detail page,
+  restoring the missing `52-WEEK RANGE` section and label, and fixing both
+  range-bar `₱… now` chips so they stay aligned and keep their pill shape at
+  the edges of the range.
+- Refined Phase 3 of `004-stock-detail-main` with `T013a` by recolouring the
+  stock detail header hero price based on direction, replacing the duplicate
+  pill-based change display with a labelled change/prev-close stat pair, and
+  adding the pure `getPriceChange` utility with Vitest coverage.
+- Completed Phase 4 / `T014` of `004-stock-detail-main` by adding the real
+  `StockDetailTrading` server component for `Open`, `Last Close`, `Prev Close`,
+  intraday range, and muted `Volume`/`Value`, wiring it into the stock detail
+  route, and verifying `npx tsc -p apps/web/tsconfig.json --noEmit` passes.
 - Completed Phase 3 of `004-stock-detail-main` by replacing the stock-detail
   route stub, adding stock-detail route loading and error files, creating the
   real nav search, gold header, and minimum-investment server components, and

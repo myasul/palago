@@ -4,6 +4,7 @@ import {
   get52WeekLabel,
   getCloseVsOpenSubtitle,
   getIntradaySecondaryText,
+  getPriceChange,
   getRangeBarPosition,
 } from "./stock-detail-utils";
 
@@ -74,6 +75,34 @@ describe("getCloseVsOpenSubtitle", () => {
   it("returns null when either input is null", () => {
     expect(getCloseVsOpenSubtitle(null, "243.00")).toBeNull();
     expect(getCloseVsOpenSubtitle("243.00", null)).toBeNull();
+  });
+});
+
+describe("getPriceChange", () => {
+  it("returns the positive diff state", () => {
+    expect(getPriceChange("695.00", "685.00")).toEqual({
+      formatted: "+10.00",
+      tone: "positive",
+    });
+  });
+
+  it("returns the negative diff state", () => {
+    expect(getPriceChange("190.00", "199.00")).toEqual({
+      formatted: "−9.00",
+      tone: "negative",
+    });
+  });
+
+  it("returns the neutral diff state", () => {
+    expect(getPriceChange("190.00", "190.00")).toEqual({
+      formatted: "0.00",
+      tone: "neutral",
+    });
+  });
+
+  it("returns null when either input is null", () => {
+    expect(getPriceChange(null, "190.00")).toBeNull();
+    expect(getPriceChange("190.00", null)).toBeNull();
   });
 });
 

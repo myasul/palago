@@ -79,7 +79,9 @@ const makeStockRow = (overrides: Partial<StockListEntry> = {}): StockListEntry =
   logoUrl: "https://palago-assets.s3.ap-southeast-1.amazonaws.com/logos/JFC.jpg",
   tradeDate: "2026-03-21",
   closePrice: "245.5000",
+  prevClose: "240.0000",
   percentChange: "1.2500",
+  pesoChange: "5.5000",
   minimumInvestment: "2455.0000",
   ...overrides,
 });
@@ -314,7 +316,9 @@ describe("getStockListPage", () => {
       makeStockRow({
         tradeDate: null,
         closePrice: null,
+        prevClose: null,
         percentChange: null,
+        pesoChange: null,
         minimumInvestment: null,
       }),
     ]);
@@ -331,7 +335,9 @@ describe("getStockListPage", () => {
     expect(result.stocks[0]).toMatchObject({
       tradeDate: null,
       closePrice: null,
+      prevClose: null,
       percentChange: null,
+      pesoChange: null,
       minimumInvestment: null,
     });
   });

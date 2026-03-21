@@ -109,6 +109,19 @@ export function StockListShell(props: StockListShellProps) {
     });
   };
 
+  const applyStickySearch = (value: string) => {
+    const normalizedSearch = value.trim();
+    const currentSearch = props.search?.trim() ?? "";
+
+    if (normalizedSearch === currentSearch) {
+      return;
+    }
+
+    updateParams({
+      search: normalizedSearch.length > 0 ? normalizedSearch : null,
+    });
+  };
+
   useEffect(() => {
     if (!searchOpen) {
       return;
@@ -130,9 +143,7 @@ export function StockListShell(props: StockListShellProps) {
     }
 
     const timeoutId = window.setTimeout(() => {
-      updateParams({
-        search: normalizedSearch.length > 0 ? normalizedSearch : null,
-      });
+      applyStickySearch(stickySearchInput);
     }, 300);
 
     return () => window.clearTimeout(timeoutId);
@@ -239,7 +250,10 @@ export function StockListShell(props: StockListShellProps) {
                     type="search"
                     value={stickySearchInput}
                     onChange={(event) => setStickySearchInput(event.target.value)}
-                    onBlur={() => setSearchOpen(false)}
+                    onBlur={() => {
+                      applyStickySearch(stickySearchInput);
+                      setSearchOpen(false);
+                    }}
                     onKeyDown={(event) => {
                       if (event.key === "Escape") {
                         setSearchOpen(false);

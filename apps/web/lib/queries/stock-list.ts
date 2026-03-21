@@ -29,7 +29,9 @@ export type StockListEntry = {
   logoUrl: string | null;
   tradeDate: string | null;
   closePrice: string | null;
+  prevClose: string | null;
   percentChange: string | null;
+  pesoChange: string | null;
   minimumInvestment: string | null;
 };
 
@@ -60,14 +62,16 @@ type SectorRow = {
   sector: string;
 };
 
-const latestDailyPricesSubquery = sql`
-  SELECT DISTINCT ON (stock_id)
+const rankedDailyPricesSubquery = sql`
+  SELECT
     stock_id,
     close_price,
     percent_change,
-    trade_date
+    trade_date,
+    ROW_NUMBER() OVER (
+      PARTITION BY stock_id ORDER BY trade_date DESC
+    ) AS rn
   FROM daily_prices
-  ORDER BY stock_id, trade_date DESC
 `;
 
 const buildWhereClause = ({
@@ -152,7 +156,9 @@ const toStockListEntry = (row: StockListEntry): StockListEntry => ({
   logoUrl: row.logoUrl ?? null,
   tradeDate: row.tradeDate ?? null,
   closePrice: row.closePrice ?? null,
+  prevClose: row.prevClose ?? null,
   percentChange: row.percentChange ?? null,
+  pesoChange: row.pesoChange ?? null,
   minimumInvestment: row.minimumInvestment ?? null,
 });
 
@@ -211,7 +217,12 @@ export const getStockListPage = async (
       companies.logo_url AS "logoUrl",
       latest_prices.trade_date::text AS "tradeDate",
       latest_prices.close_price::text AS "closePrice",
+      previous_prices.close_price::text AS "prevClose",
       latest_prices.percent_change::text AS "percentChange",
+      CASE
+        WHEN latest_prices.close_price IS NULL OR previous_prices.close_price IS NULL THEN NULL
+        ELSE (latest_prices.close_price - previous_prices.close_price)::text
+      END AS "pesoChange",
       CASE
         WHEN stocks.board_lot IS NULL OR latest_prices.close_price IS NULL THEN NULL
         ELSE (stocks.board_lot::numeric * latest_prices.close_price)::text
@@ -219,8 +230,12 @@ export const getStockListPage = async (
     FROM stocks
     INNER JOIN companies
       ON stocks.company_id = companies.id
-    LEFT JOIN (${latestDailyPricesSubquery}) AS latest_prices
+    LEFT JOIN (${rankedDailyPricesSubquery}) AS latest_prices
       ON latest_prices.stock_id = stocks.id
+      AND latest_prices.rn = 1
+    LEFT JOIN (${rankedDailyPricesSubquery}) AS previous_prices
+      ON previous_prices.stock_id = stocks.id
+      AND previous_prices.rn = 2
     ${whereClause}
     ${orderByClause}
     LIMIT ${PAGE_SIZE}

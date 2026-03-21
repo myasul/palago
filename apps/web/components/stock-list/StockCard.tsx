@@ -170,11 +170,9 @@ const formatChangePill = ({
 };
 
 function PercentChangeExplainer({
-  percentChange,
   prevClose,
   changePill,
 }: {
-  percentChange: string | null;
   prevClose: string | null;
   changePill: {
     className: string;
@@ -206,10 +204,11 @@ function PercentChangeExplainer({
               <AccordionPrimitive.Header className="flex">
                 <AccordionPrimitive.Trigger
                   className={cn(
-                    "inline-flex outline-none focus-visible:ring-2 focus-visible:ring-[#4338ca] focus-visible:ring-offset-1 rounded-full",
+                    "inline-flex rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[#4338ca] focus-visible:ring-offset-1",
+                    "[&[data-state=open]_.help-chip]:border-[#c7d2fe] [&[data-state=open]_.help-chip]:bg-[#EEF2FF] [&[data-state=open]_.help-chip]:text-[#4338ca]",
                   )}
                 >
-                  <HelpBadge active={false} className="data-[state=open]:border-[#c7d2fe] data-[state=open]:bg-[#EEF2FF] data-[state=open]:text-[#4338ca]" />
+                  <HelpBadge active={false} />
                 </AccordionPrimitive.Trigger>
               </AccordionPrimitive.Header>
             ) : null}
@@ -407,7 +406,6 @@ export function StockCard(props: StockListEntry) {
       </Link>
 
       <PercentChangeExplainer
-        percentChange={props.percentChange}
         prevClose={props.prevClose}
         changePill={changePill}
       />

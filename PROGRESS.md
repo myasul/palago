@@ -4,6 +4,11 @@ Last Updated: 2026-03-22
 
 ## ✅ Completed
 
+- Finished the pending `003-stock-list-page` follow-up wiring by committing the
+  stock-list query/test changes for `prevClose` and `pesoChange`, fixing the
+  shared `?` badge so accordion-open styles apply correctly in `StockCard`, and
+  making sticky-bar search flush its value on blur so fast taps do not drop the
+  intended URL update.
 - Refined `003-stock-list-page` again by merging the list search/chips into the
   gold header zone and replacing the old white sticky controls bar with the
   compact gold Option 3 sticky bar that shows the active chip plus search and

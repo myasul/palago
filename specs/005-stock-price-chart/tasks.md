@@ -19,7 +19,7 @@
 **Purpose**: Build and test the data access function that all subsequent
 phases depend on.
 
-- [ ] T001 Create `/Users/matthewyasul/personal/code/palago-2/apps/web/lib/queries/stock-price-history.ts` with `getStockPriceHistory({ symbol, days })`, resolving the stock by symbol via `stocks`, selecting only `trade_date` and `close_price` from `daily_prices`, filtering with `trade_date >= CURRENT_DATE - INTERVAL {days} days`, ordering `trade_date ASC`, preserving null `closePrice` rows, returning `[]` when no rows match, forbidding `Number()` anywhere in the file, and updating `/Users/matthewyasul/personal/code/palago-2/specs/005-stock-price-chart/tasks.md` in the same commit. Commit: `feat(web): add stock price history query`
+- [x] T001 Create `/Users/matthewyasul/personal/code/palago-2/apps/web/lib/queries/stock-price-history.ts` with `getStockPriceHistory({ symbol, days })`, resolving the stock by symbol via `stocks`, selecting only `trade_date` and `close_price` from `daily_prices`, filtering with `trade_date >= CURRENT_DATE - INTERVAL {days} days`, ordering `trade_date ASC`, preserving null `closePrice` rows, returning `[]` when no rows match, forbidding `Number()` anywhere in the file, and updating `/Users/matthewyasul/personal/code/palago-2/specs/005-stock-price-chart/tasks.md` in the same commit. Commit: `feat(web): add stock price history query`
 
 ---
 

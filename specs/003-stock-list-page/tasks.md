@@ -174,7 +174,7 @@ both sector and sort options. Depends on Phase 4.1 (T016a) being complete
 since this modifies StockListControls.tsx and StockListShell.tsx.
 Implement in order: T006b → T016c → T017c.
 
-- [ ] T006b [P] Run `cd apps/web && npx shadcn@latest add drawer` to
+- [x] T006b [P] Run `cd apps/web && npx shadcn@latest add drawer` to
   generate `apps/web/components/ui/drawer.tsx` using the confirmed
   `radix-nova` preset; commit message `chore(web): add shadcn drawer component`
 

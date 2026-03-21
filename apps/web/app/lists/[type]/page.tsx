@@ -2,13 +2,15 @@ import { redirect } from "next/navigation";
 
 import {
   getStockListPage,
-  type StockListEntry,
   type StockListOrder,
   type StockListPageResult,
   type StockListSort,
   type StockListState,
   type StockListType,
 } from "@/lib/queries/stock-list";
+import { EmptyState } from "@/components/stock-list/EmptyState";
+import { Pagination } from "@/components/stock-list/Pagination";
+import { StockListGrid } from "@/components/stock-list/StockListGrid";
 
 const DEFAULT_SORT: StockListSort = "percent_change";
 const DEFAULT_ORDER: StockListOrder = "desc";
@@ -74,58 +76,15 @@ function StockListShell({
       className="rounded-2xl border border-black/5 bg-white/80 p-4"
     >
       <div className="flex flex-wrap gap-2 text-xs text-slate-600">
-        <span>Type: {state.type}</span>
-        <span>Sort: {state.sort}</span>
-        <span>Order: {state.order}</span>
-        <span>Page: {state.page}</span>
-        <span>Search: {state.search || "—"}</span>
+        <span className="rounded-full bg-[#B8CEFF]/55 px-2 py-1 font-medium text-slate-800">
+          {state.type === "blue-chips" ? "Blue Chips" : "All Stocks"}
+        </span>
+        <span>Search: {state.search || "All companies"}</span>
         <span>Sector: {state.sector || "All sectors"}</span>
-        <span>Sectors loaded: {sectors.length}</span>
+        <span>Sort: {state.sort.replace("_", " ")} • {state.order}</span>
+        <span>{sectors.length} sectors</span>
       </div>
     </section>
-  );
-}
-
-function StockListGrid({ stocks }: { stocks: StockListEntry[] }) {
-  if (stocks.length === 0) {
-    return (
-      <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-6 text-sm text-slate-600">
-        No stocks match the current filters yet.
-      </div>
-    );
-  }
-
-  return (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-      {stocks.map((stock) => (
-        <article
-          key={stock.stockId}
-          className="rounded-2xl border border-black/5 bg-white p-4 shadow-sm"
-        >
-          <div className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
-            {stock.symbol}
-          </div>
-          <h2 className="mt-2 text-base font-semibold text-slate-900">
-            {stock.companyName}
-          </h2>
-          <p className="mt-1 text-sm text-slate-600">{stock.sector ?? "No sector"}</p>
-          <dl className="mt-4 space-y-2 text-sm text-slate-700">
-            <div className="flex items-center justify-between gap-4">
-              <dt>Close price</dt>
-              <dd>{stock.closePrice ?? "—"}</dd>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <dt>Percent change</dt>
-              <dd>{stock.percentChange ?? "—"}</dd>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <dt>Minimum investment</dt>
-              <dd>{stock.minimumInvestment ?? "—"}</dd>
-            </div>
-          </dl>
-        </article>
-      ))}
-    </div>
   );
 }
 
@@ -183,7 +142,8 @@ export default async function StockListPage({
             Page {result.page} of {result.totalPages}
           </span>
         </div>
-        <StockListGrid stocks={result.stocks} />
+        {result.stocks.length > 0 ? <StockListGrid stocks={result.stocks} /> : <EmptyState />}
+        <Pagination state={result.state} totalPages={result.totalPages} />
       </section>
     </main>
   );

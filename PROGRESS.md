@@ -242,6 +242,12 @@ Last Updated: 2026-03-21
   awaits `params` and `searchParams`, validates `type`, calls the stock-list
   query, and renders a server-side list placeholder, and by adding the route
   `loading.tsx` skeleton and `error.tsx` retry boundary files.
+- Completed Phase 3 of `003-stock-list-page` by adding
+  `apps/web/components/stock-list/StockCard.tsx`,
+  `StockListGrid.tsx`, `EmptyState.tsx`, and `Pagination.tsx`, moving numeric
+  display formatting into `StockCard`, wiring the route page to the real
+  server-rendered browse-flow components, and preserving pagination URLs with
+  plain anchor tags.
 
 ## ❌ Known Issues
 

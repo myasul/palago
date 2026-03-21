@@ -262,6 +262,10 @@ Last Updated: 2026-03-21
   `apps/web/components/stock-list/StockCard.tsx` into the compact blue-accent
   card layout and updating `StockListGrid.tsx` so the list surface no longer
   adds an extra colored background behind the cards.
+- Completed Phase 4.3 of `003-stock-list-page` by installing the shadcn
+  Drawer, replacing the sector/sort chips with a single Filters trigger in
+  `StockListControls.tsx`, and mounting one shared filter-and-sort bottom sheet
+  in `StockListShell.tsx` for both the main controls and sticky bar.
 - Added `apps/ingestion/scripts/mark-blue-chip-stocks.ts` to mark the current
   PSEi composition in `stocks.is_blue_chip` using the 30 symbols from the
   provided PSE composition list image, with structured logging for matched,

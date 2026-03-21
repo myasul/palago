@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import type {
   StockListOrder,
@@ -8,6 +9,7 @@ import type {
   StockListType,
 } from "@/lib/queries/stock-list";
 import { StockListControls } from "@/components/stock-list/StockListControls";
+import { StockListFilterDrawer } from "@/components/stock-list/StockListFilterDrawer";
 
 type StockListShellProps = {
   type: StockListType;
@@ -25,6 +27,9 @@ const STICKY_BAR_HEIGHT_PX = 94;
 
 export function StockListShell(props: StockListShellProps) {
   const [isStickyVisible, setIsStickyVisible] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const onScroll = () => {
@@ -39,10 +44,81 @@ export function StockListShell(props: StockListShellProps) {
     };
   }, []);
 
+  const updateParams = (updates: {
+    sort?: StockListSort;
+    order?: StockListOrder;
+    sector?: string | null;
+  }) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if ("sort" in updates) {
+      if (updates.sort && updates.sort !== "percent_change") {
+        params.set("sort", updates.sort);
+      } else {
+        params.delete("sort");
+      }
+    }
+
+    if ("order" in updates) {
+      if (updates.order && updates.order !== "desc") {
+        params.set("order", updates.order);
+      } else {
+        params.delete("order");
+      }
+    }
+
+    if ("sector" in updates) {
+      if (updates.sector) {
+        params.set("sector", updates.sector);
+      } else {
+        params.delete("sector");
+      }
+    }
+
+    params.delete("page");
+
+    const query = params.toString();
+    const path = query.length > 0 ? `/lists/${props.type}?${query}` : `/lists/${props.type}`;
+
+    router.push(path);
+  };
+
+  const setSort = (nextSort: StockListSort) => {
+    if (nextSort === props.sort) {
+      return;
+    }
+
+    updateParams({ sort: nextSort });
+  };
+
+  const setOrder = (nextOrder: StockListOrder) => {
+    if (nextOrder === props.order) {
+      return;
+    }
+
+    updateParams({ order: nextOrder });
+  };
+
+  const setSector = (nextSector: string | null, closeSheet: boolean) => {
+    if (nextSector === props.sector) {
+      if (closeSheet) {
+        setFiltersOpen(false);
+      }
+
+      return;
+    }
+
+    updateParams({ sector: nextSector });
+
+    if (closeSheet) {
+      setFiltersOpen(false);
+    }
+  };
+
   return (
     <div className="relative">
       <div className="overflow-hidden rounded-b-2xl border border-black/5 border-t-0 bg-white shadow-sm">
-        <StockListControls {...props} />
+        <StockListControls {...props} onOpenFilters={() => setFiltersOpen(true)} />
       </div>
 
       <div aria-hidden="true" style={{ height: isStickyVisible ? STICKY_BAR_HEIGHT_PX : 0 }} />
@@ -61,11 +137,29 @@ export function StockListShell(props: StockListShellProps) {
             </div>
 
             <div className="px-3 pb-2">
-              <StockListControls {...props} compact showSearch={false} />
+              <StockListControls
+                {...props}
+                compact
+                showSearch={false}
+                onOpenFilters={() => setFiltersOpen(true)}
+              />
             </div>
           </div>
         </div>
       ) : null}
+
+      <StockListFilterDrawer
+        open={filtersOpen}
+        onOpenChange={setFiltersOpen}
+        sort={props.sort}
+        order={props.order}
+        sector={props.sector}
+        sectorOptions={props.sectorOptions}
+        onSelectSort={setSort}
+        onSelectOrder={setOrder}
+        onSelectSector={setSector}
+        onClearSector={() => setSector(null, false)}
+      />
     </div>
   );
 }

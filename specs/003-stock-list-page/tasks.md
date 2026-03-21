@@ -203,7 +203,7 @@ Implement in order: T006b → T016c → T017c.
 
   commit message `feat(web): replace sector/sort chips with filters trigger (T016c)`
 
-- [ ] T017c [US2] Update `apps/web/components/stock-list/StockListShell.tsx`
+- [x] T017c [US2] Update `apps/web/components/stock-list/StockListShell.tsx`
   to own the Drawer instance and manage open/close state.
   This component keeps 'use client'.
 
@@ -257,6 +257,12 @@ Implement in order: T006b → T016c → T017c.
     Sheet close:
       Drag down or tap backdrop — standard Drawer dismiss behaviour.
       No explicit close button needed.
+
+## Phase 4.3 Completion
+
+- [x] T006b [US2] Drawer component installed at `apps/web/components/ui/drawer.tsx`
+- [x] T016c [US2] `StockListControls.tsx` now uses a single Filters trigger chip
+- [x] T017c [US2] `StockListShell.tsx` now owns the bottom-sheet Drawer instance
 
   commit message `feat(web): add filter sort bottom sheet to stock list (T017c)`
 

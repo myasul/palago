@@ -8,15 +8,8 @@ import type {
   StockListSort,
   StockListType,
 } from "@/lib/queries/stock-list";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 type StockListControlsProps = {
   type: StockListType;
@@ -26,26 +19,67 @@ type StockListControlsProps = {
   order: StockListOrder;
   page: number;
   sectorOptions: string[];
+  compact?: boolean;
+  showSearch?: boolean;
 };
 
 const SEARCH_DEBOUNCE_MS = 300;
 
-const SORT_OPTIONS: Array<{ label: string; value: StockListSort }> = [
-  { label: "% Change", value: "percent_change" },
-  { label: "Price", value: "price" },
-  { label: "Name", value: "name" },
+const SORT_SEQUENCE: Array<{ sort: StockListSort; order: StockListOrder }> = [
+  { sort: "percent_change", order: "desc" },
+  { sort: "percent_change", order: "asc" },
+  { sort: "price", order: "desc" },
+  { sort: "price", order: "asc" },
+  { sort: "name", order: "desc" },
+  { sort: "name", order: "asc" },
 ];
 
-const isSameValue = (left: string | null, right: string | null) => left === right;
+const getSortLabel = (sort: StockListSort, order: StockListOrder) => {
+  const arrow = order === "desc" ? "↓" : "↑";
+
+  switch (sort) {
+    case "price":
+      return `Price ${arrow}`;
+    case "name":
+      return `Name ${arrow}`;
+    case "percent_change":
+    default:
+      return `% Change ${arrow}`;
+  }
+};
+
+const getNextSortState = (sort: StockListSort, order: StockListOrder) => {
+  const currentIndex = SORT_SEQUENCE.findIndex(
+    (item) => item.sort === sort && item.order === order,
+  );
+
+  return SORT_SEQUENCE[(currentIndex + 1) % SORT_SEQUENCE.length] ?? SORT_SEQUENCE[0];
+};
+
+const buildPath = (pathname: string, params: URLSearchParams) => {
+  const query = params.toString();
+
+  return query.length > 0 ? `${pathname}?${query}` : pathname;
+};
+
+const createChipClassName = (isActive: boolean, compact: boolean) =>
+  cn(
+    "relative inline-flex shrink-0 items-center rounded-full border-0 transition-colors",
+    "text-[12px] font-medium leading-none",
+    compact ? "px-[10px] py-1" : "px-3 py-[5px]",
+    isActive ? "bg-[#4338ca] text-white" : "bg-[#f3f4f6] text-[#374151]",
+  );
 
 export function StockListControls({
-  type: _type,
+  type,
   sector,
   search,
   sort,
   order,
   page: _page,
   sectorOptions,
+  compact = false,
+  showSearch = true,
 }: StockListControlsProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -56,12 +90,14 @@ export function StockListControls({
     setSearchInput(search ?? "");
   }, [search]);
 
-  const updateUrl = (updates: {
+  const updateParams = (updates: {
+    type?: StockListType;
     sector?: string | null;
     search?: string | null;
     sort?: StockListSort;
     order?: StockListOrder;
   }) => {
+    const nextType = updates.type ?? type;
     const params = new URLSearchParams(searchParams.toString());
 
     if ("sector" in updates) {
@@ -99,13 +135,14 @@ export function StockListControls({
     }
 
     params.delete("page");
-
-    const query = params.toString();
-
-    router.push(query.length > 0 ? `${pathname}?${query}` : pathname);
+    router.push(buildPath(`/lists/${nextType}`, params));
   };
 
   useEffect(() => {
+    if (!showSearch) {
+      return;
+    }
+
     const normalizedSearch = searchInput.trim();
     const currentSearch = search?.trim() ?? "";
 
@@ -114,140 +151,102 @@ export function StockListControls({
     }
 
     const timeoutId = window.setTimeout(() => {
-      updateUrl({ search: normalizedSearch.length > 0 ? normalizedSearch : null });
+      updateParams({ search: normalizedSearch.length > 0 ? normalizedSearch : null });
     }, SEARCH_DEBOUNCE_MS);
 
     return () => window.clearTimeout(timeoutId);
-  }, [searchInput, search, searchParams, pathname]);
+  }, [searchInput, search, showSearch, searchParams, pathname, type]);
+
+  const sortLabel = getSortLabel(sort, order);
 
   return (
-    <section className="rounded-2xl border border-black/5 bg-white/90 p-4 shadow-sm">
-      <div className="flex flex-wrap items-center gap-2">
-        <Button
+    <section className={cn("bg-white", compact ? "px-3 py-2" : "px-4 py-4")}>
+      {showSearch ? (
+        <div className="mb-3">
+          <Input
+            type="search"
+            value={searchInput}
+            onChange={(event) => setSearchInput(event.target.value)}
+            placeholder="Search company..."
+            aria-label="Search stocks"
+            className="h-10 rounded-xl border-[#d8dee9] bg-white text-sm shadow-none placeholder:text-slate-400"
+          />
+        </div>
+      ) : null}
+
+      <div
+        className={cn(
+          "flex gap-1.5 overflow-x-auto whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        )}
+      >
+        <button
           type="button"
-          size="sm"
-          variant={_type === "blue-chips" ? "default" : "outline"}
-          className={_type === "blue-chips" ? "bg-[#B8CEFF] text-slate-900 hover:bg-[#B8CEFF]/85" : ""}
-          onClick={() => router.push("/lists/blue-chips")}
+          className={createChipClassName(type === "blue-chips", compact)}
+          onClick={() => {
+            if (type === "blue-chips") {
+              return;
+            }
+
+            updateParams({ type: "blue-chips" });
+          }}
         >
           Blue Chips
-        </Button>
-        <Button
+        </button>
+
+        <button
           type="button"
-          size="sm"
-          variant={_type === "all" ? "default" : "outline"}
-          className={_type === "all" ? "bg-[#FFF0A0] text-slate-900 hover:bg-[#FFF0A0]/85" : ""}
-          onClick={() => router.push("/lists/all")}
+          className={createChipClassName(type === "all", compact)}
+          onClick={() => {
+            if (type === "all") {
+              return;
+            }
+
+            updateParams({ type: "all" });
+          }}
         >
           All Stocks
-        </Button>
+        </button>
 
-        <div className="min-w-[10rem] flex-1 sm:flex-none">
-          <Select
+        <button
+          type="button"
+          className={createChipClassName(false, compact)}
+          onClick={() => {
+            const nextSortState = getNextSortState(sort, order);
+
+            updateParams({
+              sort: nextSortState.sort,
+              order: nextSortState.order,
+            });
+          }}
+        >
+          {sortLabel}
+        </button>
+
+        <label className={cn(createChipClassName(false, compact), "cursor-pointer")}>
+          <span>{sector ?? "All sectors"}</span>
+          <span className="ml-1 text-[10px]">▼</span>
+          <select
+            aria-label="Filter by sector"
+            className="absolute inset-0 cursor-pointer opacity-0"
             value={sector ?? "__all__"}
-            onValueChange={(value) => {
-              const nextSector = value === "__all__" ? null : value;
+            onChange={(event) => {
+              const nextSector = event.target.value === "__all__" ? null : event.target.value;
 
-              if (isSameValue(nextSector, sector)) {
+              if (nextSector === sector) {
                 return;
               }
 
-              updateUrl({ sector: nextSector });
+              updateParams({ sector: nextSector });
             }}
           >
-            <SelectTrigger className="w-full bg-white">
-              <SelectValue placeholder="All sectors" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="__all__">All sectors</SelectItem>
-              {sectorOptions.map((option) => (
-                <SelectItem key={option} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      <div className="mt-3">
-        <Input
-          type="search"
-          value={searchInput}
-          onChange={(event) => setSearchInput(event.target.value)}
-          placeholder="Search by symbol or company name"
-          aria-label="Search stocks"
-          className="bg-white"
-        />
-      </div>
-
-      <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
-            Sort by
-          </span>
-          <Select
-            value={sort}
-            onValueChange={(value) => {
-              const nextSort = value as StockListSort;
-
-              if (nextSort === sort) {
-                return;
-              }
-
-              updateUrl({ sort: nextSort });
-            }}
-          >
-            <SelectTrigger className="w-[10rem] bg-white">
-              <SelectValue placeholder="Sort field" />
-            </SelectTrigger>
-            <SelectContent>
-              {SORT_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
-            Order
-          </span>
-          <div className="flex items-center gap-2">
-            <Button
-              type="button"
-              size="sm"
-              variant={order === "asc" ? "default" : "outline"}
-              className={order === "asc" ? "bg-[#B8CEFF] text-slate-900 hover:bg-[#B8CEFF]/85" : ""}
-              onClick={() => {
-                if (order === "asc") {
-                  return;
-                }
-
-                updateUrl({ order: "asc" });
-              }}
-            >
-              Asc
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant={order === "desc" ? "default" : "outline"}
-              className={order === "desc" ? "bg-[#B8CEFF] text-slate-900 hover:bg-[#B8CEFF]/85" : ""}
-              onClick={() => {
-                if (order === "desc") {
-                  return;
-                }
-
-                updateUrl({ order: "desc" });
-              }}
-            >
-              Desc
-            </Button>
-          </div>
-        </div>
+            <option value="__all__">All sectors</option>
+            {sectorOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
     </section>
   );

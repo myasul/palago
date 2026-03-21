@@ -14,8 +14,9 @@ pagination rules drive the whole page. UI verification is manual.
 **Organization**: Tasks follow the user-mandated phase order. Setup tasks are
 in Phase 0, foundational data work is in Phase 1, route scaffolding is in Phase
 2, User Story 1 covers the core server-rendered browsing flow, User Story 2
-covers interactive filtering/sorting controls, and the final phase handles
-cross-cutting disclosure and beginner explanations.
+covers interactive filtering/sorting controls, User Story 3 covers shareable
+URL-state preservation, and the final phase handles cross-cutting disclosure
+and beginner explanations.
 
 ## Format: `[ID] [P?] [Story] Description`
 
@@ -79,13 +80,24 @@ and the server-rendered list reflects the new state.
 - [ ] T016 [US2] Create `apps/web/components/stock-list/StockListControls.tsx` as the only interactive controls component with `use client`, using `apps/web/components/ui/input.tsx` for debounced 300ms search, `apps/web/components/ui/select.tsx` for sector and sort selection, URL updates via `useRouter` and `useSearchParams`, page reset to `1` on every filter or sort change, and props-only initial values rather than direct route-state ownership; commit message `feat(web): add stock list controls`
 - [ ] T017 [US2] Create `apps/web/components/stock-list/StockListShell.tsx` as the only Client Component rendered directly by `apps/web/app/lists/[type]/page.tsx`, receiving `type`, `sector`, `search`, `sort`, `order`, `page`, and `sectorOptions`, and doing no rendering logic beyond passing props into `StockListControls`; commit message `feat(web): add stock list shell`
 
-## Phase 5: Polish & Cross-Cutting Concerns
+## Phase 5: User Story 3 - Share and Resume a Specific View (Priority: P3)
+
+**Goal**: Keep URL parameters as the single source of truth so refreshing,
+sharing, and switching list types preserves the same view.
+
+**Independent Test**: Open a filtered and paginated stock-list URL in a fresh
+session and confirm the same type, filters, sorting, and page state are restored
+from the URL alone.
+
+- [ ] T018 [US3] Update `apps/web/app/lists/[type]/page.tsx`, `apps/web/components/stock-list/StockListControls.tsx`, and `apps/web/components/stock-list/Pagination.tsx` so URL parameters remain the single source of truth across refresh, direct navigation, and type switches, preserving `sector`, `sort`, `order`, `search`, and `page`, while clamping out-of-range pages server-side to the nearest valid page; commit message `feat(web): preserve stock list url state`
+
+## Phase 6: Polish & Cross-Cutting Concerns
 
 **Purpose**: Add required disclosure and beginner-help content that applies on
 every page render.
 
-- [ ] T018 [P] Add the `Data delayed 15 minutes` disclosure to `apps/web/app/lists/[type]/page.tsx` and any supporting server-rendered stock-list layout file so it appears on every render regardless of whether prices exist; commit message `feat(web): add stock list delay disclosure`
-- [ ] T019 [P] Update `apps/web/components/stock-list/StockCard.tsx` to add keyboard-accessible shadcn `Accordion` sections from `apps/web/components/ui/accordion.tsx` with plain Filipino explanations for board lot and percent change, keeping `StockCard` as a Server Component with no `use client` — the shadcn Accordion component can be imported into a Server Component file without adding `use client` to StockCard itself, because Next.js allows Client Component libraries to be used in Server Component files as long as StockCard does not call hooks directly; do not wrap the accordion in a separate Client Component
+- [ ] T019 [P] Add the `Data delayed 15 minutes` disclosure to `apps/web/app/lists/[type]/page.tsx` and any supporting server-rendered stock-list layout file so it appears on every render regardless of whether prices exist; commit message `feat(web): add stock list delay disclosure`
+- [ ] T020 [P] Update `apps/web/components/stock-list/StockCard.tsx` to add keyboard-accessible shadcn `Accordion` sections from `apps/web/components/ui/accordion.tsx` with plain Filipino explanations for board lot and percent change, keeping `StockCard` as a Server Component with no `use client` and rendering the accordion as a nested interactive boundary rather than turning `StockCard` itself into a Client Component; commit message `feat(web): add stock card beginner explanations`
 
 ## Dependencies & Execution Order
 
@@ -99,13 +111,17 @@ every page render.
   state/pagination components to render meaningful output.
 - **Phase 4** depends on Phase 3 because the controls operate on the server
   page and its result shape.
-- **Phase 5** depends on Phase 3, with `T019` also depending on `T012`.
+- **Phase 5** depends on Phases 2, 3, and 4 because it integrates page,
+  controls, and pagination URL behavior.
+- **Phase 6** depends on Phase 3, with `T020` also depending on `T012`.
 
 ### User Story Dependencies
 
 - **US1** depends on Setup, Foundational, and Route phases.
 - **US2** depends on US1 because filtering controls need the rendered page and
   stock list result contract in place.
+- **US3** depends on US1 and US2 because it is expressed through the route,
+  controls, and pagination state handling.
 
 ### Within User Story 1
 
@@ -117,7 +133,7 @@ every page render.
 
 - `T001` through `T006` can run in parallel because each installs a different
   shadcn component file.
-- `T018` and `T019` can run in parallel once US1 is complete.
+- `T019` and `T020` can run in parallel once US1 is complete.
 
 ## Parallel Example
 
@@ -150,7 +166,8 @@ Task: "Add beginner accordion explanations in apps/web/components/stock-list/Sto
 3. Deliver the async Next.js 15 page route with loading and error files
 4. Deliver US1 browsing components
 5. Deliver US2 filter/sort controls
-6. Deliver cross-cutting disclosure and beginner explanations
+6. Deliver US3 URL-state preservation
+7. Deliver cross-cutting disclosure and beginner explanations
 
 ## Manual Verification
 

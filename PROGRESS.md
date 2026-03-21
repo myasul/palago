@@ -4,6 +4,9 @@ Last Updated: 2026-03-21
 
 ## ✅ Completed
 
+- Generated `specs/004-stock-detail-main/tasks.md` with phased setup,
+  foundational query/toast work, stock-detail route/component tasks, and
+  manual verification coverage for the first stock-detail page slice.
 - Generated the planning artifacts for feature `004-stock-detail-main`:
   `specs/004-stock-detail-main/plan.md`, `research.md`, `data-model.md`,
   `contracts/stock-detail-page.md`, and `quickstart.md`, covering the first

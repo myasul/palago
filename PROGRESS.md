@@ -4,6 +4,11 @@ Last Updated: 2026-03-21
 
 ## ✅ Completed
 
+- Completed Phase 3 of `004-stock-detail-main` by replacing the stock-detail
+  route stub, adding stock-detail route loading and error files, creating the
+  real nav search, gold header, and minimum-investment server components, and
+  verifying `npx tsc -p apps/web/tsconfig.json --noEmit` passes for the MVP
+  above-the-fold slice.
 - Completed Phase 2 of `004-stock-detail-main` by adding the app-wide
   `<Toaster />`, creating the shared `ToastHandler`, patching the stock list
   page for the `stock-not-found` toast, creating the stock-detail query and

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
@@ -17,17 +17,21 @@ export function ToastHandler({ param, message }: ToastHandlerProps) {
   useEffect(() => {
     const toastParam = searchParams.get("toast");
 
-    if (!toastParam || toastParam !== param) {
+    if (toastParam !== param) {
       return;
     }
 
-    toast(message);
+    toast(message, {
+      id: `${pathname}:${param}`,
+      position: "top-center",
+    });
 
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.delete("toast");
 
     const nextQuery = nextParams.toString();
-    const nextHref = nextQuery.length > 0 ? `${pathname}?${nextQuery}` : pathname;
+    const nextHref =
+      nextQuery.length > 0 ? `${pathname}?${nextQuery}` : pathname;
 
     router.replace(nextHref, { scroll: false });
   }, [message, param, pathname, router, searchParams]);

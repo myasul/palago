@@ -11,6 +11,7 @@ import { EmptyState } from "@/components/stock-list/EmptyState";
 import { Pagination } from "@/components/stock-list/Pagination";
 import { StockListGrid } from "@/components/stock-list/StockListGrid";
 import { StockListShell } from "@/components/stock-list/StockListShell";
+import { ToastHandler } from "@/components/ToastHandler";
 
 const DEFAULT_SORT: StockListSort = "percent_change";
 const DEFAULT_ORDER: StockListOrder = "desc";
@@ -151,6 +152,7 @@ export default async function StockListPage({
 
   return (
     <main className="mx-auto flex w-full max-w-xl flex-col gap-4 px-4 py-6">
+      <ToastHandler param="stock-not-found" message="We couldn't find that stock." />
       <section className="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
         <header className="bg-[linear-gradient(160deg,_#fde68a_0%,_#fef3c7_60%)] px-4 pb-5 pt-[18px]">
           <p className="text-[22px] font-bold tracking-[-0.03em] leading-none text-[#78350f]">

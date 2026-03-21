@@ -65,6 +65,71 @@
   }
 }
 
+@layer components {
+  .type-overline {
+    font-size: 10px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .type-label {
+    font-size: 13px;
+    line-height: 1.35;
+    font-weight: 500;
+  }
+
+  .type-label-strong {
+    font-size: 13px;
+    line-height: 1.35;
+    font-weight: 600;
+  }
+
+  .type-body-sm {
+    font-size: 12px;
+    line-height: 1.55;
+    font-weight: 500;
+  }
+
+  .type-body {
+    font-size: 13px;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+
+  .type-caption {
+    font-size: 11px;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  .type-stat {
+    font-size: 15px;
+    line-height: 1.15;
+    font-weight: 700;
+  }
+
+  .type-metric {
+    font-size: 17px;
+    line-height: 1.15;
+    font-weight: 600;
+  }
+
+  .type-price {
+    font-size: 24px;
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  .type-hero {
+    font-size: 30px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+}
+
 @theme inline {
   --font-heading: var(--font-sans);
   --font-sans: var(--font-sans);

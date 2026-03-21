@@ -96,20 +96,6 @@ const getPercentChangeTone = (value: string | null): "positive" | "negative" | "
   return parsed > 0 ? "positive" : "negative";
 };
 
-const getPercentBadgeClassName = (value: string | null) => {
-  const tone = getPercentChangeTone(value);
-
-  if (tone === "positive") {
-    return "rounded-full bg-[#dcfce7] px-[6px] py-[1px] text-[11px] font-semibold text-[#15803d]";
-  }
-
-  if (tone === "negative") {
-    return "rounded-full bg-[#ffe4e6] px-[6px] py-[1px] text-[11px] font-semibold text-[#be123c]";
-  }
-
-  return "text-[11px] text-[#9ca3af]";
-};
-
 function HelpBadge({
   active = false,
   tone = "neutral",
@@ -161,18 +147,29 @@ function PercentChangeExplainer({
             "data-[state=open]:[&_.help-chip]:border-[#c7d2fe] data-[state=open]:[&_.help-chip]:bg-[#EEF2FF] data-[state=open]:[&_.help-chip]:text-[#4338ca]",
           )}
         >
-          <div className="flex w-full items-center justify-between gap-3">
-            <div className="flex items-center gap-1.5">
-              <span className="help-label text-[12px] text-[#6b7280]">Percent change</span>
-              <HelpBadge active={false} />
+            <div className="flex w-full items-center justify-between gap-3">
+              <div className="flex items-center gap-1.5">
+                <span className="help-label type-label text-[#6b7280]">Percent change</span>
+                <HelpBadge active={false} />
+              </div>
+              <span
+                className={cn(
+                  "type-label",
+                  getPercentChangeTone(percentChange) === "positive"
+                    ? "font-semibold text-[#15803d]"
+                    : getPercentChangeTone(percentChange) === "negative"
+                      ? "font-semibold text-[#be123c]"
+                      : "text-[#9ca3af]",
+                )}
+              >
+                {formattedChange}
+              </span>
             </div>
-            <span className={getPercentBadgeClassName(percentChange)}>{formattedChange}</span>
-          </div>
-        </AccordionTrigger>
+          </AccordionTrigger>
 
         <AccordionContent className="pb-0 pt-0">
           <div className="mt-2 rounded-[6px] bg-white px-[11px] py-[9px]">
-            <p className="text-[11px] leading-[1.6] text-[#374151]">
+            <p className="type-body-sm text-[#374151]">
               Ang pagbabago ng presyo ng stock mula sa nakaraang araw ng kalakalan.
             </p>
 
@@ -181,16 +178,16 @@ function PercentChangeExplainer({
                 <span className="rounded-full bg-[#dcfce7] px-2 py-[2px] text-[11px] font-semibold text-[#15803d]">
                   ▲ Positibo
                 </span>
-                <span className="text-[11px] text-[#9ca3af]">=</span>
-                <span className="text-[11px] text-[#374151]">tumaas ang presyo</span>
+                <span className="type-caption text-[#9ca3af]">=</span>
+                <span className="type-body-sm text-[#374151]">tumaas ang presyo</span>
               </div>
 
               <div className="mt-1 flex items-center gap-[6px]">
                 <span className="rounded-full bg-[#ffe4e6] px-2 py-[2px] text-[11px] font-semibold text-[#be123c]">
                   ▼ Negatibo
                 </span>
-                <span className="text-[11px] text-[#9ca3af]">=</span>
-                <span className="text-[11px] text-[#374151]">bumaba ang presyo</span>
+                <span className="type-caption text-[#9ca3af]">=</span>
+                <span className="type-body-sm text-[#374151]">bumaba ang presyo</span>
               </div>
             </div>
           </div>
@@ -226,7 +223,7 @@ function MinimumInvestmentExplainer({
         >
           <div className="flex w-full items-center justify-between gap-3">
             <div className="flex items-center gap-1.5">
-              <span className="help-label text-[11px] text-[#1e40af]">Min. invest</span>
+              <span className="help-label type-label text-[#1e40af]">Min. invest</span>
               <HelpBadge active={false} tone="blue" />
             </div>
             <span className="text-[16px] font-bold text-[#1e3a8a]">{formattedInvestment}</span>
@@ -236,21 +233,21 @@ function MinimumInvestmentExplainer({
         <AccordionContent className="pb-0 pt-0">
           <div className="mt-2 rounded-[6px] bg-white px-[11px] py-[9px]">
             <div className="flex items-center justify-between border-b border-[#dbeafe] pb-2">
-              <span className="text-[11px] text-[#6b7280]">Board lot</span>
-              <span className="text-[12px] font-semibold text-[#1e3a8a]">{formattedBoardLot}</span>
+              <span className="type-body-sm text-[#6b7280]">Board lot</span>
+              <span className="type-label-strong text-[#1e3a8a]">{formattedBoardLot}</span>
             </div>
 
-            <p className="mt-2 text-[11px] leading-[1.6] text-[#374151]">
+            <p className="mt-2 type-body-sm text-[#374151]">
               Ito ang pinakamaliit na halagang kailangan mo para makapag-invest. Kinukuha sa{" "}
               <span className="font-medium text-[#1e40af]">board lot × presyo</span>.
             </p>
 
-            <div className="mt-2 flex flex-wrap items-center gap-1 border-t border-[#dbeafe] pt-2 text-[11px]">
-              <span className="font-medium text-[#374151]">{formattedBoardLot}</span>
+            <div className="type-body-sm mt-2 flex flex-wrap items-center gap-1 border-t border-[#dbeafe] pt-2">
+              <span className="text-[#374151]">{formattedBoardLot}</span>
               <span className="text-[#9ca3af]">×</span>
               {hasPrice ? (
                 <>
-                  <span className="font-medium text-[#374151]">{formattedClosePrice}</span>
+                  <span className="text-[#374151]">{formattedClosePrice}</span>
                   <span className="text-[#9ca3af]">=</span>
                   <span className="text-[12px] font-bold text-[#1e3a8a]">{formattedInvestment}</span>
                 </>
@@ -297,22 +294,23 @@ export function StockCard(props: StockListEntry) {
 
             <div className="min-w-0">
               <div className="flex min-w-0 items-center gap-1.5">
-                <h2 className="truncate text-[14px] font-semibold text-[#111111]">
+                <h2 className="type-metric truncate text-[#111111]">
                   {props.symbol}
                 </h2>
                 {props.sector ? (
-                  <span className="truncate text-[11px] text-[#9ca3af]">{props.sector}</span>
+                  <span className="type-body-sm truncate text-[#9ca3af]">{props.sector}</span>
                 ) : null}
               </div>
-              <p className="mt-0.5 truncate text-[11px] text-[#9ca3af]">{props.companyName}</p>
+              <p className="type-body mt-0.5 truncate text-[#9ca3af]">
+                {props.companyName}
+              </p>
             </div>
           </div>
 
           <div className="shrink-0 text-right">
-            <p className="text-[15px] font-semibold text-[#111111]">{formattedPrice}</p>
-            <div className="mt-1">
-              <span className={getPercentBadgeClassName(props.percentChange)}>{formattedChange}</span>
-            </div>
+            <p className="type-price text-[#111111]">
+              {formattedPrice}
+            </p>
           </div>
         </div>
       </Link>

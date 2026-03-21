@@ -14,6 +14,6 @@ if (!databaseUrl) {
   throw new Error("DATABASE_URL is not set");
 }
 
-export const sql = postgres(databaseUrl, { max: 1 });
+export const sql = postgres(databaseUrl, { prepare: false });
 
 export const db = drizzle(sql, { schema });

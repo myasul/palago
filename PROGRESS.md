@@ -4,6 +4,43 @@ Last Updated: 2026-03-21
 
 ## ✅ Completed
 
+- Completed Phase 5 / `T015` of `004-stock-detail-main` by adding the real
+  `StockDetailRange52` server component, wiring it into the stock detail page,
+  restoring the missing `52-WEEK RANGE` section and label, and fixing both
+  range-bar `₱… now` chips so they stay aligned and keep their pill shape at
+  the edges of the range.
+- Refined Phase 3 of `004-stock-detail-main` with `T013a` by recolouring the
+  stock detail header hero price based on direction, replacing the duplicate
+  pill-based change display with a labelled change/prev-close stat pair, and
+  adding the pure `getPriceChange` utility with Vitest coverage.
+- Completed Phase 4 / `T014` of `004-stock-detail-main` by adding the real
+  `StockDetailTrading` server component for `Open`, `Last Close`, `Prev Close`,
+  intraday range, and muted `Volume`/`Value`, wiring it into the stock detail
+  route, and verifying `npx tsc -p apps/web/tsconfig.json --noEmit` passes.
+- Completed Phase 3 of `004-stock-detail-main` by replacing the stock-detail
+  route stub, adding stock-detail route loading and error files, creating the
+  real nav search, gold header, and minimum-investment server components, and
+  verifying `npx tsc -p apps/web/tsconfig.json --noEmit` passes for the MVP
+  above-the-fold slice.
+- Completed Phase 2 of `004-stock-detail-main` by adding the app-wide
+  `<Toaster />`, creating the shared `ToastHandler`, patching the stock list
+  page for the `stock-not-found` toast, creating the stock-detail query and
+  its Vitest coverage, adding pure stock-detail display utilities and tests,
+  and verifying `npx tsc -p apps/web/tsconfig.json --noEmit` plus
+  `cd apps/web && npx vitest run lib/queries/stock-detail.test.ts lib/stock-detail-utils.test.ts`
+  both pass.
+- Completed Phase 1 of `004-stock-detail-main` by installing the shadcn
+  `sonner` component at `apps/web/components/ui/sonner.tsx` and marking `T001`
+  complete in `specs/004-stock-detail-main/tasks.md`.
+- Generated `specs/004-stock-detail-main/tasks.md` with phased setup,
+  foundational query/toast work, stock-detail route/component tasks, and
+  manual verification coverage for the first stock-detail page slice.
+- Generated the planning artifacts for feature `004-stock-detail-main`:
+  `specs/004-stock-detail-main/plan.md`, `research.md`, `data-model.md`,
+  `contracts/stock-detail-page.md`, and `quickstart.md`, covering the first
+  stock detail page slice from nav bar through the 52-week range section with
+  toast handling, direct Drizzle queries, and Next.js 15 server-component
+  constraints.
 - Added ingestion shared utilities in `apps/ingestion/shared/`:
   `db.ts`, `logger.ts`, `sleep.ts`, `clients/yahoo.ts`,
   `clients/eodhd.ts`, `utils/holidays.ts`, and `utils/trading.ts`.

@@ -271,6 +271,11 @@ Last Updated: 2026-03-21
   Drawer, replacing the sector/sort chips with a single Filters trigger in
   `StockListControls.tsx`, and mounting one shared filter-and-sort bottom sheet
   in `StockListShell.tsx` for both the main controls and sticky bar.
+- Completed Phase 6 of `003-stock-list-page` by adding the "Data delayed 15 min"
+  disclosure to the gold header in `apps/web/app/lists/[type]/page.tsx` and
+  rebuilding `apps/web/components/stock-list/StockCard.tsx` around two compact
+  independent explainers for percent change and minimum investment, with the
+  board lot detail moved into the Min. invest explainer panel.
 - Added `apps/ingestion/scripts/mark-blue-chip-stocks.ts` to mark the current
   PSEi composition in `stocks.is_blue_chip` using the 30 symbols from the
   provided PSE composition list image, with structured logging for matched,

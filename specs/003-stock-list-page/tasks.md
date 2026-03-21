@@ -112,59 +112,60 @@ company logo/placeholder top-left, minimum investment box bottom.
 Also updates StockListGrid.tsx background to match.
 Depends on Phase 4.1 being complete. No query logic or URL logic changes.
 
-- [ ] T016b [US1] Restyle `apps/web/components/stock-list/StockCard.tsx`
-  to the confirmed B+C compact design. StockCard remains a Server Component
-  — no 'use client' under any circumstances.
+- [x] T016b [US1] Restyle `apps/web/components/stock-list/StockCard.tsx`
+      to the confirmed B+C compact design. StockCard remains a Server Component
+      — no 'use client' under any circumstances.
 
   Card structure (top to bottom):
-    Outer card:
-      background: white
-      border-radius: 12px
-      border: 0.5px solid #e5e7eb
-      border-left: 4px solid #4338ca   ← blue accent strip
-      padding: 12px 14px
+  Outer card:
+  background: white
+  border-radius: 12px
+  border: 0.5px solid #e5e7eb
+  border-left: 4px solid #4338ca ← blue accent strip
+  padding: 12px 14px
 
-    Top row (logo + identity left, price + change right):
-      Left:
-        Logo image from logoUrl (36×36px, border-radius 8px)
-        OR placeholder div (36×36px, bg #EEF2FF, initials in #4338ca,
-        font-size 10px, font-weight 600) when logoUrl is null
-        Symbol (14px, 600 weight, #111) + sector badge inline
-        (11px, #9ca3af, no background — plain text)
-        Company name below (11px, #9ca3af)
-      Right (text-align right):
-        Close price (15px, 600 weight, #111) or —
-        Percent change badge (11px, 600 weight, border-radius 999px,
-        padding 1px 6px):
-          Positive: bg #dcfce7, color #15803d, prefix ▲
-          Negative: bg #ffe4e6, color #be123c, prefix ▼
-          Null: — (no badge, plain muted text)
+  Top row (logo + identity left, price + change right):
+  Left:
+  Logo image from logoUrl (36×36px, border-radius 8px)
+  OR placeholder div (36×36px, bg #EEF2FF, initials in #4338ca,
+  font-size 10px, font-weight 600) when logoUrl is null
+  Symbol (14px, 600 weight, #111) + sector badge inline
+  (11px, #9ca3af, no background — plain text)
+  Company name below (11px, #9ca3af)
+  Right (text-align right):
+  Close price (15px, 600 weight, #111) or —
+  Percent change badge (11px, 600 weight, border-radius 999px,
+  padding 1px 6px):
+  Positive: bg #dcfce7, color #15803d, prefix ▲
+  Negative: bg #ffe4e6, color #be123c, prefix ▼
+  Null: — (no badge, plain muted text)
 
-    Bottom row — minimum investment box:
-      background: #dbeafe
-      border-radius: 8px
-      padding: 7px 10px
-      display: flex, justify-content: space-between
-      Left: "Min. invest" label (11px, 500 weight, #1e40af)
-      Right: formatted amount (16px, 700 weight, #1e3a8a) or —
+  Bottom row — minimum investment box:
+  background: #dbeafe
+  border-radius: 8px
+  padding: 7px 10px
+  display: flex, justify-content: space-between
+  Left: "Min. invest" label (11px, 500 weight, #1e40af)
+  Right: formatted amount (16px, 700 weight, #1e3a8a) or —
 
   Number formatting rules (unchanged from T012):
-    - Number() conversion only here, not in query layer
-    - closePrice: ₱X,XXX.XX
-    - percentChange: sign + X.XX%
-    - minimumInvestment: ₱X,XXX.XX
-    - Never recompute minimumInvestment as boardLot × closePrice
+
+  - Number() conversion only here, not in query layer
+  - closePrice: ₱X,XXX.XX
+  - percentChange: sign + X.XX%
+  - minimumInvestment: ₱X,XXX.XX
+  - Never recompute minimumInvestment as boardLot × closePrice
 
   Link: entire card links to /stocks/[symbol] (unchanged)
 
   commit message `feat(web): restyle stock card to compact blue accent design (T016b)`
 
-- [ ] T017b [US1] Update `apps/web/components/stock-list/StockListGrid.tsx`
-  to set the card list background to #f8f9fa so white cards have
-  visible depth against the page surface. Padding: 8px 12px 14px.
-  No structural changes — grid remains a Server Component rendering
-  a list of StockCard components.
-  commit message `feat(web): update stock list grid background (T017b)`
+- [x] T017b [US1] Update `apps/web/components/stock-list/StockListGrid.tsx`
+      to set the card list background to #f8f9fa so white cards have
+      visible depth against the page surface. Padding: 8px 12px 14px.
+      No structural changes — grid remains a Server Component rendering
+      a list of StockCard components.
+      commit message `feat(web): update stock list grid background (T017b)`
 
 ## Phase 4.3: Filter & Sort Bottom Sheet
 
@@ -175,28 +176,29 @@ since this modifies StockListControls.tsx and StockListShell.tsx.
 Implement in order: T006b → T016c → T017c.
 
 - [x] T006b [P] Run `cd apps/web && npx shadcn@latest add drawer` to
-  generate `apps/web/components/ui/drawer.tsx` using the confirmed
-  `radix-nova` preset; commit message `chore(web): add shadcn drawer component`
+      generate `apps/web/components/ui/drawer.tsx` using the confirmed
+      `radix-nova` preset; commit message `chore(web): add shadcn drawer component`
 
 - [x] T016c [US2] Update `apps/web/components/stock-list/StockListControls.tsx`
-  to replace the sector chip and sort chip with a single "Filters ▾" chip
-  that triggers a bottom sheet. This component keeps 'use client'.
+      to replace the sector chip and sort chip with a single "Filters ▾" chip
+      that triggers a bottom sheet. This component keeps 'use client'.
 
   Updated chip row (single scrollable row):
-    - "Blue Chips" chip — active: bg #4338ca white text
-    - "All Stocks" chip — inactive: bg #f3f4f6 dark text
-    - "Filters ▾" chip:
-        Default state: bg #f3f4f6, color #6b7280, text "Filters ▾"
-        Active state (sector or non-default sort applied):
-          bg #EEF2FF, color #4338ca, border: 1px solid #c7d2fe
-          Text shows a summary e.g. "Services · % Change ↓"
-          truncated with ellipsis if too long
+
+  - "Blue Chips" chip — active: bg #4338ca white text
+  - "All Stocks" chip — inactive: bg #f3f4f6 dark text
+  - "Filters ▾" chip:
+    Default state: bg #f3f4f6, color #6b7280, text "Filters ▾"
+    Active state (sector or non-default sort applied):
+    bg #EEF2FF, color #4338ca, border: 1px solid #c7d2fe
+    Text shows a summary e.g. "Services · % Change ↓"
+    truncated with ellipsis if too long
 
   Bottom sheet (shadcn Drawer from apps/web/components/ui/drawer.tsx):
-    Do NOT mount the Drawer here. StockListControls receives an
-    onOpenFilters callback prop from StockListShell and calls it
-    when the Filters chip is tapped. The Drawer is mounted once
-    in StockListShell — see T017c.
+  Do NOT mount the Drawer here. StockListControls receives an
+  onOpenFilters callback prop from StockListShell and calls it
+  when the Filters chip is tapped. The Drawer is mounted once
+  in StockListShell — see T017c.
 
   Remove the previous sector chip and sort chip entirely.
   All other URL update logic (list type toggle, page reset) unchanged.
@@ -204,59 +206,59 @@ Implement in order: T006b → T016c → T017c.
   commit message `feat(web): replace sector/sort chips with filters trigger (T016c)`
 
 - [x] T017c [US2] Update `apps/web/components/stock-list/StockListShell.tsx`
-  to own the Drawer instance and manage open/close state.
-  This component keeps 'use client'.
+      to own the Drawer instance and manage open/close state.
+      This component keeps 'use client'.
 
   Drawer state:
-    const [filtersOpen, setFiltersOpen] = useState(false)
-    Pass onOpenFilters={() => setFiltersOpen(true)} to StockListControls.
-    Pass the same callback to the sticky bar Filters chip so both
-    trigger the same single Drawer instance — do not mount two Drawers.
+  const [filtersOpen, setFiltersOpen] = useState(false)
+  Pass onOpenFilters={() => setFiltersOpen(true)} to StockListControls.
+  Pass the same callback to the sticky bar Filters chip so both
+  trigger the same single Drawer instance — do not mount two Drawers.
 
   Drawer contents (apps/web/components/ui/drawer.tsx):
 
-    Header:
-      Drag handle: 36px × 4px, bg #d1d5db, centered, margin 10px auto 6px
-      Title: "Filter & Sort" — 14px, 600 weight, padding 8px 16px 12px
-      Border-bottom: 0.5px solid #f3f4f6
+  Header:
+  Drag handle: 36px × 4px, bg #d1d5db, centered, margin 10px auto 6px
+  Title: "Filter & Sort" — 14px, 600 weight, padding 8px 16px 12px
+  Border-bottom: 0.5px solid #f3f4f6
 
-    Section 1 — Sort by:
-      Section label: "Sort by" — 13px, 500 weight, color #6b7280,
-        padding 12px 16px 6px
-      Options as tappable rows (min height 44px, padding 0 16px):
-        "% Change" — maps to sort=percent_change
-        "Price"    — maps to sort=price
-        "Name"     — maps to sort=name
-      Active row: bg #f5f7ff, text #4338ca, checkmark (14px SVG) right-aligned
-      Inactive row: text #374151
-      Direction toggle row below options:
-        Two chips side by side: "Ascending" and "Descending"
-        Active chip: bg #4338ca, white text
-        Inactive chip: bg #f3f4f6, color #374151
-        Updates ?order= in URL on tap
+  Section 1 — Sort by:
+  Section label: "Sort by" — 13px, 500 weight, color #6b7280,
+  padding 12px 16px 6px
+  Options as tappable rows (min height 44px, padding 0 16px):
+  "% Change" — maps to sort=percent_change
+  "Price" — maps to sort=price
+  "Name" — maps to sort=name
+  Active row: bg #f5f7ff, text #4338ca, checkmark (14px SVG) right-aligned
+  Inactive row: text #374151
+  Direction toggle row below options:
+  Two chips side by side: "Ascending" and "Descending"
+  Active chip: bg #4338ca, white text
+  Inactive chip: bg #f3f4f6, color #374151
+  Updates ?order= in URL on tap
 
-    Section 2 — Sector:
-      Section label row: "Sector" left + "Clear" right
-        "Clear" in #4338ca, 13px — resets sector to null, resets page to 1
-      Options as tappable rows (min height 44px, padding 0 16px):
-        "All sectors" — always first, clears sector filter
-        Then each sector from sectorOptions prop
-      Active row: bg #f5f7ff, text #4338ca, checkmark right-aligned
-      Inactive row: text #374151
-      On sector tap: update ?sector= in URL, reset page to 1,
-        close the sheet automatically
+  Section 2 — Sector:
+  Section label row: "Sector" left + "Clear" right
+  "Clear" in #4338ca, 13px — resets sector to null, resets page to 1
+  Options as tappable rows (min height 44px, padding 0 16px):
+  "All sectors" — always first, clears sector filter
+  Then each sector from sectorOptions prop
+  Active row: bg #f5f7ff, text #4338ca, checkmark right-aligned
+  Inactive row: text #374151
+  On sector tap: update ?sector= in URL, reset page to 1,
+  close the sheet automatically
 
-    Behaviour:
-      Sort and direction changes update URL immediately but keep
-      the sheet open so the user can adjust both before dismissing.
-      Sector selection closes the sheet after URL update.
-      All URL updates via useRouter and useSearchParams.
-      Initial values read from props passed down from page.tsx —
-      not from useSearchParams directly inside this component.
+  Behaviour:
+  Sort and direction changes update URL immediately but keep
+  the sheet open so the user can adjust both before dismissing.
+  Sector selection closes the sheet after URL update.
+  All URL updates via useRouter and useSearchParams.
+  Initial values read from props passed down from page.tsx —
+  not from useSearchParams directly inside this component.
 
-    Sheet close:
-      Drag down or tap backdrop — standard Drawer dismiss behaviour.
-      No explicit close button needed.
+  Sheet close:
+  Drag down or tap backdrop — standard Drawer dismiss behaviour.
+  No explicit close button needed.
 
   commit message `feat(web): add filter sort bottom sheet to stock list (T017c)`
 
@@ -271,31 +273,154 @@ from the URL alone.
 
 - [x] T018 [US3] Update `apps/web/app/lists/[type]/page.tsx`, `apps/web/components/stock-list/StockListControls.tsx`, and `apps/web/components/stock-list/Pagination.tsx` so URL parameters remain the single source of truth across refresh, direct navigation, and type switches, preserving `sector`, `sort`, `order`, `search`, and `page`, while clamping out-of-range pages server-side to the nearest valid page; commit message `feat(web): preserve stock list url state`
 
-## Phase 4.2: Stock Card Visual Redesign
-
-**Goal**: Restyle the stock cards and list surface to the confirmed compact
-blue-accent design without changing data/query behavior.
-
-- [x] T016b [US1] Restyle `apps/web/components/stock-list/StockCard.tsx`
-      to the compact design with left blue accent strip, top-right grouped
-      price/change block, logo or initials placeholder at top-left, and bottom
-      minimum-investment bar; keep `StockCard` as a Server Component and keep
-      all `Number()` formatting logic in this file only; commit message
-      `feat(web): restyle stock card to compact blue accent design (T016b)`
-
-- [x] T017b [US1] Update `apps/web/components/stock-list/StockListGrid.tsx`
-      so the card list sits on a `#f8f9fa` background with `8px 12px 14px`
-      padding while remaining a Server Component that only renders `StockCard`
-      items; commit message
-      `feat(web): update stock list grid background (T017b)`
-
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-**Purpose**: Add required disclosure and beginner-help content that applies on
-every page render.
+**Purpose**: Add the data delay disclosure to the page header and replace
+the board lot data row on StockCard with two compact accordion explainers
+using a consistent design language. T019 and T020 can run in parallel.
+Both depend on Phase 4.2 (T016b) being complete since T016b last rewrote
+StockCard.tsx.
 
-- [ ] T019 [P] Add the `Data delayed 15 minutes` disclosure to `apps/web/app/lists/[type]/page.tsx` and any supporting server-rendered stock-list layout file so it appears on every render regardless of whether prices exist; commit message `feat(web): add stock list delay disclosure`
-- [ ] T020 [P] Update `apps/web/components/stock-list/StockCard.tsx` to add keyboard-accessible shadcn `Accordion` sections from `apps/web/components/ui/accordion.tsx` with plain Filipino explanations for board lot and percent change, keeping `StockCard` as a Server Component with no `use client` and rendering the accordion as a nested interactive boundary rather than turning `StockCard` itself into a Client Component; commit message `feat(web): add stock card beginner explanations`
+- [x] T019 [P] Add the "Data delayed 15 minutes" disclosure to the gold
+      header section in `apps/web/app/lists/[type]/page.tsx`.
+
+  Placement: right side of the subtitle row inside the gold header,
+  paired with the stock count on the left. Passively visible on every
+  render — no interaction required to see it.
+
+  Layout of the subtitle row:
+  display: flex, justify-content: space-between, align-items: center
+  margin-top: 10px
+  Left: "{totalCount} stocks · Page {page} of {totalPages}"
+  font-size 12px, color #78350f, font-weight 500
+  Right: SVG info icon (circle with i, 11×11px, stroke #92400e) + "Data delayed 15 min"
+  font-size 11px, color #92400e
+  display: flex, align-items: center, gap: 4px
+
+  Do not add 'use client' to page.tsx.
+  Do not put the disclosure inside StockCard — one instance in the
+  header is sufficient.
+  commit message `feat(web): add data delay disclosure to stock list header (T019)`
+
+- [x] T020 [P] After T016b is complete, update
+      `apps/web/components/stock-list/StockCard.tsx` to add two compact
+      accordion explainers and remove the board lot standalone data row.
+      StockCard remains a Server Component — no 'use client'.
+
+  ## Board lot row
+
+  Remove the board lot data row entirely from the card.
+  Board lot is not displayed as a standalone value anywhere on the card.
+  It appears only inside the Min. invest accordion explanation as part
+  of the calculation breakdown.
+
+  ## Shared explainer design language
+
+  Both explainers follow the same pattern:
+  Collapsed state:
+  Row is plain. Label in muted grey. "?" button is grey.
+  ? button styles: 16×16px circle, border 1px solid #e5e7eb,
+  bg #f9fafb, text color #9ca3af, font-size 9px font-weight 700.
+
+  Expanded state:
+  The entire row area wraps in a tinted container.
+  Label turns active colour and font-weight 500.
+  "?" button turns active colour.
+  White content panel (bg white, border-radius 6px, padding 9px 11px)
+  drops in below the label row.
+  Content panel has a breakdown row at the bottom separated by a
+  light border-top.
+
+  ## Explainer 1 — Percent change
+
+  Trigger: "?" button inline next to the "Percent change" label.
+
+  Collapsed:
+  Row: display flex, justify-content space-between, align-items center,
+  padding 4px 0.
+  Left: "Percent change" label (12px, #6b7280) + grey "?" button.
+  Right: percent change badge (existing green/red/neutral treatment).
+
+  Expanded:
+  Wrap the entire row in a tinted container:
+  bg #f5f7ff, border-radius 8px, padding 7px 10px
+  Label becomes: "Percent change" in #4338ca, font-weight 500.
+  "?" button active styles: border #c7d2fe, bg #EEF2FF, text #4338ca.
+  White content panel below label row:
+  bg white, border-radius 6px, padding 9px 11px
+  Explanation text (11px, #374151, line-height 1.6):
+  "Ang pagbabago ng presyo ng stock mula sa nakaraang araw
+  ng kalakalan."
+  Breakdown row (margin-top 8px, padding-top 8px,
+  border-top 0.5px solid #f3f4f6):
+  Green badge: "▲ Positibo" (bg #dcfce7, color #15803d,
+  11px, font-weight 600, border-radius 999px, padding 2px 8px)
+  "=" in #9ca3af
+  "tumaas ang presyo" in #374151 11px
+  — on new line —
+  Red badge: "▼ Negatibo" (bg #ffe4e6, color #be123c,
+  same styles as green badge)
+  "=" in #9ca3af
+  "bumaba ang presyo" in #374151 11px
+
+  ## Explainer 2 — Min. invest
+
+  Trigger: "?" button inline next to the "Min. invest" label inside
+  the existing blue investment box.
+
+  Collapsed:
+  Inside the existing #dbeafe box.
+  "?" button styles: border #93c5fd, bg #bfdbfe, text #1e40af.
+
+  Expanded:
+  "?" button active styles: border #93c5fd, bg #93c5fd, text white.
+  White content panel drops in below the label row (margin-top 8px):
+  bg white, border-radius 6px, padding 9px 11px
+
+      Board lot row (top of panel):
+        display flex, justify-content space-between, align-items center
+        padding-bottom 8px, margin-bottom 8px
+        border-bottom: 0.5px solid #dbeafe
+        Left: "Board lot" — 11px, color #6b7280
+        Right: "{boardLot} shares" — 12px, font-weight 600, color #1e3a8a
+        Always render this row — boardLot is always known even when
+        price is null.
+
+      Explanation text (11px, #374151, line-height 1.6, margin-bottom 8px):
+        "Ito ang pinakamaliit na halagang kailangan mo para
+        makapag-invest. Kinukuha sa board lot × presyo."
+        "board lot × presyo" styled: font-weight 500, color #1e40af
+
+      Calculation row (padding-top 8px, border-top 0.5px solid #dbeafe):
+        Layout: flex, align-items center, gap 4px, flex-wrap wrap
+        When closePrice is non-null:
+          "{boardLot} shares" in #374151, font-weight 500
+          "×" in #9ca3af
+          "₱{closePrice}" in #374151, font-weight 500
+          "=" in #9ca3af
+          "₱{minimumInvestment}" in #1e3a8a, 12px, font-weight 700
+        When closePrice is null:
+          "{boardLot} shares" in #374151, font-weight 500
+          "×" in #9ca3af
+          "walang presyo pa" in #9ca3af
+          "=" in #9ca3af
+          "—" in #9ca3af, font-weight 700
+
+  ## Implementation rules
+
+  Both accordions use the shadcn Accordion component from
+  apps/web/components/ui/accordion.tsx.
+  Both accordions are independent — opening one does not close the other.
+  Do not use Tooltip anywhere in this component.
+  Do not add 'use client' to StockCard. The shadcn Accordion can be
+  imported into a Server Component file — Next.js allows Client Component
+  libraries to be used in Server Component files as long as StockCard
+  does not call hooks directly.
+  All tap targets minimum 16px. Comfortable at 375px mobile width.
+  Nova compact spacing — do not add padding overrides that fight Nova
+  defaults.
+
+  commit message `feat(web): add compact accordion explainers to stock card (T020)
 
 ## Dependencies & Execution Order
 
@@ -316,10 +441,10 @@ every page render.
   which was created in T012. T017b updates StockListGrid from T013.
   T016b and T017b can run in parallel [P].
   - **Phase 4.3** depends on Phase 4.1 being complete since T016c and T017c
-  modify StockListControls.tsx and StockListShell.tsx created in T016a and
-  T017a. T006b can run in parallel before T016c starts. T016c must complete
-  before T017c because T017c depends on the onOpenFilters callback prop
-  pattern established in T016c.
+    modify StockListControls.tsx and StockListShell.tsx created in T016a and
+    T017a. T006b can run in parallel before T016c starts. T016c must complete
+    before T017c because T017c depends on the onOpenFilters callback prop
+    pattern established in T016c.
 - **Phase 5** depends on Phases 2, 3, and 4 because it integrates page,
   controls, and pagination URL behavior.
 - **Phase 6** depends on Phase 3, with `T020` also depending on `T012`.

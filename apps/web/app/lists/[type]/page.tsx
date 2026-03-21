@@ -159,9 +159,23 @@ export default async function StockListPage({
           <p className="mt-2 max-w-[18rem] text-[13px] leading-5 text-[#92400e]">
             Browse PSE-listed companies by affordability, sector, and momentum.
           </p>
-          <p className="mt-3 text-[12px] text-[#78350f]">
-            {result.totalCount} stocks · Page {result.page} of {result.totalPages}
-          </p>
+          <div className="mt-[10px] flex items-center justify-between gap-3">
+            <p className="text-[12px] font-medium text-[#78350f]">
+              {result.totalCount} stocks · Page {result.page} of {result.totalPages}
+            </p>
+            <div className="flex shrink-0 items-center gap-1 text-[11px] text-[#92400e]">
+              <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <circle cx="8" cy="8" r="7" stroke="#92400e" strokeWidth="1.5" />
+                <path
+                  d="M8 7v4M8 5.5v.5"
+                  stroke="#92400e"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <span>Data delayed 15 min</span>
+            </div>
+          </div>
         </header>
 
         <StockListShell

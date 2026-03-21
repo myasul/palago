@@ -8,7 +8,7 @@ export interface StockListItem {
   rank: number;
   symbol: Stock["symbol"];
   name: Stock["name"];
-  sector: Stock["sector"];
+  sector: string | null;
   price: DailyPrice["closePrice"] | IntradaySnapshot["currentPrice"] | null;
   changePercent: DailyPrice["percentChange"] | IntradaySnapshot["percentChange"] | null;
   volume: DailyPrice["volume"] | IntradaySnapshot["volume"] | null;

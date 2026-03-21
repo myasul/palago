@@ -1,10 +1,11 @@
 type ListPageProps = {
-  params: {
+  params: Promise<{
     type: string;
-  };
+  }>;
 };
 
-export default function ListPage({ params }: ListPageProps) {
-  return <main>List coming soon: {params.type}</main>;
-}
+export default async function ListPage({ params }: ListPageProps) {
+  const { type } = await params;
 
+  return <main>List coming soon: {type}</main>;
+}

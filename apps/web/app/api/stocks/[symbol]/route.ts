@@ -1,15 +1,16 @@
 import { NextResponse } from "next/server";
 
 type StockRouteContext = {
-  params: {
+  params: Promise<{
     symbol: string;
-  };
+  }>;
 };
 
 export async function GET(
   _request: Request,
   { params }: StockRouteContext,
 ) {
-  return NextResponse.json({ ok: true, symbol: params.symbol });
-}
+  const { symbol } = await params;
 
+  return NextResponse.json({ ok: true, symbol });
+}

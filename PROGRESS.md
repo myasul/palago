@@ -204,6 +204,10 @@ Last Updated: 2026-03-21
   company logo image source from the HTML page instead of reconstructing a logo
   URL from the stock symbol, and added coverage for non-pattern relative logo
   paths.
+- Updated `apps/web` for a pending manual dependency upgrade to Next.js 15,
+  React 19, and Tailwind CSS v4 by adjusting `package.json`, PostCSS config,
+  globals CSS imports, and the approved-stack line in the constitution without
+  running install, typecheck, or build steps yet.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.

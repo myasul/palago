@@ -17,6 +17,10 @@
     "lint": "turbo lint",
     "type-check": "turbo type-check"
   },
+  "overrides": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
   "devDependencies": {
     "drizzle-orm": "^0.44.7",
     "turbo": "^2.5.0"

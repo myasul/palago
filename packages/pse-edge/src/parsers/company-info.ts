@@ -2,7 +2,7 @@ import { load } from "cheerio";
 
 import { CompanyProfileSchema } from "../schemas";
 
-const ABSOLUTE_LOGO_BASE_URL = "https://edge.pse.com.ph/clogo";
+const ABSOLUTE_PSE_EDGE_BASE_URL = "https://edge.pse.com.ph";
 
 const buildFieldMap = (html: string) => {
   const $ = load(html);
@@ -26,11 +26,18 @@ const buildFieldMap = (html: string) => {
   return { $, map };
 };
 
-const extractSymbol = ($: ReturnType<typeof load>) => {
-  const logoSrc = $(".compInfo img").attr("src") ?? "";
-  const matched = logoSrc.match(/co_([^_]+)_logo\.jpg/i);
+const extractLogoUrl = ($: ReturnType<typeof load>) => {
+  const logoSrc = $(".compInfo img").attr("src")?.trim();
 
-  return matched?.[1] ?? null;
+  if (!logoSrc) {
+    return null;
+  }
+
+  try {
+    return new URL(logoSrc, ABSOLUTE_PSE_EDGE_BASE_URL).toString();
+  } catch {
+    return null;
+  }
 };
 
 const toNullableEmail = (value: string | undefined) => {
@@ -65,7 +72,7 @@ const toNullableFiscalYearEnd = (value: string | undefined) => {
 export const parseCompanyInfo = (html: string, edgeCmpyId: string) => {
   const { $, map } = buildFieldMap(html);
   const description = $("#dataList table.view").first().find("td").first().text().replace(/\s+/g, " ").trim();
-  const symbol = extractSymbol($);
+  const logoUrl = extractLogoUrl($);
 
   return CompanyProfileSchema.parse({
     edgeCmpyId,
@@ -80,6 +87,6 @@ export const parseCompanyInfo = (html: string, edgeCmpyId: string) => {
     email: toNullableEmail(map.get("E-mail Address")),
     phone: map.get("Telephone Number"),
     websiteUrl: toNullableAbsoluteUrl(map.get("Website")),
-    logoUrl: symbol ? `${ABSOLUTE_LOGO_BASE_URL}/co_${symbol}_logo.jpg` : null,
+    logoUrl,
   });
 };

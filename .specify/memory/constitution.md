@@ -71,9 +71,10 @@ incorrect market data, misleading UI, and deployment risk.
 ## Operational Constraints
 
 The approved stack is the monorepo already established for palago.ph: Turborepo
-with npm workspaces, Next.js 14 App Router, strict TypeScript, Tailwind CSS,
-shadcn/ui, Recharts, PostgreSQL via Supabase, Drizzle ORM, Node.js 20 Lambda
-jobs, Terraform in `ap-southeast-1`, and Vitest for automated tests.
+with npm workspaces, Next.js 15 App Router, React 19, strict TypeScript,
+Tailwind CSS v4, shadcn/ui, Recharts, PostgreSQL via Supabase, Drizzle ORM,
+Node.js 20 Lambda jobs, Terraform in `ap-southeast-1`, and Vitest for
+automated tests.
 
 Server Components MUST remain the default data-fetching model in the web app.
 Client Components MAY be used only for interactivity such as chart controls,

@@ -197,6 +197,17 @@ Last Updated: 2026-03-21
 - Added switchable ingestion logging in `apps/ingestion/shared/logger.ts` with
   `LOG_FORMAT=pretty|json`, defaulting to human-readable output for local TTY
   development and JSON output for non-interactive or production-style runs.
+- Added `--logos-only` mode to `apps/ingestion/scripts/seed-companies.ts` so
+  missing or fallback company logos can be retried without rerunning company and
+  stock upserts, while preserving the existing normal seed path unchanged.
+- Updated `packages/pse-edge/src/parsers/company-info.ts` to read the actual
+  company logo image source from the HTML page instead of reconstructing a logo
+  URL from the stock symbol, and added coverage for non-pattern relative logo
+  paths.
+- Updated `apps/web` for a pending manual dependency upgrade to Next.js 15,
+  React 19, and Tailwind CSS v4 by adjusting `package.json`, PostCSS config,
+  globals CSS imports, and the approved-stack line in the constitution without
+  running install, typecheck, or build steps yet.
 - Updated `packages/pse-edge/src/provider.ts` so `getCompanyList()` detects the
   last page from the paging HTML and stops at the advertised final page instead
   of making an extra empty-page request.
@@ -208,6 +219,67 @@ Last Updated: 2026-03-21
   errors, and verified
   `cd packages/pse-edge && npx vitest run tests/company-list.test.ts tests/provider-company-list.test.ts`
   passes.
+- Generated the planning artifacts for feature `003-stock-list-page`:
+  `specs/003-stock-list-page/plan.md`, `research.md`, `data-model.md`,
+  `contracts/stock-list-page.md`, and `quickstart.md`, based on the confirmed
+  Next.js 15, Drizzle, and stock-list routing/query requirements.
+- Generated `specs/003-stock-list-page/tasks.md` with phased shadcn setup,
+  query/test foundations, Next.js 15 route work, server-rendered stock-list
+  components, client controls, and manual verification steps for the stock list
+  page.
+- Completed Phase 0 of `003-stock-list-page` by installing the required
+  shadcn/ui components in `apps/web/components/ui/`: `input.tsx`, `select.tsx`,
+  `card.tsx`, `badge.tsx`, `skeleton.tsx`, and `accordion.tsx`, all using the
+  confirmed `radix-nova` preset and Tailwind CSS v4 setup.
+- Completed Phase 1 of `003-stock-list-page` by adding
+  `apps/web/lib/queries/stock-list.ts` with server-side stock/company/latest-price
+  joins, SQL-side minimum investment calculation, sector option loading, and
+  clamped pagination, plus `apps/web/lib/queries/stock-list.test.ts` with 17
+  mocked Vitest cases covering filters, sorting, null ordering, pagination, and
+  missing-price behavior.
+- Completed Phase 2 of `003-stock-list-page` by replacing
+  `apps/web/app/lists/[type]/page.tsx` with a real async Next.js 15 route that
+  awaits `params` and `searchParams`, validates `type`, calls the stock-list
+  query, and renders a server-side list placeholder, and by adding the route
+  `loading.tsx` skeleton and `error.tsx` retry boundary files.
+- Completed Phase 3 of `003-stock-list-page` by adding
+  `apps/web/components/stock-list/StockCard.tsx`,
+  `StockListGrid.tsx`, `EmptyState.tsx`, and `Pagination.tsx`, moving numeric
+  display formatting into `StockCard`, wiring the route page to the real
+  server-rendered browse-flow components, and preserving pagination URLs with
+  plain anchor tags.
+- Completed Phase 4 of `003-stock-list-page` by adding
+  `apps/web/components/stock-list/StockListControls.tsx` with debounced search,
+  sector/sort controls, URL-param updates through `useRouter` plus
+  `useSearchParams`, and page-reset behavior on filter changes, and by adding
+  `StockListShell.tsx` as the only client component rendered directly by the
+  list route.
+- Completed Phase 4.1 of `003-stock-list-page` by reskinning the controls into
+  a mobile chip row, adding a sticky condensed bar with scroll detection in
+  `StockListShell.tsx`, and adding the gold gradient server header section in
+  `apps/web/app/lists/[type]/page.tsx`.
+- Completed Phase 5 of `003-stock-list-page` by preserving stock-list URL state
+  across refresh, direct navigation, and list-type switches, keeping `page`
+  when switching between `blue-chips` and `all`, canonicalizing invalid or
+  out-of-range query strings in `apps/web/app/lists/[type]/page.tsx`, and
+  keeping pagination links aligned with the normalized server state.
+- Completed Phase 4.2 of `003-stock-list-page` by redesigning
+  `apps/web/components/stock-list/StockCard.tsx` into the compact blue-accent
+  card layout and updating `StockListGrid.tsx` so the list surface no longer
+  adds an extra colored background behind the cards.
+- Completed Phase 4.3 of `003-stock-list-page` by installing the shadcn
+  Drawer, replacing the sector/sort chips with a single Filters trigger in
+  `StockListControls.tsx`, and mounting one shared filter-and-sort bottom sheet
+  in `StockListShell.tsx` for both the main controls and sticky bar.
+- Completed Phase 6 of `003-stock-list-page` by adding the "Data delayed 15 min"
+  disclosure to the gold header in `apps/web/app/lists/[type]/page.tsx` and
+  rebuilding `apps/web/components/stock-list/StockCard.tsx` around two compact
+  independent explainers for percent change and minimum investment, with the
+  board lot detail moved into the Min. invest explainer panel.
+- Added `apps/ingestion/scripts/mark-blue-chip-stocks.ts` to mark the current
+  PSEi composition in `stocks.is_blue_chip` using the 30 symbols from the
+  provided PSE composition list image, with structured logging for matched,
+  updated, already-flagged, and missing symbols.
 
 ## ❌ Known Issues
 

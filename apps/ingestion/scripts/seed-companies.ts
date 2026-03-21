@@ -1,5 +1,5 @@
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { eq, isNotNull } from "drizzle-orm";
+import { and, asc, eq, inArray, isNotNull, isNull, like, or } from "drizzle-orm";
 
 import { companies, stocks } from "@palago/db/schema";
 import { PSEEdgeProvider } from "@palago/pse-edge";
@@ -18,10 +18,12 @@ const s3 = new S3Client({ region: "ap-southeast-1" });
 const provider = new PSEEdgeProvider();
 
 type CliOptions = {
+  logosOnly: boolean;
   startAt: number | null;
 };
 
 const parseArgs = (argv: string[]): CliOptions => {
+  let logosOnly = false;
   let startAt: number | null = null;
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -44,6 +46,11 @@ const parseArgs = (argv: string[]): CliOptions => {
       continue;
     }
 
+    if (argument === "--logos-only") {
+      logosOnly = true;
+      continue;
+    }
+
     throw new Error(`Unknown argument: ${argument}`);
   }
 
@@ -51,7 +58,7 @@ const parseArgs = (argv: string[]): CliOptions => {
     throw new Error("--start-at must be a positive integer");
   }
 
-  return { startAt };
+  return { logosOnly, startAt };
 };
 
 const toSqlDate = (value: Date | null): string | null => {
@@ -84,8 +91,179 @@ const uploadLogo = async (symbol: string, sourceLogoUrl: string) => {
   return `${LOGO_BASE_URL}/${symbol}.jpg`;
 };
 
+const runLogosOnly = async () => {
+  const skippedAlreadyS3Result = await db
+    .select({ count: companies.id })
+    .from(companies)
+    .where(like(companies.logoUrl, `${LOGO_BASE_URL}%`));
+  const logoCandidates = await db
+    .select({
+      id: companies.id,
+      name: companies.name,
+      edgeCmpyId: companies.edgeCmpyId,
+      logoUrl: companies.logoUrl,
+    })
+    .from(companies)
+    .where(
+      or(
+        isNull(companies.logoUrl),
+        like(companies.logoUrl, "https://edge.pse.com.ph%"),
+      ),
+    )
+    .orderBy(asc(companies.name), asc(companies.id));
+  const companyIds = logoCandidates.map((company) => company.id);
+  const stockRows =
+    companyIds.length === 0
+      ? []
+      : await db
+          .select({
+            companyId: stocks.companyId,
+            symbol: stocks.symbol,
+          })
+          .from(stocks)
+          .where(and(isNotNull(stocks.companyId), inArray(stocks.companyId, companyIds)))
+          .orderBy(asc(stocks.companyId), asc(stocks.symbol));
+
+  const companySymbols = new Map<number, string>();
+
+  for (const stockRow of stockRows) {
+    if (stockRow.companyId !== null && !companySymbols.has(stockRow.companyId)) {
+      companySymbols.set(stockRow.companyId, stockRow.symbol);
+    }
+  }
+
+  let logosUploadedToS3 = 0;
+  let fallbacksStored = 0;
+  let skippedMissingEdgeCmpyId = 0;
+  let skippedMissingSymbol = 0;
+  const skippedAlreadyS3 = skippedAlreadyS3Result.length;
+
+  logger.info("Resolved seed-companies logos-only starting point", {
+    job: JOB_NAME,
+    mode: "logos-only",
+    totalCompanies: logoCandidates.length,
+    skippedAlreadyS3,
+  });
+
+  if (logoCandidates.length === 0) {
+    logger.info("No company logos require upload; nothing to do", {
+      job: JOB_NAME,
+      mode: "logos-only",
+      skippedAlreadyS3,
+    });
+    return;
+  }
+
+  for (const [index, company] of logoCandidates.entries()) {
+    const symbol = companySymbols.get(company.id);
+
+    if (!symbol) {
+      skippedMissingSymbol += 1;
+      logger.warn("Skipping company logo upload without a related stock symbol", {
+        job: JOB_NAME,
+        index: index + 1,
+        companyId: company.id,
+        companyName: company.name,
+      });
+    } else if (!company.edgeCmpyId) {
+      skippedMissingEdgeCmpyId += 1;
+      logger.warn("Skipping company logo upload without edgeCmpyId", {
+        job: JOB_NAME,
+        index: index + 1,
+        companyId: company.id,
+        companyName: company.name,
+        symbol,
+      });
+    } else {
+      let sourceLogoUrl: string | null = null;
+
+      try {
+        const profile = await provider.getCompanyInfo(company.edgeCmpyId);
+        sourceLogoUrl = profile.logoUrl;
+
+        if (!sourceLogoUrl) {
+          throw new Error("company info did not include a logo URL");
+        }
+
+        const uploadedLogoUrl = await uploadLogo(symbol, sourceLogoUrl);
+
+        await db
+          .update(companies)
+          .set({ logoUrl: uploadedLogoUrl })
+          .where(eq(companies.id, company.id));
+        await db
+          .update(stocks)
+          .set({ logoUrl: uploadedLogoUrl })
+          .where(eq(stocks.companyId, company.id));
+
+        logosUploadedToS3 += 1;
+
+        logger.info(`[${index + 1}/${logoCandidates.length}] ${symbol} logo uploaded to S3`, {
+          job: JOB_NAME,
+          companyId: company.id,
+          companyName: company.name,
+          symbol,
+          logoUrl: uploadedLogoUrl,
+          sourceLogoUrl,
+        });
+      } catch (error) {
+        if (sourceLogoUrl) {
+          await db
+            .update(companies)
+            .set({ logoUrl: sourceLogoUrl })
+            .where(eq(companies.id, company.id));
+          await db
+            .update(stocks)
+            .set({ logoUrl: sourceLogoUrl })
+            .where(eq(stocks.companyId, company.id));
+
+          fallbacksStored += 1;
+
+          logger.warn(
+            `[${index + 1}/${logoCandidates.length}] ${symbol} logo upload failed, PSE Edge fallback stored`,
+            {
+              job: JOB_NAME,
+              companyId: company.id,
+              companyName: company.name,
+              symbol,
+              logoUrl: sourceLogoUrl,
+              error: error instanceof Error ? error.message : String(error),
+            },
+          );
+        } else {
+          logger.warn("Company logo scrape failed; no fallback URL stored", {
+            job: JOB_NAME,
+            index: index + 1,
+            companyId: company.id,
+            companyName: company.name,
+            symbol,
+            edgeCmpyId: company.edgeCmpyId,
+            error: error instanceof Error ? error.message : String(error),
+          });
+        }
+      }
+    }
+
+    if (index < logoCandidates.length - 1) {
+      await sleep(COMPANY_DELAY_MS);
+    }
+  }
+
+  logger.info(`Logos uploaded to S3: ${logosUploadedToS3}`, { job: JOB_NAME });
+  logger.info(`Fallbacks stored: ${fallbacksStored}`, { job: JOB_NAME });
+  logger.info(`Skipped (already S3): ${skippedAlreadyS3}`, { job: JOB_NAME });
+  logger.info(`Skipped without edgeCmpyId: ${skippedMissingEdgeCmpyId}`, { job: JOB_NAME });
+  logger.info(`Skipped without symbol: ${skippedMissingSymbol}`, { job: JOB_NAME });
+};
+
 const run = async () => {
   const options = parseArgs(process.argv.slice(2));
+
+  if (options.logosOnly) {
+    await runLogosOnly();
+    return;
+  }
+
   const listedCompanies = await provider.getCompanyList();
   const existingCompanies = await db
     .select({ edgeCmpyId: companies.edgeCmpyId })

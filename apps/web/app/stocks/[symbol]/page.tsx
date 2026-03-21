@@ -1,10 +1,13 @@
 type StockDetailPageProps = {
-  params: {
+  params: Promise<{
     symbol: string;
-  };
+  }>;
 };
 
-export default function StockDetailPage({ params }: StockDetailPageProps) {
-  return <main>Stock detail coming soon: {params.symbol}</main>;
-}
+export default async function StockDetailPage({
+  params,
+}: StockDetailPageProps) {
+  const { symbol } = await params;
 
+  return <main>Stock detail coming soon: {symbol}</main>;
+}

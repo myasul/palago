@@ -26,3 +26,6 @@ ingestion.zip
 # macOS
 .DS_Store
 **/.DS_Store
+
+# TypeScript incremental build caches
+*.tsbuildinfo

@@ -167,6 +167,10 @@ Depends on Phase 4.1 being complete. No query logic or URL logic changes.
       a list of StockCard components.
       commit message `feat(web): update stock list grid background (T017b)`
 
+- [x] Refactor StockCard: colour accent strip and price by direction, add prev close, fix change pill format, replace label with ? trigger; commit `refactor(web): redesign stock list card with colour signals and prev close`
+- [x] Refactor stock list header + sticky bar: merge controls into gold header zone, upgrade sticky bar to compact Option 3 with active chip + search icon + filter icon; commit `refactor(web): merge stock list header with controls, upgrade sticky bar to compact gold Option 3`
+- [x] Fix stock list refactor follow-ups: commit the shared `prevClose`/`pesoChange` query wiring for `StockCard`, make the shared `?` badge respond to accordion open state, and flush sticky-bar search on blur so quick taps do not lose the search update; commit `fix(web): finish stock list card and sticky search refactors`
+
 ## Phase 4.3: Filter & Sort Bottom Sheet
 
 **Purpose**: Replace the native sector select and sort controls with a

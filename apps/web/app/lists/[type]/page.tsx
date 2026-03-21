@@ -154,18 +154,12 @@ export default async function StockListPage({
     <main className="mx-auto flex w-full max-w-xl flex-col gap-4 px-4 py-6">
       <ToastHandler param="stock-not-found" message="We couldn't find that stock." />
       <section className="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
-        <header className="bg-[linear-gradient(160deg,_#fde68a_0%,_#fef3c7_60%)] px-4 pb-5 pt-[18px]">
-          <p className="text-[22px] font-bold tracking-[-0.03em] leading-none text-[#78350f]">
-            STOCK LIST
-          </p>
-          <p className="mt-2 max-w-[18rem] text-[13px] leading-5 text-[#92400e]">
-            Browse PSE-listed companies by affordability, sector, and momentum.
-          </p>
-          <div className="mt-[10px] flex items-center justify-between gap-3">
-            <p className="text-[12px] font-medium text-[#78350f]">
-              {result.totalCount} stocks · Page {result.page} of {result.totalPages}
+        <div className="bg-[linear-gradient(160deg,_#fde68a_0%,_#fef3c7_60%)] px-4 pb-4 pt-[14px]">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#92400e]">
+              STOCK LIST
             </p>
-            <div className="flex shrink-0 items-center gap-1 text-[11px] text-[#92400e]">
+            <div className="flex shrink-0 items-center gap-1 text-[10px] text-[#92400e]">
               <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <circle cx="8" cy="8" r="7" stroke="#92400e" strokeWidth="1.5" />
                 <path
@@ -178,18 +172,24 @@ export default async function StockListPage({
               <span>Data delayed 15 min</span>
             </div>
           </div>
-        </header>
 
-        <StockListShell
-          type={result.state.type}
-          sector={result.state.sector}
-          search={result.state.search}
-          sort={result.state.sort}
-          order={result.state.order}
-          page={result.state.page}
-          totalCount={result.totalCount}
-          sectorOptions={result.sectors}
-        />
+          <div className="mt-[10px]">
+            <StockListShell
+              type={result.state.type}
+              sector={result.state.sector}
+              search={result.state.search}
+              sort={result.state.sort}
+              order={result.state.order}
+              page={result.state.page}
+              totalCount={result.totalCount}
+              sectorOptions={result.sectors}
+            />
+          </div>
+
+          <p className="mt-[10px] text-[11px] font-medium text-[#92400e]">
+            {result.totalCount} stocks · Page {result.page} of {result.totalPages}
+          </p>
+        </div>
       </section>
 
       <section className="space-y-4" aria-label="Stock results">

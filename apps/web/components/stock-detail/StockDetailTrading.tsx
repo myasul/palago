@@ -1,4 +1,8 @@
 import {
+  formatCurrencyAmount,
+  formatStockPrice,
+} from "@/lib/currency-format";
+import {
   getCloseVsOpenSubtitle,
   getIntradaySecondaryText,
   getRangeBarPosition,
@@ -13,17 +17,6 @@ type StockDetailTradingProps = {
   value: string | null;
   tradeDate: string | null;
   percentChange: string | null;
-};
-
-const formatPeso = (value: string | null) => {
-  if (value === null) {
-    return "—";
-  }
-
-  return `₱${Number(value).toLocaleString("en-PH", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
 };
 
 const formatVolume = (value: number | null) => {
@@ -112,16 +105,16 @@ export function StockDetailTrading({
 
       <div className="grid grid-cols-2 border-b border-[#f3f4f6]">
         <div className="border-r border-[#f3f4f6] px-4 py-[10px]">
-          <p className="type-overline tracking-normal text-[#9ca3af]">Open</p>
-          <p className="type-metric mt-1 text-[#111111]">
-            {formatPeso(openPrice)}
-          </p>
+            <p className="type-overline tracking-normal text-[#9ca3af]">Open</p>
+            <p className="type-metric mt-1 text-[#111111]">
+            {formatStockPrice(openPrice)}
+            </p>
           <p className="type-overline mt-1 tracking-normal text-[#9ca3af]">Market opened here</p>
         </div>
 
         <div className={`px-4 py-[10px] ${getCloseValueClasses(closeVsOpen?.tone ?? null)}`}>
           <p className="type-overline tracking-normal text-[#9ca3af]">Last Close</p>
-          <p className="type-metric mt-1">{formatPeso(lastClose)}</p>
+          <p className="type-metric mt-1">{formatStockPrice(lastClose)}</p>
           {closeVsOpen ? <p className="type-overline mt-1 tracking-normal">{closeVsOpen.text}</p> : null}
         </div>
       </div>
@@ -131,13 +124,13 @@ export function StockDetailTrading({
           <div>
             <p className="type-overline tracking-normal text-[#9ca3af]">Low</p>
             <p className="type-body-sm text-[#be123c]">
-              {formatPeso(lowPrice)}
+              {formatStockPrice(lowPrice)}
             </p>
           </div>
           <div className="text-right">
             <p className="type-overline tracking-normal text-[#9ca3af]">High</p>
             <p className="type-body-sm text-[#15803d]">
-              {formatPeso(highPrice)}
+              {formatStockPrice(highPrice)}
             </p>
           </div>
         </div>
@@ -161,7 +154,7 @@ export function StockDetailTrading({
                 className={`absolute inline-flex rounded-full bg-[#EEF2FF] px-2 py-1 text-[10px] font-semibold leading-none text-[#4338ca] ${chipPosition.className}`}
                 style={chipPosition.style}
               >
-                {formatPeso(lastClose)} now
+                {formatStockPrice(lastClose)} now
               </div>
             </div>
 
@@ -184,7 +177,7 @@ export function StockDetailTrading({
 
         <div>
           <p className="type-overline tracking-normal text-[#9ca3af]">Value</p>
-          <p className="type-body-sm mt-1 text-[#6b7280]">{formatPeso(value)}</p>
+          <p className="type-body-sm mt-1 text-[#6b7280]">{formatCurrencyAmount(value)}</p>
         </div>
       </div>
     </section>

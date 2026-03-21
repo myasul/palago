@@ -231,6 +231,12 @@ Last Updated: 2026-03-21
   shadcn/ui components in `apps/web/components/ui/`: `input.tsx`, `select.tsx`,
   `card.tsx`, `badge.tsx`, `skeleton.tsx`, and `accordion.tsx`, all using the
   confirmed `radix-nova` preset and Tailwind CSS v4 setup.
+- Completed Phase 1 of `003-stock-list-page` by adding
+  `apps/web/lib/queries/stock-list.ts` with server-side stock/company/latest-price
+  joins, SQL-side minimum investment calculation, sector option loading, and
+  clamped pagination, plus `apps/web/lib/queries/stock-list.test.ts` with 17
+  mocked Vitest cases covering filters, sorting, null ordering, pagination, and
+  missing-price behavior.
 
 ## ❌ Known Issues
 

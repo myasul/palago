@@ -177,14 +177,14 @@ export const getStockListPage = async (
       WHERE stocks.is_active = true
         AND companies.sector IS NOT NULL
       ORDER BY companies.sector ASC
-    `) as Promise<SectorRow[]>,
+    `) as unknown as Promise<SectorRow[]>,
     db.execute<CountRow>(sql`
       SELECT COUNT(*)::int AS "count"
       FROM stocks
       INNER JOIN companies
         ON stocks.company_id = companies.id
       ${whereClause}
-    `) as Promise<CountRow[]>,
+    `) as unknown as Promise<CountRow[]>,
   ]);
 
   const totalCount = countRows[0]?.count ?? 0;
@@ -192,7 +192,8 @@ export const getStockListPage = async (
   const clampedPage = Math.min(Math.max(1, normalizedState.page), totalPages);
   const offset = (clampedPage - 1) * PAGE_SIZE;
 
-  const stockRows = (await db.execute<StockListEntry>(sql`
+  const stockRows = (
+    await (db.execute<StockListEntry>(sql`
     SELECT
       stocks.id AS "stockId",
       stocks.symbol AS "symbol",
@@ -219,7 +220,8 @@ export const getStockListPage = async (
     ${orderByClause}
     LIMIT ${PAGE_SIZE}
     OFFSET ${offset}
-  `) as Promise<StockListEntry[]>).map(toStockListEntry);
+  `) as unknown as Promise<StockListEntry[]>)
+  ).map(toStockListEntry);
 
   return {
     stocks: stockRows,

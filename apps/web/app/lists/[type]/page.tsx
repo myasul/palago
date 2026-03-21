@@ -140,12 +140,12 @@ export default async function StockListPage({
     redirect("/lists/blue-chips");
   }
 
-  const sort = isStockListSort(resolvedSearchParams.sort ?? "")
-    ? resolvedSearchParams.sort
-    : DEFAULT_SORT;
-  const order = isStockListOrder(resolvedSearchParams.order ?? "")
-    ? resolvedSearchParams.order
-    : DEFAULT_ORDER;
+  const rawSort = resolvedSearchParams.sort;
+  const rawOrder = resolvedSearchParams.order;
+  const sort: StockListSort =
+    rawSort !== undefined && isStockListSort(rawSort) ? rawSort : DEFAULT_SORT;
+  const order: StockListOrder =
+    rawOrder !== undefined && isStockListOrder(rawOrder) ? rawOrder : DEFAULT_ORDER;
   const page = parsePage(resolvedSearchParams.page);
   const search = normalizeSearch(resolvedSearchParams.search);
   const sector = normalizeSector(resolvedSearchParams.sector);

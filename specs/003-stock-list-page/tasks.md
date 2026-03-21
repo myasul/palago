@@ -50,9 +50,9 @@ block all page and component work.
 **Purpose**: Replace the placeholder route with the real async page entrypoint
 and add route-level loading and error UI.
 
-- [ ] T009 Create `apps/web/app/lists/[type]/page.tsx` as an async Server Component that awaits both `params` and `searchParams` because both are Promises in Next.js 15, redirects invalid `type` values to `/lists/blue-chips`, parses defaults (`sort = percent_change`, `order = desc`, `page = 1`, `search = ""`, `sector = null`), calls `apps/web/lib/queries/stock-list.ts`, passes the resolved `StockListPageResult` into `StockListShell` plus the server-rendered card grid, and performs no runtime calls to PSE Edge or any external provider; commit message `feat(web): add stock list page route`
-- [ ] T010 Create `apps/web/app/lists/[type]/loading.tsx` with the shadcn `Skeleton` component from `apps/web/components/ui/skeleton.tsx`, rendering a 375px-friendly placeholder card grid for the list page; commit message `feat(web): add stock list loading state`
-- [ ] T011 Create `apps/web/app/lists/[type]/error.tsx` as the route error boundary with a plain user-facing message only and no exposed DB error details or stack traces; commit message `feat(web): add stock list error boundary`
+- [x] T009 Create `apps/web/app/lists/[type]/page.tsx` as an async Server Component that awaits both `params` and `searchParams` because both are Promises in Next.js 15, redirects invalid `type` values to `/lists/blue-chips`, parses defaults (`sort = percent_change`, `order = desc`, `page = 1`, `search = ""`, `sector = null`), calls `apps/web/lib/queries/stock-list.ts`, passes the resolved `StockListPageResult` into `StockListShell` plus the server-rendered card grid, and performs no runtime calls to PSE Edge or any external provider; commit message `feat(web): add stock list page route`
+- [x] T010 Create `apps/web/app/lists/[type]/loading.tsx` with the shadcn `Skeleton` component from `apps/web/components/ui/skeleton.tsx`, rendering a 375px-friendly placeholder card grid for the list page; commit message `feat(web): add stock list loading state`
+- [x] T011 Create `apps/web/app/lists/[type]/error.tsx` as the route error boundary with a plain user-facing message only and no exposed DB error details or stack traces; commit message `feat(web): add stock list error boundary`
 
 ## Phase 3: User Story 1 - Browse Affordable Stocks (Priority: P1) 🎯 MVP
 

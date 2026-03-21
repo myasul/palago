@@ -237,6 +237,11 @@ Last Updated: 2026-03-21
   clamped pagination, plus `apps/web/lib/queries/stock-list.test.ts` with 17
   mocked Vitest cases covering filters, sorting, null ordering, pagination, and
   missing-price behavior.
+- Completed Phase 2 of `003-stock-list-page` by replacing
+  `apps/web/app/lists/[type]/page.tsx` with a real async Next.js 15 route that
+  awaits `params` and `searchParams`, validates `type`, calls the stock-list
+  query, and renders a server-side list placeholder, and by adding the route
+  `loading.tsx` skeleton and `error.tsx` retry boundary files.
 
 ## ❌ Known Issues
 

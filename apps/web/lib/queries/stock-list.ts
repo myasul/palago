@@ -70,8 +70,6 @@ const latestDailyPricesSubquery = sql`
   ORDER BY stock_id, trade_date DESC
 `;
 
-const emptySql = sql.raw("");
-
 const buildWhereClause = ({
   type,
   sector,
@@ -94,27 +92,32 @@ const buildWhereClause = ({
       sql`(
         stocks.symbol ILIKE ${searchPattern}
         OR companies.name ILIKE ${searchPattern}
-      )`,
+      )`
     );
   }
 
   return sql`WHERE ${sql.join(conditions, sql` AND `)}`;
 };
 
-const buildOrderByClause = (sort: StockListSort, order: StockListOrder): SQL => {
+const buildOrderByClause = (
+  sort: StockListSort,
+  order: StockListOrder
+): SQL => {
   const direction = order === "asc" ? "ASC" : "DESC";
 
   switch (sort) {
     case "price":
       return sql.raw(
-        `ORDER BY latest_prices.close_price ${direction} NULLS LAST, companies.name ASC`,
+        `ORDER BY latest_prices.close_price ${direction} NULLS LAST, companies.name ASC`
       );
     case "name":
-      return sql.raw(`ORDER BY companies.name ${direction} NULLS LAST, stocks.symbol ASC`);
+      return sql.raw(
+        `ORDER BY companies.name ${direction} NULLS LAST, stocks.symbol ASC`
+      );
     case "percent_change":
     default:
       return sql.raw(
-        `ORDER BY latest_prices.percent_change ${direction} NULLS LAST, companies.name ASC`,
+        `ORDER BY latest_prices.percent_change ${direction} NULLS LAST, companies.name ASC`
       );
   }
 };
@@ -154,7 +157,7 @@ const toStockListEntry = (row: StockListEntry): StockListEntry => ({
 });
 
 export const getStockListPage = async (
-  params: GetStockListPageParams,
+  params: GetStockListPageParams
 ): Promise<StockListPageResult> => {
   const normalizedState = {
     type: params.type,
@@ -166,9 +169,12 @@ export const getStockListPage = async (
   } satisfies StockListState;
 
   const whereClause = buildWhereClause(normalizedState);
-  const orderByClause = buildOrderByClause(normalizedState.sort, normalizedState.order);
+  const orderByClause = buildOrderByClause(
+    normalizedState.sort,
+    normalizedState.order
+  );
 
-  const [sectorRows, countRows] = await Promise.all([
+  const [sectorResults, countResults] = await Promise.all([
     db.execute<SectorRow>(sql`
       SELECT DISTINCT companies.sector AS "sector"
       FROM companies
@@ -177,23 +183,22 @@ export const getStockListPage = async (
       WHERE stocks.is_active = true
         AND companies.sector IS NOT NULL
       ORDER BY companies.sector ASC
-    `) as unknown as Promise<SectorRow[]>,
+    `),
     db.execute<CountRow>(sql`
       SELECT COUNT(*)::int AS "count"
       FROM stocks
       INNER JOIN companies
         ON stocks.company_id = companies.id
       ${whereClause}
-    `) as unknown as Promise<CountRow[]>,
+    `),
   ]);
 
-  const totalCount = countRows[0]?.count ?? 0;
+  const totalCount = countResults[0]?.count ?? 0;
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
   const clampedPage = Math.min(Math.max(1, normalizedState.page), totalPages);
   const offset = (clampedPage - 1) * PAGE_SIZE;
 
-  const stockRows = (
-    await (db.execute<StockListEntry>(sql`
+  const dbResults = await db.execute<StockListEntry>(sql`
     SELECT
       stocks.id AS "stockId",
       stocks.symbol AS "symbol",
@@ -220,12 +225,12 @@ export const getStockListPage = async (
     ${orderByClause}
     LIMIT ${PAGE_SIZE}
     OFFSET ${offset}
-  `) as unknown as Promise<StockListEntry[]>)
-  ).map(toStockListEntry);
+  `);
+  const stockRows = dbResults.map(toStockListEntry);
 
   return {
     stocks: stockRows,
-    sectors: sectorRows.map((row) => row.sector),
+    sectors: sectorResults.map((row) => row.sector),
     totalCount,
     page: clampedPage,
     pageSize: PAGE_SIZE,

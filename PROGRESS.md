@@ -19,6 +19,16 @@ Last Updated: 2026-03-22
   window-function join, then redesigning `StockCard` so the accent strip and
   top price reflect direction, the middle row uses a compact change pill plus
   `?` trigger, and `Prev close` appears as a labelled value on the right.
+- Generated the planning artifacts for `005-stock-price-chart`:
+  `specs/005-stock-price-chart/plan.md`, `research.md`, `data-model.md`,
+  `contracts/stock-price-chart.md`, and `quickstart.md`, covering the
+  Next.js 15 partial-rendering chart section, close-price-only query contract,
+  null-gap rendering rules, and mobile verification flow.
+- Updated `AGENTS.md` through the agent-context script so the feature's
+  Next.js 15, Recharts, and PostgreSQL chart-planning context is recorded.
+- Generated the feature specification for `005-stock-price-chart` at
+  `specs/005-stock-price-chart/spec.md` and added a completed requirements
+  checklist at `specs/005-stock-price-chart/checklists/requirements.md`.
 - Completed Phase 5 / `T015` of `004-stock-detail-main` by adding the real
   `StockDetailRange52` server component, wiring it into the stock detail page,
   restoring the missing `52-WEEK RANGE` section and label, and fixing both

@@ -3,14 +3,6 @@ import Link from "next/link";
 import { Building2 } from "lucide-react";
 
 import type { StockListEntry } from "@/lib/queries/stock-list";
-import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 const pesoFormatter = new Intl.NumberFormat("en-PH", {
   style: "currency",
@@ -18,8 +10,6 @@ const pesoFormatter = new Intl.NumberFormat("en-PH", {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
-
-const numberFormatter = new Intl.NumberFormat("en-PH");
 
 const getInitials = (value: string): string => {
   const words = value
@@ -62,136 +52,94 @@ const formatPercentChange = (value: string | null): string => {
     return "—";
   }
 
-  const magnitude = Math.abs(parsed).toFixed(2);
+  const magnitude = `${Math.abs(parsed).toFixed(2)}%`;
 
   if (parsed > 0) {
-    return `+${magnitude}%`;
+    return `▲ ${magnitude}`;
   }
 
   if (parsed < 0) {
-    return `−${magnitude}%`;
+    return `▼ ${magnitude}`;
   }
 
-  return `${magnitude}%`;
+  return magnitude;
 };
 
-const getPercentChangeTone = (
-  value: string | null
-): "positive" | "negative" | "neutral" => {
+const getPercentChangeClasses = (value: string | null) => {
   if (value === null) {
-    return "neutral";
+    return "text-[#9ca3af]";
   }
 
   const parsed = Number(value);
 
   if (!Number.isFinite(parsed) || parsed === 0) {
-    return "neutral";
+    return "text-[#9ca3af]";
   }
 
-  return parsed > 0 ? "positive" : "negative";
-};
-
-const getPercentChangeClasses = (tone: "positive" | "negative" | "neutral") => {
-  if (tone === "positive") {
-    return "bg-[#B2F2BB] text-slate-900";
+  if (parsed > 0) {
+    return "rounded-full bg-[#dcfce7] px-[6px] py-[1px] text-[11px] font-semibold text-[#15803d]";
   }
 
-  if (tone === "negative") {
-    return "bg-[#FFB3BB] text-slate-900";
-  }
-
-  return "bg-slate-100 text-slate-700";
+  return "rounded-full bg-[#ffe4e6] px-[6px] py-[1px] text-[11px] font-semibold text-[#be123c]";
 };
 
 export function StockCard(props: StockListEntry) {
-  const changeTone = getPercentChangeTone(props.percentChange);
-  const hasLogo = props.logoUrl !== null;
   const initials = getInitials(props.companyName);
+  const formattedPrice = formatPeso(props.closePrice);
+  const formattedChange = formatPercentChange(props.percentChange);
+  const formattedInvestment = formatPeso(props.minimumInvestment);
+  const changeClasses = getPercentChangeClasses(props.percentChange);
 
   return (
-    <Card
-      size="sm"
-      className="h-full border border-black/5 bg-white shadow-sm transition-transform hover:-translate-y-0.5"
-    >
+    <article className="rounded-xl border border-[#e5e7eb] border-l-4 border-l-[#4338ca] bg-white px-[14px] py-3 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
       <Link
         href={`/stocks/${props.symbol}`}
-        className="flex h-full flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CEFF]"
+        className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4338ca] focus-visible:ring-offset-2"
       >
-        <CardHeader className="gap-3">
-          <div className="flex items-start gap-3">
-            {hasLogo ? (
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex min-w-0 items-start gap-3">
+            {props.logoUrl ? (
               <img
-                src={props.logoUrl ?? undefined}
+                src={props.logoUrl}
                 alt={`${props.companyName} logo`}
-                className="h-12 w-12 rounded-xl border border-black/5 object-contain bg-white"
+                className="h-9 w-9 shrink-0 rounded-lg object-contain"
               />
             ) : (
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 text-slate-500">
-                {initials.length > 0 ? (
-                  <span className="text-sm font-semibold">{initials}</span>
-                ) : (
-                  <Building2 className="h-5 w-5" />
-                )}
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#EEF2FF] text-[10px] font-semibold text-[#4338ca]">
+                {initials.length > 0 ? initials : <Building2 className="h-4 w-4" />}
               </div>
             )}
 
-            <div className="min-w-0 flex-1 space-y-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <CardTitle className="text-lg font-semibold tracking-tight text-slate-950">
+            <div className="min-w-0">
+              <div className="flex min-w-0 items-center gap-1.5">
+                <h2 className="truncate text-[14px] font-semibold text-[#111111]">
                   {props.symbol}
-                </CardTitle>
+                </h2>
                 {props.sector ? (
-                  <Badge
-                    variant="outline"
-                    className="border-slate-200 bg-slate-50 text-slate-700"
-                  >
-                    {props.sector}
-                  </Badge>
+                  <span className="truncate text-[11px] text-[#9ca3af]">{props.sector}</span>
                 ) : null}
               </div>
-              <CardDescription className="line-clamp-2 text-sm leading-5 text-slate-600">
-                {props.companyName}
-              </CardDescription>
+              <p className="mt-0.5 truncate text-[11px] text-[#9ca3af]">{props.companyName}</p>
             </div>
           </div>
-        </CardHeader>
 
-        <CardContent className="flex flex-1 flex-col gap-3">
-          <dl className="space-y-2 text-sm text-slate-700">
-            <div className="flex items-center justify-between gap-4">
-              <dt className="text-slate-500">Price</dt>
-              <dd className="font-medium text-slate-900">
-                {formatPeso(props.closePrice)}
-              </dd>
+          <div className="shrink-0 text-right">
+            <p className="text-[15px] font-semibold text-[#111111]">{formattedPrice}</p>
+            <div className="mt-1">
+              {props.percentChange === null ? (
+                <span className="text-[11px] text-[#9ca3af]">{formattedChange}</span>
+              ) : (
+                <span className={changeClasses}>{formattedChange}</span>
+              )}
             </div>
-            <div className="flex items-center justify-between gap-4">
-              <dt className="text-slate-500">Percent change</dt>
-              <dd>
-                <span
-                  className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${getPercentChangeClasses(changeTone)}`}
-                >
-                  {formatPercentChange(props.percentChange)}
-                </span>
-              </dd>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <dt className="text-slate-500">Board lot</dt>
-              <dd className="font-medium text-slate-900">
-                {props.boardLot === null ? "—" : numberFormatter.format(props.boardLot)}
-              </dd>
-            </div>
-          </dl>
-
-          <div className="rounded-xl border border-[#B8CEFF] bg-[#B8CEFF]/45 px-3 py-2">
-            <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-600">
-              Minimum investment
-            </p>
-            <p className="mt-1 text-base font-semibold text-slate-950">
-              {formatPeso(props.minimumInvestment)}
-            </p>
           </div>
-        </CardContent>
+        </div>
+
+        <div className="mt-3 flex items-center justify-between rounded-lg bg-[#dbeafe] px-[10px] py-[7px]">
+          <span className="text-[11px] font-medium text-[#1e40af]">Min. invest</span>
+          <span className="text-[16px] font-bold text-[#1e3a8a]">{formattedInvestment}</span>
+        </div>
       </Link>
-    </Card>
+    </article>
   );
 }

@@ -8,10 +8,12 @@ type StockListGridProps = {
 
 export function StockListGrid({ stocks }: StockListGridProps) {
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
-      {stocks.map((stock) => (
-        <StockCard key={stock.stockId} {...stock} />
-      ))}
+    <div className="rounded-2xl bg-transparent px-3 py-2 pb-[14px]">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        {stocks.map((stock) => (
+          <StockCard key={stock.stockId} {...stock} />
+        ))}
+      </div>
     </div>
   );
 }

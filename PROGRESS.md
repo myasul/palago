@@ -258,6 +258,10 @@ Last Updated: 2026-03-21
   a mobile chip row, adding a sticky condensed bar with scroll detection in
   `StockListShell.tsx`, and adding the gold gradient server header section in
   `apps/web/app/lists/[type]/page.tsx`.
+- Completed Phase 4.2 of `003-stock-list-page` by redesigning
+  `apps/web/components/stock-list/StockCard.tsx` into the compact blue-accent
+  card layout and updating `StockListGrid.tsx` so the list surface no longer
+  adds an extra colored background behind the cards.
 - Added `apps/ingestion/scripts/mark-blue-chip-stocks.ts` to mark the current
   PSEi composition in `stocks.is_blue_chip` using the 30 symbols from the
   provided PSE composition list image, with structured logging for matched,

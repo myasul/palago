@@ -104,40 +104,161 @@ without changing query behavior or URL-state data flow.
       `StockListShell`; commit message
       `feat(web): add gold header section to stock list page (T018a)`
 
-## Phase 4.1: Visual Redesign — Header, Controls, Sticky Bar
+## Phase 4.2: Stock Card Visual Redesign
 
-**Purpose**: Restyle the stock list page to the confirmed design:
-gold gradient header, compact chip-row controls, and sticky condensed
-bar on scroll. Depends on Phase 4 (T016, T017) being complete first.
-Implement in order: T016a → T017a → T018a.
+**Purpose**: Restyle StockCard.tsx to the confirmed compact design:
+blue left accent strip, price and percent change grouped top-right,
+company logo/placeholder top-left, minimum investment box bottom.
+Also updates StockListGrid.tsx background to match.
+Depends on Phase 4.1 being complete. No query logic or URL logic changes.
 
-- [ ] T016a [US2] Restyle `apps/web/components/stock-list/StockListControls.tsx`
-      to use horizontal chip rows instead of Select dropdowns. Row 1: full-width
-      search Input. Row 2: horizontally scrollable chip row with Blue Chips / All
-      Stocks toggle, sort chip (cycles through sort+direction combinations), and
-      sector chip. Active chip: bg #4338ca, white text. Inactive: bg #f3f4f6.
-      Overflow-x scroll, no visible scrollbar. All URL update logic unchanged from
-      T016. commit message `feat(web): restyle stock list controls as chip row (T016a)`
+- [ ] T016b [US1] Restyle `apps/web/components/stock-list/StockCard.tsx`
+  to the confirmed B+C compact design. StockCard remains a Server Component
+  — no 'use client' under any circumstances.
 
-- [ ] T017a [US2] Update `apps/web/components/stock-list/StockListShell.tsx`
-      to manage two display states via useEffect scroll listener. Initial state:
-      full controls visible. Scrolled state (threshold 120px or headerRef bottom
-      above 0): sticky bar fixed at top with gold dot (#fbbf24) + "Stock List"
-      label + "{count} stocks · p.{page}" right-aligned, and compact chip row
-      below it. Sticky bar chips are functional and share URL update logic with
-      StockListControls. Add padding-top compensation equal to sticky bar height
-      to prevent layout jump. New props required: `totalCount: number`,
-      `page: number`. commit message `feat(web): add sticky condensed bar to stock list shell (T017a)`
+  Card structure (top to bottom):
+    Outer card:
+      background: white
+      border-radius: 12px
+      border: 0.5px solid #e5e7eb
+      border-left: 4px solid #4338ca   ← blue accent strip
+      padding: 12px 14px
 
-- [ ] T018a Update `apps/web/app/lists/[type]/page.tsx` to add the gold
-      gradient header section above StockListShell. Gold section:
-      background linear-gradient(160deg, #fde68a 0%, #fef3c7 60%), padding
-      18px 16px 20px. Contents: "STOCK LIST" eyebrow in 10px uppercase #92400e,
-      large title (28px, 700, letter-spacing -0.03em, line-height 1.15) derived
-      from list type ("Blue-chip\nstocks" or "All\nstocks"), subtitle showing
-      totalCount and pagination in 12px #78350f. Pass totalCount and page as
-      additional props to StockListShell. Server Component — no 'use client'.
-      commit message `feat(web): add gold header section to stock list page (T018a)`
+    Top row (logo + identity left, price + change right):
+      Left:
+        Logo image from logoUrl (36×36px, border-radius 8px)
+        OR placeholder div (36×36px, bg #EEF2FF, initials in #4338ca,
+        font-size 10px, font-weight 600) when logoUrl is null
+        Symbol (14px, 600 weight, #111) + sector badge inline
+        (11px, #9ca3af, no background — plain text)
+        Company name below (11px, #9ca3af)
+      Right (text-align right):
+        Close price (15px, 600 weight, #111) or —
+        Percent change badge (11px, 600 weight, border-radius 999px,
+        padding 1px 6px):
+          Positive: bg #dcfce7, color #15803d, prefix ▲
+          Negative: bg #ffe4e6, color #be123c, prefix ▼
+          Null: — (no badge, plain muted text)
+
+    Bottom row — minimum investment box:
+      background: #dbeafe
+      border-radius: 8px
+      padding: 7px 10px
+      display: flex, justify-content: space-between
+      Left: "Min. invest" label (11px, 500 weight, #1e40af)
+      Right: formatted amount (16px, 700 weight, #1e3a8a) or —
+
+  Number formatting rules (unchanged from T012):
+    - Number() conversion only here, not in query layer
+    - closePrice: ₱X,XXX.XX
+    - percentChange: sign + X.XX%
+    - minimumInvestment: ₱X,XXX.XX
+    - Never recompute minimumInvestment as boardLot × closePrice
+
+  Link: entire card links to /stocks/[symbol] (unchanged)
+
+  commit message `feat(web): restyle stock card to compact blue accent design (T016b)`
+
+- [ ] T017b [US1] Update `apps/web/components/stock-list/StockListGrid.tsx`
+  to set the card list background to #f8f9fa so white cards have
+  visible depth against the page surface. Padding: 8px 12px 14px.
+  No structural changes — grid remains a Server Component rendering
+  a list of StockCard components.
+  commit message `feat(web): update stock list grid background (T017b)`
+
+## Phase 4.3: Filter & Sort Bottom Sheet
+
+**Purpose**: Replace the native sector select and sort controls with a
+single "Filters" chip that opens a shadcn Drawer bottom sheet containing
+both sector and sort options. Depends on Phase 4.1 (T016a) being complete
+since this modifies StockListControls.tsx and StockListShell.tsx.
+Implement in order: T006b → T016c → T017c.
+
+- [ ] T006b [P] Run `cd apps/web && npx shadcn@latest add drawer` to
+  generate `apps/web/components/ui/drawer.tsx` using the confirmed
+  `radix-nova` preset; commit message `chore(web): add shadcn drawer component`
+
+- [ ] T016c [US2] Update `apps/web/components/stock-list/StockListControls.tsx`
+  to replace the sector chip and sort chip with a single "Filters ▾" chip
+  that triggers a bottom sheet. This component keeps 'use client'.
+
+  Updated chip row (single scrollable row):
+    - "Blue Chips" chip — active: bg #4338ca white text
+    - "All Stocks" chip — inactive: bg #f3f4f6 dark text
+    - "Filters ▾" chip:
+        Default state: bg #f3f4f6, color #6b7280, text "Filters ▾"
+        Active state (sector or non-default sort applied):
+          bg #EEF2FF, color #4338ca, border: 1px solid #c7d2fe
+          Text shows a summary e.g. "Services · % Change ↓"
+          truncated with ellipsis if too long
+
+  Bottom sheet (shadcn Drawer from apps/web/components/ui/drawer.tsx):
+    Do NOT mount the Drawer here. StockListControls receives an
+    onOpenFilters callback prop from StockListShell and calls it
+    when the Filters chip is tapped. The Drawer is mounted once
+    in StockListShell — see T017c.
+
+  Remove the previous sector chip and sort chip entirely.
+  All other URL update logic (list type toggle, page reset) unchanged.
+
+  commit message `feat(web): replace sector/sort chips with filters trigger (T016c)`
+
+- [ ] T017c [US2] Update `apps/web/components/stock-list/StockListShell.tsx`
+  to own the Drawer instance and manage open/close state.
+  This component keeps 'use client'.
+
+  Drawer state:
+    const [filtersOpen, setFiltersOpen] = useState(false)
+    Pass onOpenFilters={() => setFiltersOpen(true)} to StockListControls.
+    Pass the same callback to the sticky bar Filters chip so both
+    trigger the same single Drawer instance — do not mount two Drawers.
+
+  Drawer contents (apps/web/components/ui/drawer.tsx):
+
+    Header:
+      Drag handle: 36px × 4px, bg #d1d5db, centered, margin 10px auto 6px
+      Title: "Filter & Sort" — 14px, 600 weight, padding 8px 16px 12px
+      Border-bottom: 0.5px solid #f3f4f6
+
+    Section 1 — Sort by:
+      Section label: "Sort by" — 13px, 500 weight, color #6b7280,
+        padding 12px 16px 6px
+      Options as tappable rows (min height 44px, padding 0 16px):
+        "% Change" — maps to sort=percent_change
+        "Price"    — maps to sort=price
+        "Name"     — maps to sort=name
+      Active row: bg #f5f7ff, text #4338ca, checkmark (14px SVG) right-aligned
+      Inactive row: text #374151
+      Direction toggle row below options:
+        Two chips side by side: "Ascending" and "Descending"
+        Active chip: bg #4338ca, white text
+        Inactive chip: bg #f3f4f6, color #374151
+        Updates ?order= in URL on tap
+
+    Section 2 — Sector:
+      Section label row: "Sector" left + "Clear" right
+        "Clear" in #4338ca, 13px — resets sector to null, resets page to 1
+      Options as tappable rows (min height 44px, padding 0 16px):
+        "All sectors" — always first, clears sector filter
+        Then each sector from sectorOptions prop
+      Active row: bg #f5f7ff, text #4338ca, checkmark right-aligned
+      Inactive row: text #374151
+      On sector tap: update ?sector= in URL, reset page to 1,
+        close the sheet automatically
+
+    Behaviour:
+      Sort and direction changes update URL immediately but keep
+      the sheet open so the user can adjust both before dismissing.
+      Sector selection closes the sheet after URL update.
+      All URL updates via useRouter and useSearchParams.
+      Initial values read from props passed down from page.tsx —
+      not from useSearchParams directly inside this component.
+
+    Sheet close:
+      Drag down or tap backdrop — standard Drawer dismiss behaviour.
+      No explicit close button needed.
+
+  commit message `feat(web): add filter sort bottom sheet to stock list (T017c)`
 
 ## Phase 5: User Story 3 - Share and Resume a Specific View (Priority: P3)
 
@@ -149,6 +270,24 @@ session and confirm the same type, filters, sorting, and page state are restored
 from the URL alone.
 
 - [ ] T018 [US3] Update `apps/web/app/lists/[type]/page.tsx`, `apps/web/components/stock-list/StockListControls.tsx`, and `apps/web/components/stock-list/Pagination.tsx` so URL parameters remain the single source of truth across refresh, direct navigation, and type switches, preserving `sector`, `sort`, `order`, `search`, and `page`, while clamping out-of-range pages server-side to the nearest valid page; commit message `feat(web): preserve stock list url state`
+
+## Phase 4.2: Stock Card Visual Redesign
+
+**Goal**: Restyle the stock cards and list surface to the confirmed compact
+blue-accent design without changing data/query behavior.
+
+- [x] T016b [US1] Restyle `apps/web/components/stock-list/StockCard.tsx`
+      to the compact design with left blue accent strip, top-right grouped
+      price/change block, logo or initials placeholder at top-left, and bottom
+      minimum-investment bar; keep `StockCard` as a Server Component and keep
+      all `Number()` formatting logic in this file only; commit message
+      `feat(web): restyle stock card to compact blue accent design (T016b)`
+
+- [x] T017b [US1] Update `apps/web/components/stock-list/StockListGrid.tsx`
+      so the card list sits on a `#f8f9fa` background with `8px 12px 14px`
+      padding while remaining a Server Component that only renders `StockCard`
+      items; commit message
+      `feat(web): update stock list grid background (T017b)`
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
@@ -173,6 +312,14 @@ every page render.
 - **Phase 4.1** depends on Phase 4 because it reskins components created
   in T016 and T017. T016a and T017a must run after T016 and T017 complete.
   T018a depends on T017a because the header passes new props to StockListShell.
+- **Phase 4.2** depends on Phase 4.1 being complete. T016b reskins StockCard
+  which was created in T012. T017b updates StockListGrid from T013.
+  T016b and T017b can run in parallel [P].
+  - **Phase 4.3** depends on Phase 4.1 being complete since T016c and T017c
+  modify StockListControls.tsx and StockListShell.tsx created in T016a and
+  T017a. T006b can run in parallel before T016c starts. T016c must complete
+  before T017c because T017c depends on the onOpenFilters callback prop
+  pattern established in T016c.
 - **Phase 5** depends on Phases 2, 3, and 4 because it integrates page,
   controls, and pagination URL behavior.
 - **Phase 6** depends on Phase 3, with `T020` also depending on `T012`.

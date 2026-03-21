@@ -4,6 +4,12 @@ Last Updated: 2026-03-22
 
 ## ✅ Completed
 
+- Completed Phase 1 / `T001` and `T002` of `005-stock-price-chart` by adding
+  `apps/web/lib/queries/stock-price-history.ts`, adding mocked Vitest coverage
+  in `apps/web/lib/queries/stock-price-history.test.ts`, and marking both tasks
+  complete in `specs/005-stock-price-chart/tasks.md`. Verification commands are
+  currently blocked in this workspace because local `vitest` and `tsc` binaries
+  are unavailable and `npx` cannot reach the npm registry from the sandbox.
 - Finished the pending `003-stock-list-page` follow-up wiring by committing the
   stock-list query/test changes for `prevClose` and `pesoChange`, fixing the
   shared `?` badge so accordion-open styles apply correctly in `StockCard`, and

@@ -178,7 +178,7 @@ Implement in order: T006b → T016c → T017c.
   generate `apps/web/components/ui/drawer.tsx` using the confirmed
   `radix-nova` preset; commit message `chore(web): add shadcn drawer component`
 
-- [ ] T016c [US2] Update `apps/web/components/stock-list/StockListControls.tsx`
+- [x] T016c [US2] Update `apps/web/components/stock-list/StockListControls.tsx`
   to replace the sector chip and sort chip with a single "Filters ▾" chip
   that triggers a bottom sheet. This component keeps 'use client'.
 

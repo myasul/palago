@@ -19,20 +19,12 @@ type StockListControlsProps = {
   order: StockListOrder;
   page: number;
   sectorOptions: string[];
+  onOpenFilters: () => void;
   compact?: boolean;
   showSearch?: boolean;
 };
 
 const SEARCH_DEBOUNCE_MS = 300;
-
-const SORT_SEQUENCE: Array<{ sort: StockListSort; order: StockListOrder }> = [
-  { sort: "percent_change", order: "desc" },
-  { sort: "percent_change", order: "asc" },
-  { sort: "price", order: "desc" },
-  { sort: "price", order: "asc" },
-  { sort: "name", order: "desc" },
-  { sort: "name", order: "asc" },
-];
 
 const getSortLabel = (sort: StockListSort, order: StockListOrder) => {
   const arrow = order === "desc" ? "↓" : "↑";
@@ -48,14 +40,6 @@ const getSortLabel = (sort: StockListSort, order: StockListOrder) => {
   }
 };
 
-const getNextSortState = (sort: StockListSort, order: StockListOrder) => {
-  const currentIndex = SORT_SEQUENCE.findIndex(
-    (item) => item.sort === sort && item.order === order,
-  );
-
-  return SORT_SEQUENCE[(currentIndex + 1) % SORT_SEQUENCE.length] ?? SORT_SEQUENCE[0];
-};
-
 const buildPath = (pathname: string, params: URLSearchParams) => {
   const query = params.toString();
 
@@ -64,11 +48,33 @@ const buildPath = (pathname: string, params: URLSearchParams) => {
 
 const createChipClassName = (isActive: boolean, compact: boolean) =>
   cn(
-    "relative inline-flex shrink-0 items-center rounded-full border-0 transition-colors",
-    "text-[12px] font-medium leading-none",
+    "relative inline-flex shrink-0 items-center rounded-full border transition-colors",
+    "text-[12px] leading-none whitespace-nowrap",
     compact ? "px-[10px] py-1" : "px-3 py-[5px]",
-    isActive ? "bg-[#4338ca] text-white" : "bg-[#f3f4f6] text-[#374151]",
+    isActive
+      ? "border-[#4338ca] bg-[#4338ca] font-medium text-white"
+      : "border-transparent bg-[#f3f4f6] text-[#374151]",
   );
+
+const getFiltersLabel = (sector: string | null, sort: StockListSort, order: StockListOrder) => {
+  const hasNonDefaultSort = sort !== "percent_change" || order !== "desc";
+
+  if (!sector && !hasNonDefaultSort) {
+    return "Filters ▾";
+  }
+
+  const parts: string[] = [];
+
+  if (sector) {
+    parts.push(sector);
+  }
+
+  if (hasNonDefaultSort) {
+    parts.push(getSortLabel(sort, order));
+  }
+
+  return `${parts.join(" · ")} ▾`;
+};
 
 export function StockListControls({
   type,
@@ -77,7 +83,8 @@ export function StockListControls({
   sort,
   order,
   page: _page,
-  sectorOptions,
+  sectorOptions: _sectorOptions,
+  onOpenFilters,
   compact = false,
   showSearch = true,
 }: StockListControlsProps) {
@@ -157,7 +164,8 @@ export function StockListControls({
     return () => window.clearTimeout(timeoutId);
   }, [searchInput, search, showSearch, searchParams, pathname, type]);
 
-  const sortLabel = getSortLabel(sort, order);
+  const hasActiveFilters = sector !== null || sort !== "percent_change" || order !== "desc";
+  const filtersLabel = getFiltersLabel(sector, sort, order);
 
   return (
     <section className={cn("bg-white", compact ? "px-3 py-2" : "px-4 py-4")}>
@@ -209,44 +217,16 @@ export function StockListControls({
 
         <button
           type="button"
-          className={createChipClassName(false, compact)}
-          onClick={() => {
-            const nextSortState = getNextSortState(sort, order);
-
-            updateParams({
-              sort: nextSortState.sort,
-              order: nextSortState.order,
-            });
-          }}
+          className={cn(
+            createChipClassName(false, compact),
+            hasActiveFilters
+              ? "max-w-[13rem] border-[#c7d2fe] bg-[#EEF2FF] text-[#4338ca]"
+              : "text-[#6b7280]",
+          )}
+          onClick={onOpenFilters}
         >
-          {sortLabel}
+          <span className="block max-w-full truncate">{filtersLabel}</span>
         </button>
-
-        <label className={cn(createChipClassName(false, compact), "cursor-pointer")}>
-          <span>{sector ?? "All sectors"}</span>
-          <span className="ml-1 text-[10px]">▼</span>
-          <select
-            aria-label="Filter by sector"
-            className="absolute inset-0 cursor-pointer opacity-0"
-            value={sector ?? "__all__"}
-            onChange={(event) => {
-              const nextSector = event.target.value === "__all__" ? null : event.target.value;
-
-              if (nextSector === sector) {
-                return;
-              }
-
-              updateParams({ sector: nextSector });
-            }}
-          >
-            <option value="__all__">All sectors</option>
-            {sectorOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </label>
       </div>
     </section>
   );

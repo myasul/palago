@@ -4,6 +4,12 @@ Last Updated: 2026-03-21
 
 ## ✅ Completed
 
+- Generated the planning artifacts for feature `004-stock-detail-main`:
+  `specs/004-stock-detail-main/plan.md`, `research.md`, `data-model.md`,
+  `contracts/stock-detail-page.md`, and `quickstart.md`, covering the first
+  stock detail page slice from nav bar through the 52-week range section with
+  toast handling, direct Drizzle queries, and Next.js 15 server-component
+  constraints.
 - Added ingestion shared utilities in `apps/ingestion/shared/`:
   `db.ts`, `logger.ts`, `sleep.ts`, `clients/yahoo.ts`,
   `clients/eodhd.ts`, `utils/holidays.ts`, and `utils/trading.ts`.

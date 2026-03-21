@@ -19,6 +19,10 @@ Last Updated: 2026-03-22
   window-function join, then redesigning `StockCard` so the accent strip and
   top price reflect direction, the middle row uses a compact change pill plus
   `?` trigger, and `Prev close` appears as a labelled value on the right.
+- Generated `specs/005-stock-price-chart/tasks.md` with the fixed query, chart,
+  Suspense wiring, and manual verification sequence for the stock price chart
+  feature, including absolute file paths, commit messages, and story-based
+  execution order.
 - Generated the planning artifacts for `005-stock-price-chart`:
   `specs/005-stock-price-chart/plan.md`, `research.md`, `data-model.md`,
   `contracts/stock-price-chart.md`, and `quickstart.md`, covering the

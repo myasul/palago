@@ -4,6 +4,10 @@ Last Updated: 2026-03-22
 
 ## ✅ Completed
 
+- Completed Phase 2 / `T003` and `T004` of `005-stock-price-chart` by adding
+  `apps/web/components/stock-detail/StockDetailChartServer.tsx` as the async
+  section-level fetcher and `apps/web/components/stock-detail/ChartSkeleton.tsx`
+  as the scoped Suspense fallback for the chart card.
 - Completed Phase 1 / `T001` and `T002` of `005-stock-price-chart` by adding
   `apps/web/lib/queries/stock-price-history.ts`, adding mocked Vitest coverage
   in `apps/web/lib/queries/stock-price-history.test.ts`, and marking both tasks

@@ -248,6 +248,10 @@ Last Updated: 2026-03-21
   display formatting into `StockCard`, wiring the route page to the real
   server-rendered browse-flow components, and preserving pagination URLs with
   plain anchor tags.
+- Added `apps/ingestion/scripts/mark-blue-chip-stocks.ts` to mark the current
+  PSEi composition in `stocks.is_blue_chip` using the 30 symbols from the
+  provided PSE composition list image, with structured logging for matched,
+  updated, already-flagged, and missing symbols.
 
 ## ❌ Known Issues
 

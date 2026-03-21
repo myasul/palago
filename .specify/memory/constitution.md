@@ -108,6 +108,29 @@ Components for data fetching, Client Components only for interactivity. URL
 parameters MUST be used for all filterable/sortable list views so filters are
 shareable and survive page refresh.
 
+### Partial Rendering Pattern
+
+When a page section has a URL parameter that controls only its own
+data (e.g. a chart range toggle), that section MUST be extracted into
+a dedicated async Server Component wrapped in a React Suspense boundary
+in `page.tsx`. The parent page MUST NOT re-fetch or re-render
+unrelated sections when that parameter changes.
+
+The pattern is:
+  1. `page.tsx` reads the URL param and passes it as a prop.
+  2. A dedicated `[Section]Server.tsx` async Server Component fetches
+     only that section's data and renders the dumb Client Component.
+  3. A `[Section]Skeleton.tsx` component serves as the Suspense
+     fallback — scoped to that section's height only.
+  4. The Client Component receives data as props and does zero
+     data fetching.
+
+This pattern applies to any section whose data is independently
+parameterised, including chart range, pagination, and future
+filter controls. It ensures only the affected section re-renders
+on URL change — the rest of the page stays completely still.
+The stock price chart (spec 005) is the reference implementation.
+
 ## Delivery Workflow & Quality Gates
 
 Every feature spec, plan, and task list MUST demonstrate compliance with the
@@ -163,4 +186,4 @@ After completing any task, Codex must:
 3. Stage the relevant files and commit immediately — no approval
    required
 
-**Version**: 1.1.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-21
+**Version**: 1.2.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-22

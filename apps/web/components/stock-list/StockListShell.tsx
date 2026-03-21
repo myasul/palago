@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import type {
@@ -80,39 +80,9 @@ export function StockListShell(props: StockListShellProps) {
     const query = params.toString();
     const path = query.length > 0 ? `/lists/${props.type}?${query}` : `/lists/${props.type}`;
 
-    router.push(path);
-  };
-
-  const setSort = (nextSort: StockListSort) => {
-    if (nextSort === props.sort) {
-      return;
-    }
-
-    updateParams({ sort: nextSort });
-  };
-
-  const setOrder = (nextOrder: StockListOrder) => {
-    if (nextOrder === props.order) {
-      return;
-    }
-
-    updateParams({ order: nextOrder });
-  };
-
-  const setSector = (nextSector: string | null, closeSheet: boolean) => {
-    if (nextSector === props.sector) {
-      if (closeSheet) {
-        setFiltersOpen(false);
-      }
-
-      return;
-    }
-
-    updateParams({ sector: nextSector });
-
-    if (closeSheet) {
-      setFiltersOpen(false);
-    }
+    startTransition(() => {
+      router.push(path);
+    });
   };
 
   return (
@@ -155,10 +125,9 @@ export function StockListShell(props: StockListShellProps) {
         order={props.order}
         sector={props.sector}
         sectorOptions={props.sectorOptions}
-        onSelectSort={setSort}
-        onSelectOrder={setOrder}
-        onSelectSector={setSector}
-        onClearSector={() => setSector(null, false)}
+        onApply={({ sort, order, sector }) => {
+          updateParams({ sort, order, sector });
+        }}
       />
     </div>
   );

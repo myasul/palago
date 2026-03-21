@@ -254,6 +254,10 @@ Last Updated: 2026-03-21
   `useSearchParams`, and page-reset behavior on filter changes, and by adding
   `StockListShell.tsx` as the only client component rendered directly by the
   list route.
+- Completed Phase 4.1 of `003-stock-list-page` by reskinning the controls into
+  a mobile chip row, adding a sticky condensed bar with scroll detection in
+  `StockListShell.tsx`, and adding the gold gradient server header section in
+  `apps/web/app/lists/[type]/page.tsx`.
 - Added `apps/ingestion/scripts/mark-blue-chip-stocks.ts` to mark the current
   PSEi composition in `stocks.is_blue_chip` using the 30 symbols from the
   provided PSE composition list image, with structured logging for matched,

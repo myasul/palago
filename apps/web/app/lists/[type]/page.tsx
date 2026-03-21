@@ -93,30 +93,38 @@ export default async function StockListPage({
     page,
   });
 
-  return (
-    <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
-      <header className="space-y-2">
-        <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">
-          Stock List
-        </p>
-        <h1 className="text-3xl font-semibold tracking-tight text-slate-950">
-          {type === "blue-chips" ? "Blue-chip stocks" : "All active PSE stocks"}
-        </h1>
-        <p className="max-w-2xl text-sm text-slate-600">
-          Browse PSE-listed stocks from the database only. No runtime calls to PSE Edge
-          or any external provider are made on this page.
-        </p>
-      </header>
+  const titleLines =
+    type === "blue-chips"
+      ? ["Blue-chip", "stocks"]
+      : ["All", "stocks"];
 
-      <StockListShell
-        type={result.state.type}
-        sector={result.state.sector}
-        search={result.state.search}
-        sort={result.state.sort}
-        order={result.state.order}
-        page={result.state.page}
-        sectorOptions={result.sectors}
-      />
+  return (
+    <main className="mx-auto flex w-full max-w-xl flex-col gap-4 px-4 py-6">
+      <section className="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
+        <header className="bg-[linear-gradient(160deg,_#fde68a_0%,_#fef3c7_60%)] px-4 pb-5 pt-[18px]">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#92400e]">
+            STOCK LIST
+          </p>
+          <h1 className="mt-2 text-[28px] font-bold tracking-[-0.03em] leading-[1.15] text-slate-950">
+            <span className="block">{titleLines[0]}</span>
+            <span className="block">{titleLines[1]}</span>
+          </h1>
+          <p className="mt-3 text-[12px] text-[#78350f]">
+            {result.totalCount} stocks · Page {result.page} of {result.totalPages}
+          </p>
+        </header>
+
+        <StockListShell
+          type={result.state.type}
+          sector={result.state.sector}
+          search={result.state.search}
+          sort={result.state.sort}
+          order={result.state.order}
+          page={result.state.page}
+          totalCount={result.totalCount}
+          sectorOptions={result.sectors}
+        />
+      </section>
 
       <section className="space-y-4" aria-label="Stock results">
         <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600">

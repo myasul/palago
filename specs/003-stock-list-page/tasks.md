@@ -80,6 +80,65 @@ and the server-rendered list reflects the new state.
 - [x] T016 [US2] Create `apps/web/components/stock-list/StockListControls.tsx` as the only interactive controls component with `use client`, using `apps/web/components/ui/input.tsx` for debounced 300ms search, `apps/web/components/ui/select.tsx` for sector and sort selection, URL updates via `useRouter` and `useSearchParams`, page reset to `1` on every filter or sort change, and props-only initial values rather than direct route-state ownership; commit message `feat(web): add stock list controls`
 - [x] T017 [US2] Create `apps/web/components/stock-list/StockListShell.tsx` as the only Client Component rendered directly by `apps/web/app/lists/[type]/page.tsx`, receiving `type`, `sector`, `search`, `sort`, `order`, `page`, and `sectorOptions`, and doing no rendering logic beyond passing props into `StockListControls`; commit message `feat(web): add stock list shell`
 
+## Phase 4.1: Visual Redesign — Header, Controls, Sticky Bar
+
+**Goal**: Reskin the stock list page to match the reviewed mobile design
+without changing query behavior or URL-state data flow.
+
+- [x] T016a [US2] Restyle `apps/web/components/stock-list/StockListControls.tsx`
+      into a compact chip-row layout with full-width search input, horizontal
+      chip scroller, active/inactive chip states, sort-cycle chip, and sector
+      native-select chip while preserving the existing `useRouter` +
+      `useSearchParams` URL update behavior; commit message
+      `feat(web): restyle stock list controls as chip row (T016a)`
+
+- [x] T017a [US2] Update `apps/web/components/stock-list/StockListShell.tsx`
+      to add scroll-driven sticky condensed bar behavior with gold dot title
+      row, `{count} stocks · p.{page}` meta text, compact chip row reuse, and
+      layout-jump compensation spacing; commit message
+      `feat(web): add sticky condensed bar to stock list shell (T017a)`
+
+- [x] T018a Update `apps/web/app/lists/[type]/page.tsx` to add the gold
+      gradient server-rendered header section, derive the two-line title from
+      list type, and pass `totalCount` and `page` props into
+      `StockListShell`; commit message
+      `feat(web): add gold header section to stock list page (T018a)`
+
+## Phase 4.1: Visual Redesign — Header, Controls, Sticky Bar
+
+**Purpose**: Restyle the stock list page to the confirmed design:
+gold gradient header, compact chip-row controls, and sticky condensed
+bar on scroll. Depends on Phase 4 (T016, T017) being complete first.
+Implement in order: T016a → T017a → T018a.
+
+- [ ] T016a [US2] Restyle `apps/web/components/stock-list/StockListControls.tsx`
+      to use horizontal chip rows instead of Select dropdowns. Row 1: full-width
+      search Input. Row 2: horizontally scrollable chip row with Blue Chips / All
+      Stocks toggle, sort chip (cycles through sort+direction combinations), and
+      sector chip. Active chip: bg #4338ca, white text. Inactive: bg #f3f4f6.
+      Overflow-x scroll, no visible scrollbar. All URL update logic unchanged from
+      T016. commit message `feat(web): restyle stock list controls as chip row (T016a)`
+
+- [ ] T017a [US2] Update `apps/web/components/stock-list/StockListShell.tsx`
+      to manage two display states via useEffect scroll listener. Initial state:
+      full controls visible. Scrolled state (threshold 120px or headerRef bottom
+      above 0): sticky bar fixed at top with gold dot (#fbbf24) + "Stock List"
+      label + "{count} stocks · p.{page}" right-aligned, and compact chip row
+      below it. Sticky bar chips are functional and share URL update logic with
+      StockListControls. Add padding-top compensation equal to sticky bar height
+      to prevent layout jump. New props required: `totalCount: number`,
+      `page: number`. commit message `feat(web): add sticky condensed bar to stock list shell (T017a)`
+
+- [ ] T018a Update `apps/web/app/lists/[type]/page.tsx` to add the gold
+      gradient header section above StockListShell. Gold section:
+      background linear-gradient(160deg, #fde68a 0%, #fef3c7 60%), padding
+      18px 16px 20px. Contents: "STOCK LIST" eyebrow in 10px uppercase #92400e,
+      large title (28px, 700, letter-spacing -0.03em, line-height 1.15) derived
+      from list type ("Blue-chip\nstocks" or "All\nstocks"), subtitle showing
+      totalCount and pagination in 12px #78350f. Pass totalCount and page as
+      additional props to StockListShell. Server Component — no 'use client'.
+      commit message `feat(web): add gold header section to stock list page (T018a)`
+
 ## Phase 5: User Story 3 - Share and Resume a Specific View (Priority: P3)
 
 **Goal**: Keep URL parameters as the single source of truth so refreshing,
@@ -111,6 +170,9 @@ every page render.
   state/pagination components to render meaningful output.
 - **Phase 4** depends on Phase 3 because the controls operate on the server
   page and its result shape.
+- **Phase 4.1** depends on Phase 4 because it reskins components created
+  in T016 and T017. T016a and T017a must run after T016 and T017 complete.
+  T018a depends on T017a because the header passes new props to StockListShell.
 - **Phase 5** depends on Phases 2, 3, and 4 because it integrates page,
   controls, and pagination URL behavior.
 - **Phase 6** depends on Phase 3, with `T020` also depending on `T012`.

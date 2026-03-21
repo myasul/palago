@@ -30,12 +30,12 @@ and beginner explanations.
 or stock-list component work starts. All tasks run via the shadcn CLI and may
 be completed in parallel.
 
-- [ ] T001 [P] Run `cd apps/web && npx shadcn@latest add input` to generate `apps/web/components/ui/input.tsx` using the confirmed `radix-nova` preset; commit message `chore(web): add shadcn input component`
-- [ ] T002 [P] Run `cd apps/web && npx shadcn@latest add select` to generate `apps/web/components/ui/select.tsx` using the confirmed `radix-nova` preset; commit message `chore(web): add shadcn select component`
-- [ ] T003 [P] Run `cd apps/web && npx shadcn@latest add card` to generate `apps/web/components/ui/card.tsx` using the confirmed `radix-nova` preset; commit message `chore(web): add shadcn card component`
-- [ ] T004 [P] Run `cd apps/web && npx shadcn@latest add badge` to generate `apps/web/components/ui/badge.tsx` using the confirmed `radix-nova` preset; commit message `chore(web): add shadcn badge component`
-- [ ] T005 [P] Run `cd apps/web && npx shadcn@latest add skeleton` to generate `apps/web/components/ui/skeleton.tsx` using the confirmed `radix-nova` preset; commit message `chore(web): add shadcn skeleton component`
-- [ ] T006 [P] Run `cd apps/web && npx shadcn@latest add accordion` to generate `apps/web/components/ui/accordion.tsx` using the confirmed `radix-nova` preset; commit message `chore(web): add shadcn accordion component`
+- [x] T001 [P] Run `cd apps/web && npx shadcn@latest add input` to generate `apps/web/components/ui/input.tsx` using the confirmed `radix-nova` preset; commit message `chore(web): add shadcn input component`
+- [x] T002 [P] Run `cd apps/web && npx shadcn@latest add select` to generate `apps/web/components/ui/select.tsx` using the confirmed `radix-nova` preset; commit message `chore(web): add shadcn select component`
+- [x] T003 [P] Run `cd apps/web && npx shadcn@latest add card` to generate `apps/web/components/ui/card.tsx` using the confirmed `radix-nova` preset; commit message `chore(web): add shadcn card component`
+- [x] T004 [P] Run `cd apps/web && npx shadcn@latest add badge` to generate `apps/web/components/ui/badge.tsx` using the confirmed `radix-nova` preset; commit message `chore(web): add shadcn badge component`
+- [x] T005 [P] Run `cd apps/web && npx shadcn@latest add skeleton` to generate `apps/web/components/ui/skeleton.tsx` using the confirmed `radix-nova` preset; commit message `chore(web): add shadcn skeleton component`
+- [x] T006 [P] Run `cd apps/web && npx shadcn@latest add accordion` to generate `apps/web/components/ui/accordion.tsx` using the confirmed `radix-nova` preset; commit message `chore(web): add shadcn accordion component`
 
 ## Phase 1: Foundational Data Layer
 

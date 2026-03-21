@@ -227,6 +227,10 @@ Last Updated: 2026-03-21
   query/test foundations, Next.js 15 route work, server-rendered stock-list
   components, client controls, and manual verification steps for the stock list
   page.
+- Completed Phase 0 of `003-stock-list-page` by installing the required
+  shadcn/ui components in `apps/web/components/ui/`: `input.tsx`, `select.tsx`,
+  `card.tsx`, `badge.tsx`, `skeleton.tsx`, and `accordion.tsx`, all using the
+  confirmed `radix-nova` preset and Tailwind CSS v4 setup.
 
 ## ❌ Known Issues
 

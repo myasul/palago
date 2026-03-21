@@ -1,9 +1,11 @@
 const FALLBACK_52_WEEK_LABEL = "52-week range not yet available — not enough trading history.";
 
 const formatPeso = (value: number): string => {
+  const fractionDigits = value !== 0 && Math.abs(value) < 1 ? 4 : 2;
+
   return `₱${value.toLocaleString("en-PH", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
   })}`;
 };
 

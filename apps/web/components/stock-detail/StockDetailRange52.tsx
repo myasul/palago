@@ -1,20 +1,10 @@
 import type { StockDetailRange52 as StockDetailRange52Data } from "@/lib/queries/stock-detail";
+import { formatStockPrice } from "@/lib/currency-format";
 import { get52WeekLabel, getRangeBarPosition } from "@/lib/stock-detail-utils";
 
 type StockDetailRange52Props = {
   lastClose: string | null;
   range52: StockDetailRange52Data | null;
-};
-
-const formatPeso = (value: string | null) => {
-  if (value === null) {
-    return "—";
-  }
-
-  return `₱${Number(value).toLocaleString("en-PH", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
 };
 
 const getChipPositionClasses = (position: number) => {
@@ -68,19 +58,19 @@ export function StockDetailRange52({
         <div>
           <p className="type-overline tracking-normal text-[#9ca3af]">Low</p>
           <p className="type-body-sm text-[#374151]">
-            {formatPeso(range52.low52)}
+            {formatStockPrice(range52.low52)}
           </p>
         </div>
 
         <div className="text-center">
           <p className="type-overline tracking-normal text-[#9ca3af]">Current</p>
-          <p className="type-body-sm font-bold text-[#4338ca]">{formatPeso(lastClose)}</p>
+          <p className="type-body-sm font-bold text-[#4338ca]">{formatStockPrice(lastClose)}</p>
         </div>
 
         <div className="text-right">
           <p className="type-overline tracking-normal text-[#9ca3af]">High</p>
           <p className="type-body-sm text-[#374151]">
-            {formatPeso(range52.high52)}
+            {formatStockPrice(range52.high52)}
           </p>
         </div>
       </div>
@@ -104,7 +94,7 @@ export function StockDetailRange52({
               className={`absolute inline-flex rounded-full bg-[#EEF2FF] px-2 py-1 text-[10px] font-semibold leading-none text-[#4338ca] ${chipPosition.className}`}
               style={chipPosition.style}
             >
-              {formatPeso(lastClose)} now
+              {formatStockPrice(lastClose)} now
             </div>
           </div>
 

@@ -1,16 +1,6 @@
 import type { StockDetailPriceSnapshot } from "@/lib/queries/stock-detail";
+import { formatStockPrice } from "@/lib/currency-format";
 import { getPriceChange } from "@/lib/stock-detail-utils";
-
-const formatPeso = (value: string | null) => {
-  if (value === null) {
-    return "—";
-  }
-
-  return `₱${Number(value).toLocaleString("en-PH", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-};
 
 const getInitials = (companyName: string) => {
   return companyName
@@ -83,20 +73,20 @@ const getHeroPriceContent = (
   if (parsed > 0) {
     return {
       className: "text-[#15803d]",
-      content: formatPeso(lastClose),
+      content: formatStockPrice(lastClose),
     };
   }
 
   if (parsed < 0) {
     return {
       className: "text-[#be123c]",
-      content: formatPeso(lastClose),
+      content: formatStockPrice(lastClose),
     };
   }
 
   return {
     className: "text-[#1c1917]",
-    content: formatPeso(lastClose),
+    content: formatStockPrice(lastClose),
   };
 };
 
@@ -176,7 +166,7 @@ export function StockDetailHeader({
               prevClose === null ? "text-[#9ca3af]" : "text-[#44403c]"
             }`}
           >
-            {prevClose === null ? "—" : formatPeso(prevClose)}
+            {prevClose === null ? "—" : formatStockPrice(prevClose)}
           </p>
         </div>
       </div>

@@ -9,14 +9,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  formatCurrencyAmount,
+  formatStockPrice,
+} from "@/lib/currency-format";
 import { cn } from "@/lib/utils";
-
-const pesoFormatter = new Intl.NumberFormat("en-PH", {
-  style: "currency",
-  currency: "PHP",
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-});
 
 const sharesFormatter = new Intl.NumberFormat("en-PH");
 
@@ -34,20 +31,6 @@ const getInitials = (value: string): string => {
     .slice(0, 2)
     .map((word) => word[0]?.toUpperCase() ?? "")
     .join("");
-};
-
-const formatPeso = (value: string | null): string => {
-  if (value === null) {
-    return "—";
-  }
-
-  const parsed = Number(value);
-
-  if (!Number.isFinite(parsed)) {
-    return "—";
-  }
-
-  return pesoFormatter.format(parsed);
 };
 
 const formatPercentChange = (value: string | null): string => {
@@ -207,7 +190,7 @@ function MinimumInvestmentExplainer({
   formattedInvestment: string;
 }) {
   const formattedBoardLot = formatBoardLot(boardLot);
-  const formattedClosePrice = formatPeso(closePrice);
+  const formattedClosePrice = formatStockPrice(closePrice);
   const hasPrice = closePrice !== null && formattedClosePrice !== "—";
 
   return (
@@ -268,9 +251,9 @@ function MinimumInvestmentExplainer({
 
 export function StockCard(props: StockListEntry) {
   const initials = getInitials(props.companyName);
-  const formattedPrice = formatPeso(props.closePrice);
+  const formattedPrice = formatStockPrice(props.closePrice);
   const formattedChange = formatPercentChange(props.percentChange);
-  const formattedInvestment = formatPeso(props.minimumInvestment);
+  const formattedInvestment = formatCurrencyAmount(props.minimumInvestment);
 
   return (
     <article className="rounded-xl border border-[#e5e7eb] border-l-4 border-l-[#4338ca] bg-white px-[14px] py-3 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">

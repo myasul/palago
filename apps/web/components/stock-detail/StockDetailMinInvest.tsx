@@ -1,13 +1,4 @@
-const formatPeso = (value: string | null) => {
-  if (value === null) {
-    return "—";
-  }
-
-  return `₱${Number(value).toLocaleString("en-PH", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-};
+import { formatCurrencyAmount, formatStockPrice } from "@/lib/currency-format";
 
 type StockDetailMinInvestProps = {
   boardLot: number | null;
@@ -30,7 +21,7 @@ export function StockDetailMinInvest({
             MINIMUM INVESTMENT
           </p>
           <p className="type-hero text-[28px] tracking-[-0.02em] text-[#1e3a8a]">
-            {formatPeso(minimumInvestment)}
+            {formatCurrencyAmount(minimumInvestment)}
           </p>
         </div>
 
@@ -46,10 +37,10 @@ export function StockDetailMinInvest({
             {boardLotValue}
           </span>
           <span className="type-caption text-[#3b82f6]">×</span>
-          <span className="type-caption text-[#1e40af]">{formatPeso(lastClose)}</span>
+          <span className="type-caption text-[#1e40af]">{formatStockPrice(lastClose)}</span>
           <span className="type-caption text-[#3b82f6]">=</span>
           <span className="text-[12px] font-bold text-[#1e3a8a]">
-            {formatPeso(minimumInvestment)}
+            {formatCurrencyAmount(minimumInvestment)}
           </span>
           <span className="type-overline tracking-normal text-[#3b82f6]">· Cannot buy fewer.</span>
         </div>

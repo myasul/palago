@@ -1,9 +1,19 @@
 # PROGRESS
 
-Last Updated: 2026-03-21
+Last Updated: 2026-03-22
 
 ## ✅ Completed
 
+- Refined `003-stock-list-page` again by merging the list search/chips into the
+  gold header zone and replacing the old white sticky controls bar with the
+  compact gold Option 3 sticky bar that shows the active chip plus search and
+  filter icon buttons, including inline sticky search expansion and updated
+  spacer compensation.
+- Refined `003-stock-list-page` stock cards by adding SQL-derived `prevClose`
+  and `pesoChange` in the stock list query via a single-pass `ROW_NUMBER()`
+  window-function join, then redesigning `StockCard` so the accent strip and
+  top price reflect direction, the middle row uses a compact change pill plus
+  `?` trigger, and `Prev close` appears as a labelled value on the right.
 - Completed Phase 5 / `T015` of `004-stock-detail-main` by adding the real
   `StockDetailRange52` server component, wiring it into the stock detail page,
   restoring the missing `52-WEEK RANGE` section and label, and fixing both

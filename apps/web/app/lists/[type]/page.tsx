@@ -93,22 +93,16 @@ export default async function StockListPage({
     page,
   });
 
-  const titleLines =
-    type === "blue-chips"
-      ? ["Blue-chip", "stocks"]
-      : ["All", "stocks"];
-
   return (
     <main className="mx-auto flex w-full max-w-xl flex-col gap-4 px-4 py-6">
       <section className="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
         <header className="bg-[linear-gradient(160deg,_#fde68a_0%,_#fef3c7_60%)] px-4 pb-5 pt-[18px]">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#92400e]">
+          <p className="text-[22px] font-bold tracking-[-0.03em] leading-none text-[#78350f]">
             STOCK LIST
           </p>
-          <h1 className="mt-2 text-[28px] font-bold tracking-[-0.03em] leading-[1.15] text-slate-950">
-            <span className="block">{titleLines[0]}</span>
-            <span className="block">{titleLines[1]}</span>
-          </h1>
+          <p className="mt-2 max-w-[18rem] text-[13px] leading-5 text-[#92400e]">
+            Browse PSE-listed companies by affordability, sector, and momentum.
+          </p>
           <p className="mt-3 text-[12px] text-[#78350f]">
             {result.totalCount} stocks · Page {result.page} of {result.totalPages}
           </p>

@@ -191,12 +191,6 @@ export default async function StockListPage({
       </section>
 
       <section className="space-y-4" aria-label="Stock results">
-        <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600">
-          <span>{result.totalCount} stocks</span>
-          <span>
-            Page {result.page} of {result.totalPages}
-          </span>
-        </div>
         {result.stocks.length > 0 ? <StockListGrid stocks={result.stocks} /> : <EmptyState />}
         <Pagination state={result.state} totalPages={result.totalPages} />
       </section>

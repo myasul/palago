@@ -219,6 +219,14 @@ Last Updated: 2026-03-21
   errors, and verified
   `cd packages/pse-edge && npx vitest run tests/company-list.test.ts tests/provider-company-list.test.ts`
   passes.
+- Generated the planning artifacts for feature `003-stock-list-page`:
+  `specs/003-stock-list-page/plan.md`, `research.md`, `data-model.md`,
+  `contracts/stock-list-page.md`, and `quickstart.md`, based on the confirmed
+  Next.js 15, Drizzle, and stock-list routing/query requirements.
+- Generated `specs/003-stock-list-page/tasks.md` with phased shadcn setup,
+  query/test foundations, Next.js 15 route work, server-rendered stock-list
+  components, client controls, and manual verification steps for the stock list
+  page.
 
 ## ❌ Known Issues
 

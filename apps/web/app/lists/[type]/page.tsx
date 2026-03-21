@@ -63,6 +63,48 @@ const normalizeSector = (value: string | undefined): string | null => {
   return trimmed ? trimmed : null;
 };
 
+const buildStockListHref = ({
+  type,
+  sector,
+  search,
+  sort,
+  order,
+  page,
+}: {
+  type: StockListType;
+  sector: string | null;
+  search: string | null;
+  sort: StockListSort;
+  order: StockListOrder;
+  page: number;
+}) => {
+  const params = new URLSearchParams();
+
+  if (sector) {
+    params.set("sector", sector);
+  }
+
+  if (sort !== DEFAULT_SORT) {
+    params.set("sort", sort);
+  }
+
+  if (order !== DEFAULT_ORDER) {
+    params.set("order", order);
+  }
+
+  if (search) {
+    params.set("search", search);
+  }
+
+  if (page > DEFAULT_PAGE) {
+    params.set("page", String(page));
+  }
+
+  const query = params.toString();
+
+  return query.length > 0 ? `/lists/${type}?${query}` : `/lists/${type}`;
+};
+
 export default async function StockListPage({
   params,
   searchParams,
@@ -92,6 +134,20 @@ export default async function StockListPage({
     order,
     page,
   });
+
+  const requestedHref = buildStockListHref({
+    type,
+    sector,
+    search: search.length > 0 ? search : null,
+    sort,
+    order,
+    page,
+  });
+  const canonicalHref = buildStockListHref(result.state);
+
+  if (requestedHref !== canonicalHref) {
+    redirect(canonicalHref);
+  }
 
   return (
     <main className="mx-auto flex w-full max-w-xl flex-col gap-4 px-4 py-6">

@@ -11,6 +11,7 @@ type PaginationProps = {
 
 const getPageHref = (state: StockListState, page: number) => {
   const params = new URLSearchParams();
+  const normalizedSearch = state.search?.trim();
 
   if (state.sector) {
     params.set("sector", state.sector);
@@ -24,8 +25,8 @@ const getPageHref = (state: StockListState, page: number) => {
     params.set("order", state.order);
   }
 
-  if (state.search) {
-    params.set("search", state.search);
+  if (normalizedSearch) {
+    params.set("search", normalizedSearch);
   }
 
   if (page > 1) {

@@ -258,6 +258,11 @@ Last Updated: 2026-03-21
   a mobile chip row, adding a sticky condensed bar with scroll detection in
   `StockListShell.tsx`, and adding the gold gradient server header section in
   `apps/web/app/lists/[type]/page.tsx`.
+- Completed Phase 5 of `003-stock-list-page` by preserving stock-list URL state
+  across refresh, direct navigation, and list-type switches, keeping `page`
+  when switching between `blue-chips` and `all`, canonicalizing invalid or
+  out-of-range query strings in `apps/web/app/lists/[type]/page.tsx`, and
+  keeping pagination links aligned with the normalized server state.
 - Completed Phase 4.2 of `003-stock-list-page` by redesigning
   `apps/web/components/stock-list/StockCard.tsx` into the compact blue-accent
   card layout and updating `StockListGrid.tsx` so the list surface no longer

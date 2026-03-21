@@ -103,6 +103,7 @@ export function StockListControls({
     search?: string | null;
     sort?: StockListSort;
     order?: StockListOrder;
+    resetPage?: boolean;
   }) => {
     const nextType = updates.type ?? type;
     const params = new URLSearchParams(searchParams.toString());
@@ -141,7 +142,10 @@ export function StockListControls({
       }
     }
 
-    params.delete("page");
+    if (updates.resetPage ?? true) {
+      params.delete("page");
+    }
+
     router.push(buildPath(`/lists/${nextType}`, params));
   };
 
@@ -158,7 +162,9 @@ export function StockListControls({
     }
 
     const timeoutId = window.setTimeout(() => {
-      updateParams({ search: normalizedSearch.length > 0 ? normalizedSearch : null });
+      updateParams({
+        search: normalizedSearch.length > 0 ? normalizedSearch : null,
+      });
     }, SEARCH_DEBOUNCE_MS);
 
     return () => window.clearTimeout(timeoutId);
@@ -195,7 +201,7 @@ export function StockListControls({
               return;
             }
 
-            updateParams({ type: "blue-chips" });
+            updateParams({ type: "blue-chips", resetPage: false });
           }}
         >
           Blue Chips
@@ -209,7 +215,7 @@ export function StockListControls({
               return;
             }
 
-            updateParams({ type: "all" });
+            updateParams({ type: "all", resetPage: false });
           }}
         >
           All Stocks

@@ -258,12 +258,6 @@ Implement in order: T006b → T016c → T017c.
       Drag down or tap backdrop — standard Drawer dismiss behaviour.
       No explicit close button needed.
 
-## Phase 4.3 Completion
-
-- [x] T006b [US2] Drawer component installed at `apps/web/components/ui/drawer.tsx`
-- [x] T016c [US2] `StockListControls.tsx` now uses a single Filters trigger chip
-- [x] T017c [US2] `StockListShell.tsx` now owns the bottom-sheet Drawer instance
-
   commit message `feat(web): add filter sort bottom sheet to stock list (T017c)`
 
 ## Phase 5: User Story 3 - Share and Resume a Specific View (Priority: P3)
@@ -275,7 +269,7 @@ sharing, and switching list types preserves the same view.
 session and confirm the same type, filters, sorting, and page state are restored
 from the URL alone.
 
-- [ ] T018 [US3] Update `apps/web/app/lists/[type]/page.tsx`, `apps/web/components/stock-list/StockListControls.tsx`, and `apps/web/components/stock-list/Pagination.tsx` so URL parameters remain the single source of truth across refresh, direct navigation, and type switches, preserving `sector`, `sort`, `order`, `search`, and `page`, while clamping out-of-range pages server-side to the nearest valid page; commit message `feat(web): preserve stock list url state`
+- [x] T018 [US3] Update `apps/web/app/lists/[type]/page.tsx`, `apps/web/components/stock-list/StockListControls.tsx`, and `apps/web/components/stock-list/Pagination.tsx` so URL parameters remain the single source of truth across refresh, direct navigation, and type switches, preserving `sector`, `sort`, `order`, `search`, and `page`, while clamping out-of-range pages server-side to the nearest valid page; commit message `feat(web): preserve stock list url state`
 
 ## Phase 4.2: Stock Card Visual Redesign
 

@@ -4,6 +4,9 @@ Last Updated: 2026-03-21
 
 ## ✅ Completed
 
+- Completed Phase 1 of `004-stock-detail-main` by installing the shadcn
+  `sonner` component at `apps/web/components/ui/sonner.tsx` and marking `T001`
+  complete in `specs/004-stock-detail-main/tasks.md`.
 - Generated `specs/004-stock-detail-main/tasks.md` with phased setup,
   foundational query/toast work, stock-detail route/component tasks, and
   manual verification coverage for the first stock-detail page slice.

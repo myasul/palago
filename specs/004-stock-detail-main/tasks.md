@@ -29,7 +29,7 @@ manual verification.
 
 **Purpose**: Install the shared toast component before any route or page work.
 
-- [ ] T001 Run `cd apps/web && npx shadcn@latest add sonner` to generate `apps/web/components/ui/sonner.tsx` and confirm the file exists without modifying the generated component; commit message `chore(web): add shadcn sonner component`
+- [x] T001 Run `cd apps/web && npx shadcn@latest add sonner` to generate `apps/web/components/ui/sonner.tsx` and confirm the file exists without modifying the generated component; commit message `chore(web): add shadcn sonner component`
 
 ## Phase 2: Foundational Infrastructure
 

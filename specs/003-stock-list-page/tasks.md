@@ -77,8 +77,8 @@ breaking the server-first rendering model.
 sort field, and sort direction and confirm the URL updates, page resets to `1`,
 and the server-rendered list reflects the new state.
 
-- [ ] T016 [US2] Create `apps/web/components/stock-list/StockListControls.tsx` as the only interactive controls component with `use client`, using `apps/web/components/ui/input.tsx` for debounced 300ms search, `apps/web/components/ui/select.tsx` for sector and sort selection, URL updates via `useRouter` and `useSearchParams`, page reset to `1` on every filter or sort change, and props-only initial values rather than direct route-state ownership; commit message `feat(web): add stock list controls`
-- [ ] T017 [US2] Create `apps/web/components/stock-list/StockListShell.tsx` as the only Client Component rendered directly by `apps/web/app/lists/[type]/page.tsx`, receiving `type`, `sector`, `search`, `sort`, `order`, `page`, and `sectorOptions`, and doing no rendering logic beyond passing props into `StockListControls`; commit message `feat(web): add stock list shell`
+- [x] T016 [US2] Create `apps/web/components/stock-list/StockListControls.tsx` as the only interactive controls component with `use client`, using `apps/web/components/ui/input.tsx` for debounced 300ms search, `apps/web/components/ui/select.tsx` for sector and sort selection, URL updates via `useRouter` and `useSearchParams`, page reset to `1` on every filter or sort change, and props-only initial values rather than direct route-state ownership; commit message `feat(web): add stock list controls`
+- [x] T017 [US2] Create `apps/web/components/stock-list/StockListShell.tsx` as the only Client Component rendered directly by `apps/web/app/lists/[type]/page.tsx`, receiving `type`, `sector`, `search`, `sort`, `order`, `page`, and `sectorOptions`, and doing no rendering logic beyond passing props into `StockListControls`; commit message `feat(web): add stock list shell`
 
 ## Phase 5: User Story 3 - Share and Resume a Specific View (Priority: P3)
 

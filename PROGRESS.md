@@ -248,6 +248,12 @@ Last Updated: 2026-03-21
   display formatting into `StockCard`, wiring the route page to the real
   server-rendered browse-flow components, and preserving pagination URLs with
   plain anchor tags.
+- Completed Phase 4 of `003-stock-list-page` by adding
+  `apps/web/components/stock-list/StockListControls.tsx` with debounced search,
+  sector/sort controls, URL-param updates through `useRouter` plus
+  `useSearchParams`, and page-reset behavior on filter changes, and by adding
+  `StockListShell.tsx` as the only client component rendered directly by the
+  list route.
 - Added `apps/ingestion/scripts/mark-blue-chip-stocks.ts` to mark the current
   PSEi composition in `stocks.is_blue_chip` using the 30 symbols from the
   provided PSE composition list image, with structured logging for matched,

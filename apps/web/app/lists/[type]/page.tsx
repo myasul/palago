@@ -5,12 +5,12 @@ import {
   type StockListOrder,
   type StockListPageResult,
   type StockListSort,
-  type StockListState,
   type StockListType,
 } from "@/lib/queries/stock-list";
 import { EmptyState } from "@/components/stock-list/EmptyState";
 import { Pagination } from "@/components/stock-list/Pagination";
 import { StockListGrid } from "@/components/stock-list/StockListGrid";
+import { StockListShell } from "@/components/stock-list/StockListShell";
 
 const DEFAULT_SORT: StockListSort = "percent_change";
 const DEFAULT_ORDER: StockListOrder = "desc";
@@ -63,31 +63,6 @@ const normalizeSector = (value: string | undefined): string | null => {
   return trimmed ? trimmed : null;
 };
 
-function StockListShell({
-  state,
-  sectors,
-}: {
-  state: StockListState;
-  sectors: string[];
-}) {
-  return (
-    <section
-      aria-label="Current stock list filters"
-      className="rounded-2xl border border-black/5 bg-white/80 p-4"
-    >
-      <div className="flex flex-wrap gap-2 text-xs text-slate-600">
-        <span className="rounded-full bg-[#B8CEFF]/55 px-2 py-1 font-medium text-slate-800">
-          {state.type === "blue-chips" ? "Blue Chips" : "All Stocks"}
-        </span>
-        <span>Search: {state.search || "All companies"}</span>
-        <span>Sector: {state.sector || "All sectors"}</span>
-        <span>Sort: {state.sort.replace("_", " ")} • {state.order}</span>
-        <span>{sectors.length} sectors</span>
-      </div>
-    </section>
-  );
-}
-
 export default async function StockListPage({
   params,
   searchParams,
@@ -133,7 +108,15 @@ export default async function StockListPage({
         </p>
       </header>
 
-      <StockListShell state={result.state} sectors={result.sectors} />
+      <StockListShell
+        type={result.state.type}
+        sector={result.state.sector}
+        search={result.state.search}
+        sort={result.state.sort}
+        order={result.state.order}
+        page={result.state.page}
+        sectorOptions={result.sectors}
+      />
 
       <section className="space-y-4" aria-label="Stock results">
         <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600">

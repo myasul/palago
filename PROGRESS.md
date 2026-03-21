@@ -4,6 +4,13 @@ Last Updated: 2026-03-21
 
 ## ✅ Completed
 
+- Completed Phase 2 of `004-stock-detail-main` by adding the app-wide
+  `<Toaster />`, creating the shared `ToastHandler`, patching the stock list
+  page for the `stock-not-found` toast, creating the stock-detail query and
+  its Vitest coverage, adding pure stock-detail display utilities and tests,
+  and verifying `npx tsc -p apps/web/tsconfig.json --noEmit` plus
+  `cd apps/web && npx vitest run lib/queries/stock-detail.test.ts lib/stock-detail-utils.test.ts`
+  both pass.
 - Completed Phase 1 of `004-stock-detail-main` by installing the shadcn
   `sonner` component at `apps/web/components/ui/sonner.tsx` and marking `T001`
   complete in `specs/004-stock-detail-main/tasks.md`.

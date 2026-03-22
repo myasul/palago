@@ -141,7 +141,7 @@ export function StockDetailChart({
   const dotProps = getDotProps(nonNullPrices.length === 1);
 
   return (
-    <section className="overflow-hidden rounded-[12px] border border-[#e5e7eb] bg-white">
+    <section className="overflow-hidden border border-[#e5e7eb] bg-white">
       <div className="px-[14px] py-3">
         <div className="mb-3 flex items-center justify-between gap-3">
           <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[#6b7280]">

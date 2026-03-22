@@ -4,6 +4,10 @@ Last Updated: 2026-03-22
 
 ## ✅ Completed
 
+- Refined the `005-stock-price-chart` section stacking by removing the rounded
+  joining edges between `StockDetailRange52`, `StockDetailChart`, and
+  `ChartSkeleton` so the stock-detail page sections align flush without
+  overlapping card corners.
 - Completed Phase 4 / `T006` of `005-stock-price-chart` by wiring the chart
   section into `apps/web/app/stocks/[symbol]/page.tsx` with awaited
   `searchParams.range`, normalized range handling, a scoped `Suspense`

@@ -58,7 +58,7 @@ the client chart depends on.
 
 ### Implementation for User Story 2
 
-- [ ] T006 [US2] Update `/Users/matthewyasul/personal/code/palago-2/apps/web/app/stocks/[symbol]/page.tsx` to await both `params` and `searchParams`, destructure `range` from awaited `searchParams`, normalize `range` against `["1w", "1m", "6m", "1y"]` with `1m` as the fallback, leave the existing stock detail query untouched, import `Suspense`, `ChartSkeleton`, and `StockDetailChartServer`, and add `<Suspense fallback={<ChartSkeleton />}><StockDetailChartServer symbol={symbol.toUpperCase()} range={normalizedRange} /></Suspense>` directly below `StockDetailRange52`, then update `/Users/matthewyasul/personal/code/palago-2/specs/005-stock-price-chart/tasks.md` in the same commit. Commit: `feat(web): wire stock detail chart suspense section`
+- [x] T006 [US2] Update `/Users/matthewyasul/personal/code/palago-2/apps/web/app/stocks/[symbol]/page.tsx` to await both `params` and `searchParams`, destructure `range` from awaited `searchParams`, normalize `range` against `["1w", "1m", "6m", "1y"]` with `1m` as the fallback, leave the existing stock detail query untouched, import `Suspense`, `ChartSkeleton`, and `StockDetailChartServer`, and add `<Suspense fallback={<ChartSkeleton />}><StockDetailChartServer symbol={symbol.toUpperCase()} range={normalizedRange} /></Suspense>` directly below `StockDetailRange52`, then update `/Users/matthewyasul/personal/code/palago-2/specs/005-stock-price-chart/tasks.md` in the same commit. Commit: `feat(web): wire stock detail chart suspense section`
 
 **Checkpoint**: User Story 2 is complete once URL-driven range changes re-render only the chart section and `page.tsx` still does not call `getStockPriceHistory` directly.
 

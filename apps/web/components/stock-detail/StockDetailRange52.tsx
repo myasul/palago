@@ -34,7 +34,7 @@ export function StockDetailRange52({
 }: StockDetailRange52Props) {
   if (range52 === null) {
     return (
-      <section className="rounded-b-2xl border-t border-[#f3f4f6] bg-white px-4 py-3">
+      <section className="border-t border-[#f3f4f6] bg-white px-4 py-3">
         <p className="type-overline mb-2 tracking-[0.1em] text-[#6b7280]">
           52-WEEK RANGE
         </p>
@@ -49,7 +49,7 @@ export function StockDetailRange52({
   const chipPosition = position === null ? null : getChipPositionClasses(position);
 
   return (
-    <section className="rounded-b-2xl border-t border-[#f3f4f6] bg-white px-4 py-3">
+    <section className="border-t border-[#f3f4f6] bg-white px-4 py-3">
       <p className="type-overline mb-2 tracking-[0.1em] text-[#6b7280]">
         52-WEEK RANGE
       </p>

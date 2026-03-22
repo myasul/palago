@@ -4,6 +4,29 @@ Last Updated: 2026-03-22
 
 ## ✅ Completed
 
+- Refined the `005-stock-price-chart` section stacking by removing the rounded
+  joining edges between `StockDetailRange52`, `StockDetailChart`, and
+  `ChartSkeleton` so the stock-detail page sections align flush without
+  overlapping card corners.
+- Completed Phase 4 / `T006` of `005-stock-price-chart` by wiring the chart
+  section into `apps/web/app/stocks/[symbol]/page.tsx` with awaited
+  `searchParams.range`, normalized range handling, a scoped `Suspense`
+  boundary, and the `ChartSkeleton` fallback mounted below the 52-week range.
+- Completed Phase 3 / `T005` of `005-stock-price-chart` by adding
+  `apps/web/components/stock-detail/StockDetailChart.tsx` as the client-side
+  Recharts price-history card with the persistent range toggle, explicit
+  date formatting, null-gap rendering, single-point dot handling, period
+  low/high summary row, empty state, and no-volume footer treatment.
+- Completed Phase 2 / `T003` and `T004` of `005-stock-price-chart` by adding
+  `apps/web/components/stock-detail/StockDetailChartServer.tsx` as the async
+  section-level fetcher and `apps/web/components/stock-detail/ChartSkeleton.tsx`
+  as the scoped Suspense fallback for the chart card.
+- Completed Phase 1 / `T001` and `T002` of `005-stock-price-chart` by adding
+  `apps/web/lib/queries/stock-price-history.ts`, adding mocked Vitest coverage
+  in `apps/web/lib/queries/stock-price-history.test.ts`, and marking both tasks
+  complete in `specs/005-stock-price-chart/tasks.md`. Verification commands are
+  currently blocked in this workspace because local `vitest` and `tsc` binaries
+  are unavailable and `npx` cannot reach the npm registry from the sandbox.
 - Finished the pending `003-stock-list-page` follow-up wiring by committing the
   stock-list query/test changes for `prevClose` and `pesoChange`, fixing the
   shared `?` badge so accordion-open styles apply correctly in `StockCard`, and
@@ -19,6 +42,20 @@ Last Updated: 2026-03-22
   window-function join, then redesigning `StockCard` so the accent strip and
   top price reflect direction, the middle row uses a compact change pill plus
   `?` trigger, and `Prev close` appears as a labelled value on the right.
+- Generated `specs/005-stock-price-chart/tasks.md` with the fixed query, chart,
+  Suspense wiring, and manual verification sequence for the stock price chart
+  feature, including absolute file paths, commit messages, and story-based
+  execution order.
+- Generated the planning artifacts for `005-stock-price-chart`:
+  `specs/005-stock-price-chart/plan.md`, `research.md`, `data-model.md`,
+  `contracts/stock-price-chart.md`, and `quickstart.md`, covering the
+  Next.js 15 partial-rendering chart section, close-price-only query contract,
+  null-gap rendering rules, and mobile verification flow.
+- Updated `AGENTS.md` through the agent-context script so the feature's
+  Next.js 15, Recharts, and PostgreSQL chart-planning context is recorded.
+- Generated the feature specification for `005-stock-price-chart` at
+  `specs/005-stock-price-chart/spec.md` and added a completed requirements
+  checklist at `specs/005-stock-price-chart/checklists/requirements.md`.
 - Completed Phase 5 / `T015` of `004-stock-detail-main` by adding the real
   `StockDetailRange52` server component, wiring it into the stock detail page,
   restoring the missing `52-WEEK RANGE` section and label, and fixing both

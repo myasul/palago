@@ -25,3 +25,10 @@ For project state, read `PROGRESS.md` and `TASKS.md`.
 | Hosting | Vercel |
 
 Package names use `@palago/` prefix.
+
+## Active Technologies
+- strict TypeScript 5.x + Next.js 15 App Router, React 19, Recharts `^2.15.3`, (005-stock-price-chart)
+- PostgreSQL via Supabase (`daily_prices`) (005-stock-price-chart)
+
+## Recent Changes
+- 005-stock-price-chart: Added strict TypeScript 5.x + Next.js 15 App Router, React 19, Recharts `^2.15.3`,

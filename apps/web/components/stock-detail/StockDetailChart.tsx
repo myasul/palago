@@ -92,7 +92,7 @@ const getDotProps = (hasSinglePoint: boolean) => {
 function ChartTooltip({
   active,
   payload,
-}: TooltipProps<number | null, string>) {
+}: TooltipProps<number, string>) {
   if (!active || !payload || payload.length === 0) {
     return null;
   }

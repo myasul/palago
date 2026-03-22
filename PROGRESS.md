@@ -4,6 +4,11 @@ Last Updated: 2026-03-22
 
 ## ✅ Completed
 
+- Completed Phase 3 / `T005` of `005-stock-price-chart` by adding
+  `apps/web/components/stock-detail/StockDetailChart.tsx` as the client-side
+  Recharts price-history card with the persistent range toggle, explicit
+  date formatting, null-gap rendering, single-point dot handling, period
+  low/high summary row, empty state, and no-volume footer treatment.
 - Completed Phase 2 / `T003` and `T004` of `005-stock-price-chart` by adding
   `apps/web/components/stock-detail/StockDetailChartServer.tsx` as the async
   section-level fetcher and `apps/web/components/stock-detail/ChartSkeleton.tsx`
